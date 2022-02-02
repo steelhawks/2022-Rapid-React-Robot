@@ -25,7 +25,7 @@ public class RobotMap
   public final int MUSIC_MOTOR_PORT = 10;//USING RIGHTDOWN
 
   //climbtest
-  private final double intakeSpeed = 0.25;
+  private final double intakeSpeed = 1;
 
   //Optical Encoder Ports
   private final int LEFT_ENC_PORT_A = 0;
@@ -58,9 +58,6 @@ public class RobotMap
   private final int PORT_BUTTON = 11;
   private final int BALL_BUTTON = 9;
 
-  //Light ports
-  private final int LIGHT_PORT = 12;
-
   /*****
    * Constructor methods
    *****/
@@ -72,7 +69,6 @@ public class RobotMap
   public double getintakeSpeed(){
     return this.intakeSpeed;
   }
-
 
   public int getRightMotorPortUp()
   {
@@ -94,11 +90,11 @@ public class RobotMap
     return this.LEFT_MOTOR_PORT_DOWN;
   }
 
-
   public int getLeftEncPortA()
   {
     return this.LEFT_ENC_PORT_A;
   }
+  
   public int getLeftEncPortB()
   {
     return this.LEFT_ENC_PORT_B;
@@ -159,8 +155,4 @@ public class RobotMap
     return this.BAY_BUTTON;
   }
 
-  public int getLightPort() 
-  {
-    return this.LIGHT_PORT;
-  }
 }

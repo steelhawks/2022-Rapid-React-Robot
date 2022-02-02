@@ -27,7 +27,6 @@ public class DiffDrive implements Command
   @Override
   public void execute() 
   {
-    
     Robot.DRIVETRAIN.arcadeDrive(Robot.COMMAND_LINKER.DRIVE_JOYSTICK);
   }
 

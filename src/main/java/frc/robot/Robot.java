@@ -7,13 +7,12 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DiffDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.StorageTest;
-//import frc.robot.subsystems.Music;
+import frc.robot.subsystems.Music;
 import frc.robot.subsystems.SolenoidTesting;
 import frc.util.ColorSensor;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -26,10 +25,9 @@ public class Robot extends TimedRobot
   public static final RobotMap ROBOTMAP = new RobotMap();
   public static final Drivetrain DRIVETRAIN = new Drivetrain();
   public static final CommandLinker COMMAND_LINKER = new CommandLinker();
-  public WPI_TalonSRX light = new WPI_TalonSRX(ROBOTMAP.getLightPort());
   public double count = -0.99;
 
-  //public static final Music MUSIC = new Music();
+  public static final Music MUSIC = new Music();
   
   public static final StorageTest INTAKETEST = new StorageTest();
   public static final SolenoidTesting SOLENOID_TESTING = new SolenoidTesting();
@@ -44,39 +42,19 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit() 
   {
-       
-    //COMMAND_LINKER.configureCommands();
-    light.configContinuousCurrentLimit(1);
-    light.enableCurrentLimit(true);
-
-    //CommandScheduler.getInstance().registerSubsystem(Robot.DRIVETRAIN);
-    //CommandScheduler.getInstance().registerSubsystem(Robot.ULTRA);
-    //CommandScheduler.getInstance().registerSubsystem(Robot.VISION);
-
-    //Button SHIFT_BUTTON = new JoystickButton(Robot.COMMAND_LINKER.DRIVE_JOYSTICK, Robot.ROBOTMAP.getShiftButton());
-    //Button ALIGN_BUTTON = new JoystickButton(Robot.COMMAND_LINKER.DRIVE_JOYSTICK, Robot.ROBOTMAP.getAlignButton());
-
-    //SHIFT_BUTTON.whenPressed(new ShiftGear());
-    //ALIGN_BUTTON.whenPressed(new Align());
-
-    //colorsensor match with fixed colors
-    COLOR_SENSOR.matchfixedcolors();
-
     //tab.add("currentDistanceCentimeters", currentDistanceCentimeters).getEntry();
     //tab.add("currentDistanceInches", currentDistanceInches).getEntry();
 
-    Robot.COMMAND_LINKER.configureCommands();
-    Robot.COMMAND_LINKER.configureRegisteredSubsystems();  
+    COMMAND_LINKER.configureRegisteredSubsystems();  
+    COMMAND_LINKER.configureCommands();
 
-    // MUSIC.addIntra();
-    // MUSIC.addMusic();
-
+    MUSIC.addIntra();
+    MUSIC.addMusic();
   }
 
   @Override
   public void robotPeriodic() 
   {
-    
     /*
     double raw_value = ultrasonic.getValue();
     //voltage_scale_factor allows us to compensate for differences in supply voltage.
@@ -86,10 +64,6 @@ public class Robot extends TimedRobot
     System.out.println(currentDistanceCentimeters + "cm");
     System.out.println(currentDistanceInches + "in");
     */
-
-    //colorsensor
-    COLOR_SENSOR.detectColor();
-    COLOR_SENSOR.updatecolortable();
   }
 
   @Override
@@ -108,14 +82,12 @@ public class Robot extends TimedRobot
   public void teleopInit() 
   {
     CommandScheduler.getInstance().enable();
-    //MUSIC.playMusic();
+    MUSIC.playMusic();
 
   }
   public void teleopPeriodic() 
   {
     CommandScheduler.getInstance().run();
-    light.set(1.0);
-
   }
 
   @Override

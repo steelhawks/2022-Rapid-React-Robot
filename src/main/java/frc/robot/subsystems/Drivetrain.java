@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
+import edu.wpi.first.wpilibj.MotorSafety;
 
-
-
+//import edu.wpi.first.wpilibj.MotorSafety;
 
 public class Drivetrain extends MechanicalSubsystem
 {
@@ -54,7 +54,6 @@ public class Drivetrain extends MechanicalSubsystem
     //SPEED CONTROLLER GROUPS
     this.UP_M_GROUP = new MotorControllerGroup(this.LEFT_M_UP, this.RIGHT_M_UP);
     this.DOWN_M_GROUP = new MotorControllerGroup(this.LEFT_M_DOWN, this.RIGHT_M_DOWN);
-    this.DOWN_M_GROUP.setInverted(true);
 
     //DIFFERENTIAL DRIVE
     this.DIFF_DRIVE = new DifferentialDrive(this.UP_M_GROUP, this.DOWN_M_GROUP);
@@ -69,7 +68,6 @@ public class Drivetrain extends MechanicalSubsystem
 
     configureMotors();
 
-    this.DOWN_M_GROUP.setInverted(true);
     this.LEFT_M_DOWN.setInverted(true);
   }
 
@@ -160,6 +158,10 @@ public class Drivetrain extends MechanicalSubsystem
   public boolean stop(){
     rotate(0);
     return false;
+  }
+
+  public void motorTimeout(){
+    System.out.println(LEFT_M_DOWN.getExpiration());
   }
 
   /** Pings the subsystem. */

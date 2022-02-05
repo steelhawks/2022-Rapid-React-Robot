@@ -20,8 +20,8 @@ public class Intake extends MechanicalSubsystem {
   public final MotorControllerGroup intakeMotorGroup;
 
   // SOLENOID
-  public DoubleSolenoid solenoidLeft;
-  public DoubleSolenoid solenoidRight;
+  public DoubleSolenoid intakeSolenoidLeft;
+  public DoubleSolenoid intakeSolenoidRight;
 
   //Solenoid Type
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
@@ -35,8 +35,8 @@ public class Intake extends MechanicalSubsystem {
     this.intakeMotorGroup = new MotorControllerGroup(this.intakeMotorOne);
 
     // SOLENOID
-    this.solenoidLeft = new DoubleSolenoid(type, 0, 1);
-    this.solenoidRight = new DoubleSolenoid(type, 2, 3);
+    this.intakeSolenoidLeft = new DoubleSolenoid(type, Robot.ROBOTMAP.intakeSoleLeftForward, Robot.ROBOTMAP.intakeSoleLeftReverse );
+    this.intakeSolenoidRight = new DoubleSolenoid(type, Robot.ROBOTMAP.intakeSoleRightForward, Robot.ROBOTMAP.intakeSoleRightReverse);
     
     configureMotors();
   }
@@ -44,19 +44,19 @@ public class Intake extends MechanicalSubsystem {
   public void spinRoller(boolean isForward) {
     System.out.println("spinning motors");
     if (isForward) {
-      this.intakeMotorGroup.set(-Robot.ROBOTMAP.getIntakeSpeed());
+      this.intakeMotorGroup.set(-Robot.ROBOTMAP.intakeSpeed);
     } else {
-      this.intakeMotorGroup.set(Robot.ROBOTMAP.getIntakeSpeed());
+      this.intakeMotorGroup.set(Robot.ROBOTMAP.intakeSpeed);
     }
   }
 
   public void spinRoller(double speed) {
-    System.out.println("2");
+    System.out.println("intake set to spin at:" + speed);
     this.intakeMotorGroup.set(-speed);
   }
 
   public void spinRollerReverse(double speed) {
-    System.out.println(-2);
+    System.out.println("intake spinning out at:" + speed);
     this.intakeMotorGroup.set(speed);
   }
 
@@ -66,24 +66,26 @@ public class Intake extends MechanicalSubsystem {
   }
 
   public void toggle() {
-    if (this.solenoidLeft.get().equals(DoubleSolenoid.Value.kForward)) {
-      retract();
+    if (this.intakeSolenoidLeft.get().equals(DoubleSolenoid.Value.kForward)) {
+      intakeRetract();
+      System.out.println("toggle: retract intake pistons");
     } else {
-      extend();
+      intakeExtend();
+      System.out.println("toggle: extend intake pistons");
     }
-    System.out.println("Shifted gears!");
+    
   }
 
-  public void extend() {
-    System.out.println("extend");
-    this.solenoidLeft.set(DoubleSolenoid.Value.kForward);
-    this.solenoidRight.set(DoubleSolenoid.Value.kForward);
+  public void intakeExtend() {
+    System.out.println("extend intake");
+    this.intakeSolenoidLeft.set(DoubleSolenoid.Value.kForward);
+    this.intakeSolenoidRight.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void retract() {
+  public void intakeRetract() {
     System.out.println("retract");
-    this.solenoidLeft.set(DoubleSolenoid.Value.kReverse);
-    this.solenoidRight.set(DoubleSolenoid.Value.kReverse);
+    this.intakeSolenoidLeft.set(DoubleSolenoid.Value.kReverse);
+    this.intakeSolenoidRight.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void configureMotors() {

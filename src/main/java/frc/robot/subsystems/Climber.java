@@ -2,18 +2,19 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 // import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
 
 public class Climber extends MechanicalSubsystem{
 
-  public final Talon winch = new Talon(Robot.ROBOTMAP.getWinchPort()); //?????
+  //TODO:FIX EVERYTHING 
+
+  public final Talon winch = new Talon(Robot.ROBOTMAP.WINCH_PORT); //?????
 
   public void rollWinch(boolean isFoward) {
     System.out.println("winching");
     if(isFoward) {
-      this.winch.set(Robot.ROBOTMAP.getClimberSpeed());
+      this.winch.set(Robot.ROBOTMAP.climberSpeed);
       System.out.println("foward");
     }
   }
@@ -38,7 +39,7 @@ public class Climber extends MechanicalSubsystem{
   }
 @Override
 public void shuffleBoard() {
-    // TODO Auto-generated method stub
+    // TODO add values
     
 }
 

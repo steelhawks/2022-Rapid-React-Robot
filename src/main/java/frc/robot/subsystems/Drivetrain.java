@@ -8,6 +8,8 @@ import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
 
@@ -29,6 +31,10 @@ public class Drivetrain extends MechanicalSubsystem{
   //DIFFERENTIAL DRIVE
   public final DifferentialDrive DIFF_DRIVE;
 
+  //DRIVETRAIN SHIFTGEAR SOLENOIDS
+  public final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
+  public DoubleSolenoid DRIVESOLENOID;
+
   //VARIABLE RPM ELECTRO-SHIFT
   public int shiftStatus;
   public double rPMCoefficient;
@@ -40,14 +46,14 @@ public class Drivetrain extends MechanicalSubsystem{
   public Drivetrain() 
   {
     //SPARK MAX LEFT MOTORS
-    this.LEFT_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.getLeftMotorPortOne());
-    this.LEFT_MOTOR_TWO = new WPI_TalonSRX(Robot.ROBOTMAP.getLeftMotorPortTwo());
-    this.LEFT_MOTOR_THREE = new WPI_TalonSRX(Robot.ROBOTMAP.getLeftMotorPortThree());
+    this.LEFT_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainLeftMotorPortOne);
+    this.LEFT_MOTOR_TWO = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainLeftMotorPortTwo);
+    this.LEFT_MOTOR_THREE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainLeftMotorPortThree);
     
     //SPARK MAX RIGHT MOTORS
-    this.RIGHT_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.getRigtMotorPortOne());
-    this.RIGHT_MOTOR_TWO = new WPI_TalonSRX(Robot.ROBOTMAP.getRightMotorPortTwo());
-    this.RIGHT_MOTOR_THREE = new WPI_TalonSRX(Robot.ROBOTMAP.getRightMotorPortThree());
+    this.RIGHT_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainRightMotorPortOne);
+    this.RIGHT_MOTOR_TWO = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainRightMotorPortTwo);
+    this.RIGHT_MOTOR_THREE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainRightMotorPortThree);
 
     //SPEED CONTROLLER GROUPS
     this.RIGHT_M_GROUP = new MotorControllerGroup(this.RIGHT_MOTOR_ONE, this.RIGHT_MOTOR_TWO, this.RIGHT_MOTOR_THREE);
@@ -58,16 +64,19 @@ public class Drivetrain extends MechanicalSubsystem{
 
     //NAVX MXP GYRO
     this.GYRO = new AHRS(SPI.Port.kMXP);
-    this.KP_GYRO = Robot.ROBOTMAP.getKPGyro();
+    this.KP_GYRO = Robot.ROBOTMAP.KP_GYRO;
 
     //VARIABLE RPM ELECTRO-SHIFT
     this.shiftStatus = 1;
     this.rPMCoefficient = 1.75;
 
-    configureMotors();
+    //DRIVETRAIN SOLENOID
+    this.DRIVESOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.drivetrainSolenoidPortOn, Robot.ROBOTMAP.drivetrainSolenoidPortOff);
 
     this.LEFT_M_GROUP.setInverted(true);
     this.RIGHT_M_GROUP.setInverted(false);
+
+    configureMotors();
   }
 
   //DRIVING METHOD
@@ -79,7 +88,20 @@ public class Drivetrain extends MechanicalSubsystem{
   //SHIFTING METHOD
   public void shiftGear() 
   {
-    
+    if (this.DRIVESOLENOID.get() == DoubleSolenoid.Value.kForward) {
+      highGear();
+    } else {
+      lowGear();
+    }
+    System.out.println("Drive Train Shifted gears!");
+  }
+
+  public void lowGear() {
+    this.DRIVESOLENOID.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void highGear() {
+    this.DRIVESOLENOID.set(DoubleSolenoid.Value.kReverse);
   }
 
   //MOVING STRAIGHT USING THE GYRO METHOD

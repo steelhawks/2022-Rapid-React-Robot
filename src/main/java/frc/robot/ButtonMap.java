@@ -5,19 +5,19 @@ import frc.util.Gamepad;
 public class ButtonMap {
   public final int joystickOnePort = 0;
   public final int gamepadOnePort = 1;
+
   public final int climberRollWinchButton = Gamepad.kGamepadButtonShoulderL;
   public final int climberExtendButton = Gamepad.kGamepadLeftStickY; 
+
   public final int intakeSpinButton = Gamepad.kGamepadButtonA;
   public final int intakeReverseSpinButton = Gamepad.kGamepadButtonB; 
-  public final int intakeSolenoidButton = Gamepad.kGamepadButtonX; 
-
-  public final int storageSpinForwardButton = Gamepad.kGamepadTriggerRight;
+  public final int intakeToggleSolenoidButton = Gamepad.kGamepadButtonX; 
 
   public final int storageMoveBallsUpButton = Gamepad.kGamepadButtonShoulderR;
   public final int storageMoveBallsReverseButton = Gamepad.kGamepadButtonY;
 
-  //later 
-//   public final int drivetrainShiftButton = 1;
+                    //later 
+  public final int drivetrainShiftButton = 1;
 //   public final int drivetrainReverseDirectionButton = 3;
 //   public final int drivetrainCoolFalconsButton = -3;
 

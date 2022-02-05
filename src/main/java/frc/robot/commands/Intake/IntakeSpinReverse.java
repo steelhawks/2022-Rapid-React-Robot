@@ -1,10 +1,10 @@
-package frc.robot.commands;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class IntakeSpin extends CommandBase {
-    public IntakeSpin() {
+public class IntakeSpinReverse extends CommandBase {
+    public IntakeSpinReverse() {
         addRequirements(Robot.INTAKE);
     }
 
@@ -15,7 +15,7 @@ public class IntakeSpin extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.INTAKE.spinRoller(true);
+        Robot.INTAKE.spinRoller(false);
     }
 
     @Override

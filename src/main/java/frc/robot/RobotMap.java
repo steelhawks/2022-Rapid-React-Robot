@@ -4,35 +4,81 @@ public class RobotMap
 {
   /*Store instance variables, values, ports needed for the robot*/
 
-  //Motor Ports
-  private final int MOTOR_PORT = 2;
+  //Joystick Input Ports
+  private final int JoystickPortOne = 0;
 
-  //climbtest
-  private final double motorspeed = 1;
+  //DRIVETRAIN Motor ID
+  public final int drivetrainLeftMotorPortOne = 1;
+  public final int drivetrainLeftMotorPortTwo = 2;
+  public final int drivetrainLeftMotorPortThree = 3;
+  
+  public final int drivetrainRightMotorPortOne = 4;
+  public final int drivetrainRightMotorPortTwo = 5;
+  public final int drivetrainRightMotorPortThree = 6;
 
-  //Input Ports
-  private final int JOYSTICK_PORT_ONE = 0;
+  public final int drivetrainSolenoidPortOn = 0;
+  public final int drivetrainSolenoidPortOff = 1;
+
+  //Storage % Shooter Motor ID
+  public final int storageMotorPortOne = 13;
+  public final int storageMotorPortTwo = 15;
+  public final double storageSpeedOne = 1.0;
+  public final double storageSpeedTwo = 1.0;
+
+  //Gyro
+    
+    private final double KP_GYRO = 0.008;
+
+  //Intake Motor & solenoids
+  public final int intakeMotorOnePort = 0;
+  public final int intakeSolOnPort = 0;
+  public final int intakeSolOffPort = 0;
+  public final double intakeSpeed = 0.75;
+
+
+  //Climber ??
+
 
   /*****
-   * Constructor methods
+   Constructor method
    *****/
+
+   public int getLeftMotorPortOne()
+   {
+     return this.drivetrainLeftMotorPortOne; 
+   }
+   public int getLeftMotorPortTwo()
+   {
+     return this.drivetrainLeftMotorPortTwo; 
+   }
+   public int getLeftMotorPortThree()
+   {
+     return this.drivetrainLeftMotorPortThree; 
+   }
+   public int getRigtMotorPortOne()
+   {
+     return this.drivetrainRightMotorPortOne; 
+   }
+   public int getRightMotorPortTwo()
+   {
+     return this.drivetrainLeftMotorPortTwo;  
+   }
+   public int getRightMotorPortThree()
+   {
+     return this.drivetrainRightMotorPortThree; 
+   }
+   public int getJoystickPortOne()
+   {
+     return this.JoystickPortOne; 
+   }
+   public double getKPGyro()
+  {
+    return this.KP_GYRO;
+  }
+  public double getIntakeSpeed() {
+    return this.intakeSpeed;
+  }
+
   public RobotMap() {}
-
-  /*****
-   * Getter methods
-   *****/
-  public double getintakeSpeed(){
-    return this.motorspeed;
-  }
-
-  public int getRightMotorPortUp()
-  {
-    return this.MOTOR_PORT;
-  }
-
-  public int getJoystickPortOne()
-  {
-    return this.JOYSTICK_PORT_ONE;
-  }
 
 }

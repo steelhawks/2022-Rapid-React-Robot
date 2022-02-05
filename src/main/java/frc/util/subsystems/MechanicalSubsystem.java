@@ -19,6 +19,6 @@ public abstract class MechanicalSubsystem extends SubsystemBase {
   /** Checks if the subsystem is functioning properly. @return True if functioning */
   abstract public boolean isAlive();
 
-  /** Print info to Smart Dashboard */
-  abstract public void smartDashboard();
+  /** Print info to Shuffle Board */
+  abstract public void shuffleBoard();
 }

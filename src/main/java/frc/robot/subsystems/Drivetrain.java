@@ -98,10 +98,7 @@ public class Drivetrain extends SubsystemBase {
 
 
 
-
-
-
-
+    Why is the other Robot.DRIVETRAIN and not this. ?
     */
     this.diffDrive.arcadeDrive(y, -rotate);
 

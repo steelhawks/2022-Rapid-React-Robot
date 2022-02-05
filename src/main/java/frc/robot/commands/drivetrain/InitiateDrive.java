@@ -15,6 +15,8 @@ public class InitiateDrive extends CommandBase {
 
   @Override
   public void execute() {
+
+    //Sets the 3D Port Joystick as the arcadeDrive joystick inputs
     Robot.DRIVETRAIN.arcadeDrive(Robot.COMMAND_LINKER.driveJoystick);
   }
 

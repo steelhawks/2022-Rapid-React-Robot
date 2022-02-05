@@ -92,6 +92,22 @@ public class Drivetrain extends SubsystemBase {
     } else {
       y = -y;
     }
+
+    /*This is probably the problem if controls are reversed
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    */
     this.diffDrive.arcadeDrive(y, -rotate);
 
     /* Currently no recorder */

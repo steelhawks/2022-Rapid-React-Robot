@@ -16,64 +16,64 @@ public class Gamepad extends Joystick {
   }
 
   // GAMEPAD AXES
-  public static final int kGamepadLeftStickX = 0;
-  public static final int kGamepadLeftStickY = 1;
+  public static final int gamepadLeftStickX = 0;
+  public static final int gamepadLeftStickY = 1;
   // shooter stop
-  public static final int kGamepadTriggerLeft = 2;
-  public static final int kGamepadTriggerRight = 3;
-  public static final int kGamepadRightStickX = 4;
-  public static final int kGamepadRightStickY = 5;
+  public static final int gamepadTriggerLeft = 2;
+  public static final int gamepadTriggerRight = 3;
+  public static final int gamepadRightStickX = 4;
+  public static final int gamepadRightStickY = 5;
 
   // GAMEPAD BUTTONS
   // Intake Toggle Solenoids
-  public static final int kGamepadButtonA = 1;
+  public static final int gamepadButtonA = 1;
   // Intake Vomit
-  public static final int kGamepadButtonB = 2;
+  public static final int gamepadButtonB = 2;
   // Pistons
-  public static final int kGamepadButtonX = 3;
+  public static final int gamepadButtonX = 3;
   // Storage
-  public static final int kGamepadButtonY = 4;
+  public static final int gamepadButtonY = 4;
   // Shooter
-  public static final int kGamepadButtonShoulderL = 5;
+  public static final int gamepadButtonShoulderL = 5;
   // Intake
-  public static final int kGamepadButtonShoulderR = 6;
+  public static final int gamepadButtonShoulderR = 6;
 
-  public static final int kGamepadButtonBack = 7;
+  public static final int gamepadButtonBack = 7;
 
   // Climb
-  public static final int kGamepadButtonStart = 8;
-  public static final int kGamepadButtonLeftStick = 9;
+  public static final int gamepadButtonStart = 8;
+  public static final int gamepadButtonLeftStick = 9;
 
   // Rollwinch
-  public static final int kGamepadButtonRightStick = 10;
-  public static final int kGamepadButtonMode = -1;
-  public static final int kGamepadButtonLogitech = -1;
+  public static final int gamepadButtonRightStick = 10;
+  public static final int gamepadButtonMode = -1;
+  public static final int gamepadButtonLogitech = -1;
 
   public double getRawAxis(int axis) {
     return super.getRawAxis(axis);
   }
 
   public double getLeftX() {
-    return super.getRawAxis(kGamepadLeftStickX);
+    return super.getRawAxis(gamepadLeftStickX);
   }
 
   public double getLeftY() {
-    return super.getRawAxis(kGamepadLeftStickY);
+    return super.getRawAxis(gamepadLeftStickY);
   }
 
   public double getRightX() {
-    return super.getRawAxis(kGamepadRightStickX);
+    return super.getRawAxis(gamepadRightStickX);
   }
 
   public double getRightY() {
-    return super.getRawAxis(kGamepadRightStickY);
+    return super.getRawAxis(gamepadRightStickY);
   }
 
   public double getLeftTrigger() {
-    return super.getRawAxis(kGamepadTriggerLeft);
+    return super.getRawAxis(gamepadTriggerLeft);
   }
 
   public double getRightTrigger() {
-    return super.getRawAxis(kGamepadTriggerRight);
+    return super.getRawAxis(gamepadTriggerRight);
   }
 }

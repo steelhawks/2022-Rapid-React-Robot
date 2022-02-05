@@ -11,6 +11,8 @@ public class Controller {
     this.joystick = joystick;
   }
 
+
+  //Used to give a JoystickButton for Commands in other Controller Files
   public JoystickButton mapButton(int buttonNumber){
     return new JoystickButton(this.joystick, buttonNumber);
   }

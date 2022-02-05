@@ -10,9 +10,9 @@ public class ButtonMap {
   //Xbox Controller Port
   public final int gamepadPort = 1;
 
-  //Storage Function Buttons
-  public final int storageMoveUpButton = Gamepad.kGamepadButtonY;
-  public final int StorageMoveReverseButton = Gamepad.kGamepadButtonB;
+  //Storage Function Buttons (Found in Gamepad.java)
+  public final int storageMoveUpButton = Gamepad.gamepadButtonY;
+  public final int StorageMoveReverseButton = Gamepad.gamepadButtonB;
 
   public final int drivetrainShiftButton = 1;
   public final int drivetrainReverseDirectionButton = 3;

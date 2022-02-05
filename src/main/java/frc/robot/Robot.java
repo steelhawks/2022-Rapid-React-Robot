@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
 
   public static final RobotMap ROBOT_MAP = new RobotMap();
   public static final Drivetrain DRIVETRAIN = new Drivetrain();
+  public static final Storage STORAGE = new Storage();
 
   /**
    * This function is run when the robot is first started up and should be used for any

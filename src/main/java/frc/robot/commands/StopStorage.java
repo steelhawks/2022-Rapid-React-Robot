@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Storage;
 
-public class RunStorage extends CommandBase {
+public class StopStorage extends CommandBase {
 
   private final Storage m_intakeTest;
 
-  public RunStorage(Storage subsystem) {
+  public StopStorage(Storage subsystem) {
     m_intakeTest = subsystem;
     addRequirements(m_intakeTest);
   }
@@ -19,7 +19,7 @@ public class RunStorage extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.STORAGE.startStorage(true);
+    Robot.STORAGE.stopStorage();
   }
 
   @Override

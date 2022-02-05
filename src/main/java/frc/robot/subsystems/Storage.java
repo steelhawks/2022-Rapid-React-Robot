@@ -41,7 +41,7 @@ public class Storage extends SubsystemBase {
       }
 
      
-      public void startIntake(boolean isForward){
+      public void startStorage(boolean isForward){
         System.out.println("roolling down motors");
         if (isForward) {
             this.FRONT_M_GROUP.set(Robot.ROBOT_MAP.intakeSpeed);
@@ -52,7 +52,7 @@ public class Storage extends SubsystemBase {
         }
       }
 
-      public boolean stopIntake() {
+      public boolean stopStorage() {
         this.FRONT_M_GROUP.stopMotor();
         this.BACK_M_GROUP.stopMotor();
         return true;

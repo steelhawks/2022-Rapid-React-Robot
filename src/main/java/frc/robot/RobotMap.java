@@ -31,9 +31,12 @@ public class RobotMap
 
   //Intake Motor & solenoids
   public final int intakeMotorOnePort = 0;
+  public final int intakeMotorTwoPort = 0;
   public final int intakeSolOnPort = 0;
   public final int intakeSolOffPort = 0;
   public final double intakeSpeed = 0.75;
+
+
 
 
   //Climber ??

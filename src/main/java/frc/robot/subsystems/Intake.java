@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,7 +20,11 @@ public class Intake extends MechanicalSubsystem {
   public final MotorControllerGroup intakeMotorGroup;
 
   // SOLENOID
-  public DoubleSolenoid intakeSol;
+  public DoubleSolenoid solenoidLeft;
+  public DoubleSolenoid solenoidRight;
+
+  //Solenoid Type
+  private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
 
   // DRIVETRAIN CONSTRUCTOR
   public Intake() {
@@ -30,7 +35,8 @@ public class Intake extends MechanicalSubsystem {
     this.intakeMotorGroup = new MotorControllerGroup(this.intakeMotorOne);
 
     // SOLENOID
-    //this.intakeSol = new DoubleSolenoid(Robot.ROBOTMAP.intakeSolOnPort, Robot.ROBOTMAP.intakeSolOffPort);
+    this.solenoidLeft = new DoubleSolenoid(type, 0, 1);
+    this.solenoidRight = new DoubleSolenoid(type, 2, 3);
     
     configureMotors();
   }
@@ -59,23 +65,25 @@ public class Intake extends MechanicalSubsystem {
     return true;
   }
 
-  public void togglePosition() {
-    if (this.intakeSol.get() == DoubleSolenoid.Value.kForward) {
-      down();
+  public void toggle() {
+    if (this.solenoidLeft.get().equals(DoubleSolenoid.Value.kForward)) {
+      retract();
     } else {
-      up();
+      extend();
     }
     System.out.println("Shifted gears!");
   }
 
-  public void up() {
-    System.out.println("up");
-    this.intakeSol.set(DoubleSolenoid.Value.kForward);
+  public void extend() {
+    System.out.println("extend");
+    this.solenoidLeft.set(DoubleSolenoid.Value.kForward);
+    this.solenoidRight.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void down() {
-    System.out.println("down");
-    this.intakeSol.set(DoubleSolenoid.Value.kReverse);
+  public void retract() {
+    System.out.println("retract");
+    this.solenoidLeft.set(DoubleSolenoid.Value.kReverse);
+    this.solenoidRight.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void configureMotors() {

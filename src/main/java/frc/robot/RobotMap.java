@@ -40,7 +40,8 @@ public class RobotMap
 
 
   //Climber ??
-
+    public final int WINCH_PORT = 3;
+    public final double climberSpeed = 1.0;
 
   /*****
    Constructor method
@@ -80,6 +81,14 @@ public class RobotMap
   }
   public double getIntakeSpeed() {
     return this.intakeSpeed;
+  }
+
+  public int getWinchPort() {
+    return this.WINCH_PORT;
+  }
+
+  public double getClimberSpeed() {
+    return this.climberSpeed;
   }
 
   public RobotMap() {}

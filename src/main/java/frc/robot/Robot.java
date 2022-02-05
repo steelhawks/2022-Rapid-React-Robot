@@ -5,11 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Storage;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,12 +30,19 @@ public class Robot extends TimedRobot {
   public static final Drivetrain DRIVETRAIN = new Drivetrain(); 
   public static final Intake INTAKE = new Intake();
   public static final CommandLinker COMMAND_LINKER = new CommandLinker(); 
+  public static final ButtonMap BUTTON_MAP = new ButtonMap(); 
+  public static final Storage STORAGE = new Storage(); 
+  public static final Climber CLIMBER = new Climber();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    Robot.COMMAND_LINKER.configureRegisteredSubsystems();
+    Robot.COMMAND_LINKER.configurePeriodicBindings();
+    Robot.COMMAND_LINKER.configureCommands();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);

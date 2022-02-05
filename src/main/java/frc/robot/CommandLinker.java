@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.commands.Drivetrain.DiffDrive;
 
 
 
@@ -23,6 +24,10 @@ public class CommandLinker
   public void configureRegisteredSubsystems() {
     CommandScheduler.getInstance().registerSubsystem(Robot.INTAKE);
     CommandScheduler.getInstance().registerSubsystem(Robot.DRIVETRAIN);
+  }
+
+  public void configurePeriodicBindings() {
+    CommandScheduler.getInstance().setDefaultCommand(Robot.DRIVETRAIN, new DiffDrive());
   }
 
   public void configureCommands()

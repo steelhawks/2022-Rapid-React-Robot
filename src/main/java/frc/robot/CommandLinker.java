@@ -1,14 +1,11 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2020 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.drivetrain.InitiateDrive;
+import frc.robot.controllers.Driver3DProController;
+import frc.robot.controllers.OperatorXboxController;
+import frc.util.Gamepad;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -20,22 +17,32 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class CommandLinker {
 
-  //create joysticks
+  public final Joystick driveJoystick = new Joystick(Robot.BUTTON_MAP.joystickPort);
+  public final Gamepad operatorGamepad = new Gamepad(Robot.BUTTON_MAP.gamepadPort);
+  private final Driver3DProController driverController = new Driver3DProController(driveJoystick);
+  private final OperatorXboxController xboxController = new OperatorXboxController(operatorGamepad);
 
   public CommandLinker() {
-    
   }
-  
 
   public void configureRegisteredSubsystems() {
-
+    // CommandScheduler.getInstance().registerSubsystem(Robot.CLIMBER);
+    CommandScheduler.getInstance().registerSubsystem(Robot.DRIVETRAIN);
+    // CommandScheduler.getInstance().registerSubsystem(Robot.INTAKE);
+    // CommandScheduler.getInstance().registerSubsystem(Robot.SHOOTER);
+    CommandScheduler.getInstance().registerSubsystem(Robot.STORAGE);
+    // CommandScheduler.getInstance().registerSubsystem(Robot.TURRET);
+    // CommandScheduler.getInstance().registerSubsystem(Robot.VISION);
+    // CommandScheduler.getInstance().registerSubsystem(Robot.VISION_LIGHT);
   }
 
   public void configurePeriodicBindings() {
+    CommandScheduler.getInstance().setDefaultCommand(Robot.DRIVETRAIN, new InitiateDrive());
 
   }
 
   public void configureButtonBindings() {
-
+    driverController.mapButtons();
+    xboxController.mapButtons();
   }
 }

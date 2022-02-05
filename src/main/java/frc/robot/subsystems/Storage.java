@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Storage extends SubsystemBase {
 
+  //Motors, Note: Front is the direction of where the ball is spitting
     public final WPI_TalonSRX INTAKE_FRONT_M;
     public final WPI_TalonSRX INTAKE_BACK_M;
   
@@ -27,7 +28,7 @@ public class Storage extends SubsystemBase {
         this.FRONT_M_GROUP = new MotorControllerGroup(this.INTAKE_FRONT_M);
         this.BACK_M_GROUP = new MotorControllerGroup(this.INTAKE_BACK_M);
 
-        this.BACK_M_GROUP.setInverted(true);
+        this.FRONT_M_GROUP.setInverted(true);
     
         configureMotors();
       }

@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 
-public class DiffDrive extends CommandBase 
+public class ShiftGears extends CommandBase 
 {
-  public DiffDrive() {
+  public ShiftGears() {
       addRequirements(Robot.DRIVETRAIN);
   }
 
@@ -22,7 +22,7 @@ public class DiffDrive extends CommandBase
   public void execute() 
   {
     //Sets the 3D Port Joystick as the arcadeDrive joystick inputs
-    Robot.DRIVETRAIN.arcadeDrive(Robot.COMMAND_LINKER.driveJoystick);
+    Robot.DRIVETRAIN.shiftGear();
   }
 
   @Override

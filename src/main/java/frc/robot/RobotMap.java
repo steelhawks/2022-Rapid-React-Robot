@@ -2,10 +2,15 @@ package frc.robot;
 
 public class RobotMap 
 {
+
+  public RobotMap() {}
+  
   /*Store instance variables, values, ports needed for the robot*/
 
   //Joystick Input Ports
-  private final int JoystickPortOne = 0;
+
+  
+  final int JoystickPortOne = 0;
 
   //DRIVETRAIN Motor ID
   public final int drivetrainLeftMotorPortOne = 1;
@@ -27,13 +32,15 @@ public class RobotMap
 
   //Gyro
     
-    private final double KP_GYRO = 0.008;
+    public final double KP_GYRO = 0.008;
 
   //Intake Motor & solenoids
   public final int intakeMotorOnePort = 0;
   public final int intakeMotorTwoPort = 0;
-  public final int intakeSolOnPort = 0;
-  public final int intakeSolOffPort = 0;
+  public final int intakeSoleLeftForward = 0;
+  public final int intakeSoleLeftReverse = 0;
+  public final int intakeSoleRightForward = 0;
+  public final int intakeSoleRightReverse = 0;
   public final double intakeSpeed = 0.75;
 
 
@@ -47,50 +54,47 @@ public class RobotMap
    Constructor method
    *****/
 
-   public int getLeftMotorPortOne()
-   {
-     return this.drivetrainLeftMotorPortOne; 
-   }
-   public int getLeftMotorPortTwo()
-   {
-     return this.drivetrainLeftMotorPortTwo; 
-   }
-   public int getLeftMotorPortThree()
-   {
-     return this.drivetrainLeftMotorPortThree; 
-   }
-   public int getRigtMotorPortOne()
-   {
-     return this.drivetrainRightMotorPortOne; 
-   }
-   public int getRightMotorPortTwo()
-   {
-     return this.drivetrainLeftMotorPortTwo;  
-   }
-   public int getRightMotorPortThree()
-   {
-     return this.drivetrainRightMotorPortThree; 
-   }
-   public int getJoystickPortOne()
-   {
-     return this.JoystickPortOne; 
-   }
-   public double getKPGyro()
-  {
-    return this.KP_GYRO;
-  }
-  public double getIntakeSpeed() {
-    return this.intakeSpeed;
-  }
+  //  public int getLeftMotorPortOne()
+  //  {
+  //    return this.drivetrainLeftMotorPortOne; 
+  //  }
+  //  public int getLeftMotorPortTwo()
+  //  {
+  //    return this.drivetrainLeftMotorPortTwo; 
+  //  }
+  //  public int getLeftMotorPortThree()
+  //  {
+  //    return this.drivetrainLeftMotorPortThree; 
+  //  }
+  //  public int getRigtMotorPortOne()
+  //  {
+  //    return this.drivetrainRightMotorPortOne; 
+  //  }
+  //  public int getRightMotorPortTwo()
+  //  {
+  //    return this.drivetrainLeftMotorPortTwo;  
+  //  }
+  //  public int getRightMotorPortThree()
+  //  {
+  //    return this.drivetrainRightMotorPortThree; 
+  //  }
+  //  public int getJoystickPortOne()
+  //  {
+  //    return this.JoystickPortOne; 
+  //  }
+  //  public double getKPGyro()
+  // {
+  //   return this.KP_GYRO;
+  // }
+  // public double getIntakeSpeed() {
+  //   return this.intakeSpeed;
+  // }
 
-  public int getWinchPort() {
-    return this.WINCH_PORT;
-  }
+  // public int getWinchPort() {
+  //   return this.WINCH_PORT;
+  // }
 
-  public double getClimberSpeed() {
-    return this.climberSpeed;
-  }
-
-  public RobotMap() {}
-
+  // public double getClimberSpeed() {
+  //   return this.climberSpeed;
+  // }
 }

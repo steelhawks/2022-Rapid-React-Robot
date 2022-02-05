@@ -2,10 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.*;
+import frc.robot.Controllers.DriverJoystickController;
+import frc.robot.Controllers.XBoxController;
 import frc.robot.commands.Drivetrain.DiffDrive;
+import frc.util.Gamepad;
 
 
 
@@ -14,16 +14,20 @@ public class CommandLinker
   /*****
    * Joystick Objects
    *****/
-  public final Joystick Joystick = new Joystick(Robot.ROBOTMAP.getJoystickPortOne());
 
-  public CommandLinker() 
-  {
-    //configureCommands();
-  }
+  public final Joystick driveJoystick = new Joystick(Robot.BUTTON_MAP.joystickOnePort);
+  public final Gamepad operatorGamepad = new Gamepad(Robot.BUTTON_MAP.gamepadOnePort);
+  private final DriverJoystickController driverController = new DriverJoystickController(driveJoystick);
+  private final XBoxController xboxController = new XBoxController(operatorGamepad);
 
+  public CommandLinker() {}
+
+  
   public void configureRegisteredSubsystems() {
     CommandScheduler.getInstance().registerSubsystem(Robot.INTAKE);
     CommandScheduler.getInstance().registerSubsystem(Robot.DRIVETRAIN);
+    CommandScheduler.getInstance().registerSubsystem(Robot.STORAGE);
+    CommandScheduler.getInstance().registerSubsystem(Robot.CLIMBER);
   }
 
   public void configurePeriodicBindings() {
@@ -32,13 +36,9 @@ public class CommandLinker
 
   public void configureCommands()
   {
-    CommandScheduler.getInstance().setDefaultCommand(Robot.DRIVETRAIN, new DiffDrive());
 
-    //Button ALIGN_BUTTON = new JoystickButton(this.Joystick, Robot.ROBOTMAP.getAlignButton());
-    //ALIGN_BUTTON.whenPressed(new Align());
-      
-    // Button SHIFT_BUTTON = new JoystickButton(this.Joystick, Robot.ROBOTMAP.getShiftButton());
-    // SHIFT_BUTTON.whenPressed(new ShiftGear());
+    driverController.mapButtons();
+    xboxController.mapButtons();
    
   }
 }

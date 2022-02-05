@@ -4,63 +4,72 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.Robot;
-
+import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Storage extends SubsystemBase {
+public class Storage extends MechanicalSubsystem {
     //intake motors 
-    public final WPI_TalonSRX INTAKE_FRONT_M;
-    public final WPI_TalonSRX INTAKE_BACK_M;
+    public final WPI_TalonSRX STORAGE_M_FRONT;
+    public final WPI_TalonSRX STORAGE_M_BACK;
   
   
     // SPEED CONTROLLER GROUP
-    public final MotorControllerGroup FRONT_M_GROUP;
-    public final MotorControllerGroup BACK_M_GROUP;
+    public final MotorControllerGroup STORAGE_M_GROUP;
 
     public Storage() {
         // TALON SRX MOTOR CONTROLLER
-        this.INTAKE_FRONT_M = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorOnePort);
-        this.INTAKE_BACK_M = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorTwoPort);
+        STORAGE_M_FRONT = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorOnePort);
+        STORAGE_M_BACK = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorTwoPort);
     
         // SPEED CONTROLLER GROUP
-        this.FRONT_M_GROUP = new MotorControllerGroup(this.INTAKE_FRONT_M);
-        this.BACK_M_GROUP = new MotorControllerGroup(this.INTAKE_BACK_M);
+        this.STORAGE_M_GROUP = new MotorControllerGroup(this.STORAGE_M_BACK, this.STORAGE_M_FRONT);
 
-        this.BACK_M_GROUP.setInverted(true);
+        STORAGE_M_BACK.setInverted(true);
     
         configureMotors();
       }
 
 
       public void configureMotors() {
-        this.INTAKE_BACK_M.configFactoryDefault();
-        this.INTAKE_FRONT_M.configFactoryDefault();
-        this.INTAKE_BACK_M.setNeutralMode(NeutralMode.Coast);
-        this.INTAKE_FRONT_M.setNeutralMode(NeutralMode.Coast);
+        STORAGE_M_FRONT.configFactoryDefault();
+        STORAGE_M_BACK.configFactoryDefault();
+        STORAGE_M_FRONT.setNeutralMode(NeutralMode.Coast);
+        STORAGE_M_BACK.setNeutralMode(NeutralMode.Coast);
       }
 
      
-      public void startStorage(boolean isForward){
-        System.out.println("roolling down motors");
+      public void storageRun(boolean isForward){
+        System.out.println("rooooolling motors");
         if (isForward) {
-            this.FRONT_M_GROUP.set(Robot.ROBOTMAP.intakeSpeed);
-            this.BACK_M_GROUP.set(Robot.ROBOTMAP.intakeSpeed);
+            this.STORAGE_M_GROUP.set(Robot.ROBOTMAP.intakeSpeed);
         } else {
-            this.FRONT_M_GROUP.set(-Robot.ROBOTMAP.intakeSpeed);
-            this.BACK_M_GROUP.set(-Robot.ROBOTMAP.intakeSpeed);
+            this.STORAGE_M_GROUP.set(-Robot.ROBOTMAP.intakeSpeed);
         }
       }
 
-      public boolean stopStorage() {
-        this.FRONT_M_GROUP.stopMotor();
-        this.BACK_M_GROUP.stopMotor();
+      public boolean storageMotorStop() {
+        this.STORAGE_M_GROUP.stopMotor();
         return true;
       }
 
-      public void stopClimb() {
-        this.FRONT_M_GROUP.set(0.0);
-        this.BACK_M_GROUP.set(0.0);
+      public void storageStop() {
+        this.STORAGE_M_GROUP.set(0.0);
+      }
+
+      public boolean isAlive() {
+        return STORAGE_M_FRONT.isAlive() && STORAGE_M_BACK.isAlive();
+      }
+    
+      public void ping() {
+      }
+    
+      public boolean stop() {
+        STORAGE_M_GROUP.stopMotor();
+        return true;
+      }
+    
+      public void shuffleBoard() {
+      
       }
 
 

@@ -1,14 +1,15 @@
-package frc.robot.commands.Storage;
+package frc.robot.commands.Storage; 
+import frc.robot.subsystems.Storage;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.Storage;
 
-public class RunStorage extends CommandBase {
+
+public class StorageReverse extends CommandBase {
 
   private final Storage m_intakeTest;
 
-  public RunStorage(Storage subsystem) {
+  public StorageReverse(Storage subsystem) {
     m_intakeTest = subsystem;
     addRequirements(m_intakeTest);
   }
@@ -19,7 +20,7 @@ public class RunStorage extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.STORAGE.startStorage(true);
+    Robot.STORAGE.storageRun(false);
   }
 
   @Override
@@ -30,7 +31,7 @@ public class RunStorage extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (interrupted) {
-      Robot.STORAGE.stopClimb();
+      Robot.STORAGE.storageMotorStop();
     }
   }
 }

@@ -38,7 +38,6 @@ public class CommandLinker {
 
   public void configurePeriodicBindings() {
     CommandScheduler.getInstance().setDefaultCommand(Robot.DRIVETRAIN, new InitiateDrive());
-
   }
 
   public void configureButtonBindings() {

@@ -31,8 +31,13 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
   @Override
   public void robotInit() {
+    Robot.COMMAND_LINKER.configureRegisteredSubsystems();
+    Robot.COMMAND_LINKER.configurePeriodicBindings();
+    Robot.COMMAND_LINKER.configureButtonBindings();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -58,6 +63,7 @@ public class Robot extends TimedRobot {
    * below with additional strings. If using the SendableChooser make sure to add them to the
    * chooser code above as well.
    */
+
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();

@@ -3,7 +3,8 @@ package frc.robot.controllers;
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.Robot;
-import frc.robot.*;
+import frc.robot.commands.drivetrain.DrivetrainShiftGear;
+import frc.robot.commands.drivetrain.ReverseDrivetrain;
 
 //Not made yet
 // import frc.robot.commands.drivetrain.DrivetrainReverseDirection;
@@ -21,12 +22,11 @@ public class Driver3DProController {
   public void mapButtons() {
 
     // DRIVETRAIN
+    this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton)
+      .whenPressed(new DrivetrainShiftGear());
 
-    // this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton)
-    //   .whenPressed(new DrivetrainShiftGear());
-
-    // this.controller.mapButton(Robot.BUTTON_MAP.drivetrainReverseDirectionButton)
-    //     .whenPressed(new DrivetrainReverseDirection());
+    this.controller.mapButton(Robot.BUTTON_MAP.drivetrainReverseDirectionButton)
+        .whenPressed(new ReverseDrivetrain());
 
 
   }

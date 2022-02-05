@@ -1,0 +1,6 @@
+Notes for Where to Set Button Ports:
+
+Set Button Ports in ButtonMap.java
+If you want to set Gamepad buttons, set the values in Gamepad.java and call them in ButtonMap.java
+Set the commands in Driver3DProController.java for Joystick Buttons
+Set the commands in OperatorXboxController.java for Gamepad Buttons

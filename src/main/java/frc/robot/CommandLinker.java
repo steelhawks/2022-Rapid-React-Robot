@@ -39,6 +39,5 @@ public class CommandLinker
 
     driverController.mapButtons();
     xboxController.mapButtons();
-   
   }
 }

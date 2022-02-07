@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class RollWinch extends CommandBase {
+public class ClimberUnrollWinch extends CommandBase {
 
-    public RollWinch() {
+    public ClimberUnrollWinch() {
         addRequirements(Robot.CLIMBER);
     }
 
@@ -15,17 +15,17 @@ public class RollWinch extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.CLIMBER.rollWinch(true);
+        Robot.CLIMBER.climberUnrollWinch();
     }
-    
-        @Override
-        public boolean isFinished() {
-          return true;
-        }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
       
-        @Override
-        public void end(boolean interrupted) {
-          if (interrupted) {
+    @Override
+    public void end(boolean interrupted) {
+        if (interrupted) {
             Robot.CLIMBER.stop();
         }
     }

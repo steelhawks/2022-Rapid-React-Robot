@@ -6,8 +6,10 @@ public class ButtonMap {
   public final int joystickOnePort = 0;
   public final int gamepadOnePort = 1;
 
-  public final int climberRollWinchButton = Gamepad.kGamepadButtonShoulderL;
-  public final int climberExtendButton = Gamepad.kGamepadLeftStickY; 
+  public final int climberWinchForwardButton = Gamepad.kGamepadRightStick;
+  public final int climberWinchReverseButton = Gamepad.kGamepadLeftStick; 
+  public final int climberPivotButton = Gamepad.kGamepadButtonStart;
+  public final int climberPivotReverseButton = Gamepad.kGamepadButtonBack; 
 
   public final int intakeSpinButton = Gamepad.kGamepadButtonA;
   public final int intakeReverseSpinButton = Gamepad.kGamepadButtonB; 

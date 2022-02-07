@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Robot;
 import frc.robot.commands.Storage.StorageRun;
 import frc.robot.commands.Storage.StorageReverse;
-import frc.robot.commands.Climber.RollWinch;
+import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*; 
 
 
@@ -39,8 +39,15 @@ public class XBoxController {
         .whenPressed(new ToggleSolenoid());
 
     //Climber 
-    this.controller.mapButton(Robot.BUTTON_MAP.climberRollWinchButton)
-        .whenHeld(new RollWinch());
+    this.controller.mapButton(Robot.BUTTON_MAP.climberWinchForwardButton)
+        .whenHeld(new ClimberRollWinch());
+    
+    this.controller.mapButton(Robot.BUTTON_MAP.climberWinchReverseButton)
+        .whenHeld(new ClimberUnrollWinch());
 
+    this.controller.mapButton(Robot.BUTTON_MAP.climberPivotButton)
+        .whenHeld(new ClimberPivot());
+    this.controller.mapButton(Robot.BUTTON_MAP.climberPivotReverseButton)
+        .whenHeld(new ClimberPivotReverse());
   }
 }

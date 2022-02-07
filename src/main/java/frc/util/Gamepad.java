@@ -15,66 +15,39 @@ public class Gamepad extends Joystick {
     super(port);
   }
 
-  
   // GAMEPAD BUTTONS
-  public static final int kGamepadTriggerLeft = 7;
-
-  //axes
-  public static final int kGamepadRightStickX = 2;
-  public static final int kGamepadRightStickY = 3;
-  public static final int kGamepadLeftStickX = 0;
-
-
-
- 
-
-  //Climber Winch
-  public static final int kGamepadButtonShoulderL = 5; 
-  //Arm extension
-  public static final int kGamepadLeftStickY = 1;
-  //Intake Extend/Retract
   public static final int kGamepadButtonX = 1;
-  //Intake SpinRoller
   public static final int kGamepadButtonA = 2; 
   public static final int kGamepadButtonB = 3; 
-
-
-  //Storage Run
-  public static final int kGamepadTriggerRight = 8; 
-  public static final int kGamepadButtonShoulderR = 6; 
   public static final int kGamepadButtonY = 4; 
+  public static final int kGamepadButtonShoulderL = 5;
+  public static final int kGamepadButtonShoulderR = 6; 
+  public static final int kGamepadTriggerLeft = 7;
+  public static final int kGamepadTriggerRight = 8; 
+  public static final int kGamepadButtonBack = 9;
+  public static final int kGamepadButtonStart = 10; 
+  public static final int kGamepadLeftStick = 11;
+  public static final int kGamepadRightStick = 12;
   
-
-  
-
-
-
 
   public double getRawAxis(int axis) {
     return super.getRawAxis(axis);
   }
 
   public double getLeftX() {
-    return super.getRawAxis(kGamepadLeftStickX);
+    return super.getRawAxis(0);
   }
 
   public double getLeftY() {
-    return super.getRawAxis(kGamepadLeftStickY);
+    return super.getRawAxis(1);
   }
 
   public double getRightX() {
-    return super.getRawAxis(kGamepadRightStickX);
+    return super.getRawAxis(2);
   }
 
   public double getRightY() {
-    return super.getRawAxis(kGamepadRightStickY);
+    return super.getRawAxis(3);
   }
 
-  public double getLeftTrigger() {
-    return super.getRawAxis(kGamepadTriggerLeft);
-  }
-
-  public double getRightTrigger() {
-    return super.getRawAxis(kGamepadTriggerRight);
-  }
 }

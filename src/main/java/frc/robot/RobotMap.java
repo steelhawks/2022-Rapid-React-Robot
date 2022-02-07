@@ -48,7 +48,9 @@ public class RobotMap
 
   //Climber ??
     public final int WINCH_PORT = 3;
-    public final double climberSpeed = 1.0;
+    public final int PIVOT_PORT = 8;
+    public final double climberSpeed = 0.5;
+    public final double pivotSpeed = 0.1;
 
   /*****
    Constructor method

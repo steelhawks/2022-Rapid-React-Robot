@@ -21,7 +21,7 @@ public class RobotMap
   public final int drivetrainRightMotorPortTwo = 5;
   public final int drivetrainRightMotorPortThree = 6;
 
-  public final int drivetrainSolenoidPortOn = 0;
+  public final int drivetrainSolenoidPortOn = 0; //make sure it is right
   public final int drivetrainSolenoidPortOff = 1;
 
   //Storage % Shooter Motor ID
@@ -31,12 +31,10 @@ public class RobotMap
   public final double storageSpeedTwo = 1.0;
 
   //Gyro
-    
-    public final double KP_GYRO = 0.008;
+  public final double KP_GYRO = 0.008;
 
   //Intake Motor & solenoids
   public final int intakeMotorOnePort = 0;
-  public final int intakeMotorTwoPort = 0;
   public final int intakeSoleLeftForward = 0;
   public final int intakeSoleLeftReverse = 0;
   public final int intakeSoleRightForward = 0;

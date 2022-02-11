@@ -18,8 +18,8 @@ public class Storage extends MechanicalSubsystem {
 
     public Storage() {
         // TALON SRX MOTOR CONTROLLER
-        STORAGE_M_FRONT = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorOnePort);
-        STORAGE_M_BACK = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorTwoPort);
+        STORAGE_M_FRONT = new WPI_TalonSRX(Robot.ROBOTMAP.storageMotorPortOne);
+        STORAGE_M_BACK = new WPI_TalonSRX(Robot.ROBOTMAP.storageMotorPortTwo);
     
         // SPEED CONTROLLER GROUP
         this.STORAGE_M_GROUP = new MotorControllerGroup(this.STORAGE_M_BACK, this.STORAGE_M_FRONT);

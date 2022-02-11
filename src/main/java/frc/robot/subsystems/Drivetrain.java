@@ -67,8 +67,7 @@ public class Drivetrain extends MechanicalSubsystem{
     this.KP_GYRO = Robot.ROBOTMAP.KP_GYRO;
 
     //VARIABLE RPM ELECTRO-SHIFT
-    this.shiftStatus = 1;
-    this.rPMCoefficient = 1.75;
+    this.rPMCoefficient = 2;//original 1.75
 
     //DRIVETRAIN SOLENOID
     this.DRIVESOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.drivetrainSolenoidPortOn, Robot.ROBOTMAP.drivetrainSolenoidPortOff);

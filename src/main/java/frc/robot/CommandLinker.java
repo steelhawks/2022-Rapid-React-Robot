@@ -28,7 +28,7 @@ public class CommandLinker
 
   public void configureCommands()
   {
-    //CommandScheduler.getInstance().setDefaultCommand(Robot.DRIVETRAIN, new DiffDrive());
+    CommandScheduler.getInstance().setDefaultCommand(Robot.DRIVETRAIN, new DiffDrive());
 
     //Button ALIGN_BUTTON = new JoystickButton(this.DRIVE_JOYSTICK, Robot.ROBOTMAP.getAlignButton());
     //ALIGN_BUTTON.whenPressed(new Align());

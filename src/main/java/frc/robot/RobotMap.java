@@ -26,9 +26,9 @@ public class RobotMap
 
   //Storage % Shooter Motor ID
   public final int storageMotorPortOne = 13;
-  public final int storageMotorPortTwo = 15;
   public final double storageSpeedOne = 1.0;
-  public final double storageSpeedTwo = 1.0;
+  //public final int storageMotorPortTwo = 15;
+  //public final double storageSpeedTwo = 1.0;
 
   //Gyro
   public final double KP_GYRO = 0.008;

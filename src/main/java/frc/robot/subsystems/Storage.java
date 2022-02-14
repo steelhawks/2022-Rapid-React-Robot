@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 public class Storage extends MechanicalSubsystem {
     //intake motors 
     public final WPI_TalonSRX STORAGE_M_FRONT;
-    public final WPI_TalonSRX STORAGE_M_BACK;
-  
   
     // SPEED CONTROLLER GROUP
     public final MotorControllerGroup STORAGE_M_GROUP;
@@ -19,12 +17,9 @@ public class Storage extends MechanicalSubsystem {
     public Storage() {
         // TALON SRX MOTOR CONTROLLER
         STORAGE_M_FRONT = new WPI_TalonSRX(Robot.ROBOTMAP.storageMotorPortOne);
-        STORAGE_M_BACK = new WPI_TalonSRX(Robot.ROBOTMAP.storageMotorPortTwo);
     
         // SPEED CONTROLLER GROUP
-        this.STORAGE_M_GROUP = new MotorControllerGroup(this.STORAGE_M_BACK, this.STORAGE_M_FRONT);
-
-        STORAGE_M_BACK.setInverted(true);
+        this.STORAGE_M_GROUP = new MotorControllerGroup(this.STORAGE_M_FRONT);
     
         configureMotors();
       }
@@ -32,9 +27,7 @@ public class Storage extends MechanicalSubsystem {
 
       public void configureMotors() {
         STORAGE_M_FRONT.configFactoryDefault();
-        STORAGE_M_BACK.configFactoryDefault();
         STORAGE_M_FRONT.setNeutralMode(NeutralMode.Coast);
-        STORAGE_M_BACK.setNeutralMode(NeutralMode.Coast);
       }
 
      
@@ -57,7 +50,7 @@ public class Storage extends MechanicalSubsystem {
       }
 
       public boolean isAlive() {
-        return STORAGE_M_FRONT.isAlive() && STORAGE_M_BACK.isAlive();
+        return STORAGE_M_FRONT.isAlive();
       }
     
       public void ping() {

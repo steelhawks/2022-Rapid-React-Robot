@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import com.kauailabs.navx.frc.AHRS; 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
@@ -176,7 +178,9 @@ public class Drivetrain extends MechanicalSubsystem{
   }
 
   /** Print info to shuffleboard */
-  public void shuffleBoard(){}
+  public void shuffleBoard(){
+    Shuffleboard.getTab("Subsystem");
+  }
 
 }
 

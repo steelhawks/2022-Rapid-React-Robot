@@ -8,7 +8,6 @@ public class RobotMap
   /*Store instance variables, values, ports needed for the robot*/
 
   //Joystick Input Ports
-
   
   final int JoystickPortOne = 0;
 

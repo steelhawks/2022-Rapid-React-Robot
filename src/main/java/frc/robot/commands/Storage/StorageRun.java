@@ -24,7 +24,7 @@ public class StorageRun extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 
   @Override

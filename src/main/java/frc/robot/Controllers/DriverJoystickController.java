@@ -1,7 +1,7 @@
 package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
 import frc.robot.commands.Drivetrain.ShiftGears;
 
@@ -24,8 +24,8 @@ public class DriverJoystickController {
     //TODO: add all buttons on the joystick
 
     // DRIVETRAIN
-    this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton)
-       .whenPressed(new ShiftGears());
+    Button shift = this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton);
+    shift.whenPressed(new ShiftGears());
 
   }
 }

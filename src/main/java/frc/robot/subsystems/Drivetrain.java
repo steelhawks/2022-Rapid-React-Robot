@@ -1,5 +1,5 @@
 package frc.robot.subsystems;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import com.kauailabs.navx.frc.AHRS; 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Drivetrain extends MechanicalSubsystem{
     // LEFT MOTORS
-  public final WPI_TalonSRX LEFT_MOTOR_ONE;
-  public final WPI_TalonSRX LEFT_MOTOR_TWO;
-  public final WPI_TalonSRX LEFT_MOTOR_THREE;
+  public final WPI_TalonFX LEFT_MOTOR_ONE;
+  public final WPI_TalonFX LEFT_MOTOR_TWO;
+  public final WPI_TalonFX LEFT_MOTOR_THREE;
   
   // RIGHT MOTOR
-  public final WPI_TalonSRX RIGHT_MOTOR_ONE;
-  public final WPI_TalonSRX RIGHT_MOTOR_TWO;
-  public final WPI_TalonSRX RIGHT_MOTOR_THREE;
+  public final WPI_TalonFX RIGHT_MOTOR_ONE;
+  public final WPI_TalonFX RIGHT_MOTOR_TWO;
+  public final WPI_TalonFX RIGHT_MOTOR_THREE;
 
   //SPEED CONTROLLER GROUPS
   public final MotorControllerGroup LEFT_M_GROUP;
@@ -33,7 +33,8 @@ public class Drivetrain extends MechanicalSubsystem{
 
   //DRIVETRAIN SHIFTGEAR SOLENOIDS
   public final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
-  public DoubleSolenoid DRIVESOLENOID;
+  public DoubleSolenoid DRIVE_SOLENOID_LEFT;
+  public DoubleSolenoid DRIVE_SOLENOID_RIGHT;
 
   //VARIABLE RPM ELECTRO-SHIFT
   public int shiftStatus;
@@ -46,14 +47,14 @@ public class Drivetrain extends MechanicalSubsystem{
   public Drivetrain() 
   {
     //SPARK MAX LEFT MOTORS
-    this.LEFT_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainLeftMotorPortOne);
-    this.LEFT_MOTOR_TWO = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainLeftMotorPortTwo);
-    this.LEFT_MOTOR_THREE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainLeftMotorPortThree);
+    this.LEFT_MOTOR_ONE = new WPI_TalonFX(Robot.ROBOTMAP.drivetrainLeftMotorPortOne);
+    this.LEFT_MOTOR_TWO = new WPI_TalonFX(Robot.ROBOTMAP.drivetrainLeftMotorPortTwo);
+    this.LEFT_MOTOR_THREE = new WPI_TalonFX(Robot.ROBOTMAP.drivetrainLeftMotorPortThree);
     
     //SPARK MAX RIGHT MOTORS
-    this.RIGHT_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainRightMotorPortOne);
-    this.RIGHT_MOTOR_TWO = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainRightMotorPortTwo);
-    this.RIGHT_MOTOR_THREE = new WPI_TalonSRX(Robot.ROBOTMAP.drivetrainRightMotorPortThree);
+    this.RIGHT_MOTOR_ONE = new WPI_TalonFX(Robot.ROBOTMAP.drivetrainRightMotorPortOne);
+    this.RIGHT_MOTOR_TWO = new WPI_TalonFX(Robot.ROBOTMAP.drivetrainRightMotorPortTwo);
+    this.RIGHT_MOTOR_THREE = new WPI_TalonFX(Robot.ROBOTMAP.drivetrainRightMotorPortThree);
 
     //SPEED CONTROLLER GROUPS
     this.RIGHT_M_GROUP = new MotorControllerGroup(this.RIGHT_MOTOR_ONE, this.RIGHT_MOTOR_TWO, this.RIGHT_MOTOR_THREE);
@@ -70,7 +71,8 @@ public class Drivetrain extends MechanicalSubsystem{
     this.rPMCoefficient = 2;//original 1.75
 
     //DRIVETRAIN SOLENOID
-    this.DRIVESOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.drivetrainSolenoidPortOn, Robot.ROBOTMAP.drivetrainSolenoidPortOff);
+    this.DRIVE_SOLENOID_LEFT = new DoubleSolenoid(1, type, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOn, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOff);
+    this.DRIVE_SOLENOID_RIGHT = new DoubleSolenoid(1, type, Robot.ROBOTMAP.drivetrainSolenoidRightPortOn, Robot.ROBOTMAP.drivetrainSolenoidRightPortOff);
 
     this.LEFT_M_GROUP.setInverted(true);
     this.RIGHT_M_GROUP.setInverted(false);
@@ -87,7 +89,7 @@ public class Drivetrain extends MechanicalSubsystem{
   //SHIFTING METHOD
   public void shiftGear() 
   {
-    if (this.DRIVESOLENOID.get() == DoubleSolenoid.Value.kForward) {
+    if (this.DRIVE_SOLENOID_LEFT.get() == DoubleSolenoid.Value.kForward) {
       highGear();
     } else {
       lowGear();
@@ -96,11 +98,11 @@ public class Drivetrain extends MechanicalSubsystem{
   }
 
   public void lowGear() {
-    this.DRIVESOLENOID.set(DoubleSolenoid.Value.kForward);
+    this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
   }
 
   public void highGear() {
-    this.DRIVESOLENOID.set(DoubleSolenoid.Value.kReverse);
+    this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
   }
 
   //MOVING STRAIGHT USING THE GYRO METHOD

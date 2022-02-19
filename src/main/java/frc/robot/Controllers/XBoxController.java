@@ -39,15 +39,15 @@ public class XBoxController {
         .whenPressed(new ToggleSolenoid());
 
     //Climber 
-    this.controller.mapButton(Robot.BUTTON_MAP.climberWinchForwardButton)
-        .whenHeld(new ClimberRollWinch());
+    // this.controller.mapButton(Robot.BUTTON_MAP.climberWinchForwardButton)
+    //     .whenHeld(new ClimberRollWinch());
     
-    this.controller.mapButton(Robot.BUTTON_MAP.climberWinchReverseButton)
-        .whenHeld(new ClimberUnrollWinch());
+    // this.controller.mapButton(Robot.BUTTON_MAP.climberWinchReverseButton)
+    //     .whenHeld(new ClimberUnrollWinch());
 
-    this.controller.mapButton(Robot.BUTTON_MAP.climberPivotButton)
-        .whenHeld(new ClimberPivot());
-    this.controller.mapButton(Robot.BUTTON_MAP.climberPivotReverseButton)
-        .whenHeld(new ClimberPivotReverse());
+    // this.controller.mapButton(Robot.BUTTON_MAP.climberPivotButton)
+    //     .whenHeld(new ClimberPivot());
+    // this.controller.mapButton(Robot.BUTTON_MAP.climberPivotReverseButton)
+    //     .whenHeld(new ClimberPivotReverse());
   }
 }

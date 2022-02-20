@@ -35,8 +35,8 @@ public class Intake extends MechanicalSubsystem {
     this.intakeMotorGroup = new MotorControllerGroup(this.intakeMotorOne);
 
     // SOLENOID
-    this.intakeSolenoidLeft = new DoubleSolenoid(0, type, Robot.ROBOTMAP.intakeSoleLeftForward, Robot.ROBOTMAP.intakeSoleLeftReverse);
-    this.intakeSolenoidRight = new DoubleSolenoid(0, type, Robot.ROBOTMAP.intakeSoleRightForward, Robot.ROBOTMAP.intakeSoleRightReverse);
+    this.intakeSolenoidLeft = new DoubleSolenoid(9, type, Robot.ROBOTMAP.intakeSoleLeftForward, Robot.ROBOTMAP.intakeSoleLeftReverse);
+    this.intakeSolenoidRight = new DoubleSolenoid(9, type, Robot.ROBOTMAP.intakeSoleRightForward, Robot.ROBOTMAP.intakeSoleRightReverse);
     
     configureMotors();
   }

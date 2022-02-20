@@ -40,7 +40,7 @@ public class CommandLinker
   public void configureCommands()
   {
 
-    driverController.mapButtons();
+    this.driverController.mapButtons();
     this.xboxController.mapButtons();
   }
 }

@@ -10,7 +10,7 @@ public class RobotMap
   //Joystick Input Ports
 
   
-  final int JoystickPortOne = 0;
+  final int joystickPortOne = 0;
 
   //DRIVETRAIN Motor ID
   public final int drivetrainLeftMotorPortOne = 1;
@@ -28,9 +28,10 @@ public class RobotMap
 
 
   //Storage % Shooter Motor ID
-  public final int storageMotorPortOne = 7;
-  public final double storageSpeedOne = 0.75;
-  public final double storageSpeedTwo = 0.75;
+  public final int storageMotorPortUp = 7;
+  public final int storageMotorPortIn = 13;
+  public final double storageSpeedUp = 0.75;
+  public final double storageSpeedIn = 1;
 
   //Gyro
   public final double KP_GYRO = 0.008;

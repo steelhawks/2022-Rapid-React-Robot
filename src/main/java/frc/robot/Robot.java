@@ -53,10 +53,10 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
   
-    COMPRESSOR.disable();
-    COMPRESSOR1.disable();
+    // COMPRESSOR.disable();
+    // COMPRESSOR1.disable();
   }
-
+  
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
    * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
@@ -65,8 +65,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
-
+  public void robotPeriodic() {
+  DRIVETRAIN.shuffleBoard();
+  }
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
    * autonomous modes using the dashboard. The sendable chooser code works with the Java

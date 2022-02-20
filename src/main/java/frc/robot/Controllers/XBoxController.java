@@ -1,12 +1,11 @@
 package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
-import frc.robot.commands.Storage.StorageRun;
-import frc.robot.commands.Storage.StorageReverse;
+import frc.robot.commands.Storage.*;
 import frc.robot.commands.Climber.*;
-import frc.robot.commands.Intake.*; 
+import frc.robot.commands.Intake.*;
 
 
 
@@ -21,14 +20,20 @@ public class XBoxController {
   public void mapButtons() {
 
     //TODO: add all buttons on the xbox controller
+   
 
-
-    //Storage 
+    // Storage 
     this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsUpButton)
-        .whenHeld(new StorageRun(Robot.STORAGE));
+        .whenHeld(new StorageUp(Robot.STORAGE));
 
     this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsReverseButton)
-        .whenHeld(new StorageReverse(Robot.STORAGE));
+        .whenHeld(new StorageDown(Robot.STORAGE));
+
+    //Intake to Storage
+    this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
+        .whenHeld(new StorageIn(Robot.STORAGE));
+    this.controller.mapButton(Robot.BUTTON_MAP.storageOutButton)
+        .whenHeld(new StorageOut(Robot.STORAGE));
 
     //Intake
     this.controller.mapButton(Robot.BUTTON_MAP.intakeSpinButton)
@@ -37,6 +42,12 @@ public class XBoxController {
         .whenHeld(new IntakeSpinReverse());
     this.controller.mapButton(Robot.BUTTON_MAP.intakeToggleSolenoidButton)
         .whenPressed(new ToggleSolenoid());
+
+    // this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsUpButton)
+    //     .whenHeld(new StorageUp(Robot.STORAGE));
+
+    // this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsReverseButton)
+    //     .whenHeld(new StorageDown(Robot.STORAGE));
 
     //Climber 
     // this.controller.mapButton(Robot.BUTTON_MAP.climberWinchForwardButton)

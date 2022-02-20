@@ -16,8 +16,13 @@ public class ButtonMap {
   public final int intakeReverseSpinButton = Gamepad.kGamepadButtonA; 
   public final int intakeToggleSolenoidButton = Gamepad.kGamepadButtonY; 
 
+  public final int storageInButton = Gamepad.kGamepadTriggerLeft;
+  public final int storageOutButton = Gamepad.kGamepadTriggerRight;
+
   public final int storageMoveBallsUpButton = Gamepad.kGamepadButtonShoulderR;
   public final int storageMoveBallsReverseButton = Gamepad.kGamepadButtonShoulderL;
+  public final int storageMoveBallsInButton = Gamepad.kGamepadButtonX;
+  // public final int storageMoveBallsOutButton;
 
 //   public final int drivetrainReverseDirectionButton = 3;
 //   public final int drivetrainCoolFalconsButton = -3;

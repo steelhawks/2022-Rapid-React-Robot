@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.kauailabs.navx.frc.AHRS; 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
@@ -40,6 +43,9 @@ public class Drivetrain extends MechanicalSubsystem{
   public int shiftStatus;
   public double rPMCoefficient;
 
+  //TWIST COEFFICIENT
+  public double twistCoefficient;
+
   //NAVX MXP GYRO
   private final AHRS GYRO;
   private final double KP_GYRO;
@@ -70,12 +76,15 @@ public class Drivetrain extends MechanicalSubsystem{
     //VARIABLE RPM ELECTRO-SHIFT
     this.rPMCoefficient = 2;//original 1.75
 
-    //DRIVETRAIN SOLENOID
-    this.DRIVE_SOLENOID_LEFT = new DoubleSolenoid(1, type, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOn, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOff);
-    this.DRIVE_SOLENOID_RIGHT = new DoubleSolenoid(1, type, Robot.ROBOTMAP.drivetrainSolenoidRightPortOn, Robot.ROBOTMAP.drivetrainSolenoidRightPortOff);
+    //TWIST COEFFICIENT
+    this.twistCoefficient = 1.1;
 
-    this.LEFT_M_GROUP.setInverted(true);
-    this.RIGHT_M_GROUP.setInverted(false);
+    //DRIVETRAIN SOLENOID
+    this.DRIVE_SOLENOID_LEFT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOn, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOff);
+    this.DRIVE_SOLENOID_RIGHT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidRightPortOn, Robot.ROBOTMAP.drivetrainSolenoidRightPortOff);
+
+    this.LEFT_M_GROUP.setInverted(false);
+    this.RIGHT_M_GROUP.setInverted(true);
 
     configureMotors();
   }
@@ -83,7 +92,7 @@ public class Drivetrain extends MechanicalSubsystem{
   //DRIVING METHOD
   public void arcadeDrive(Joystick stick) 
   {
-    this.DIFF_DRIVE.arcadeDrive(stick.getY() / this.rPMCoefficient, -stick.getTwist(), false);
+    this.DIFF_DRIVE.arcadeDrive(stick.getY() / this.rPMCoefficient, stick.getTwist() / this.twistCoefficient, false);
   }
 
   //SHIFTING METHOD
@@ -99,10 +108,12 @@ public class Drivetrain extends MechanicalSubsystem{
 
   public void lowGear() {
     this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
+    this.DRIVE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kForward);
   }
 
   public void highGear() {
     this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
+    this.DRIVE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
   }
 
   //MOVING STRAIGHT USING THE GYRO METHOD
@@ -136,7 +147,7 @@ public class Drivetrain extends MechanicalSubsystem{
     this.LEFT_MOTOR_THREE.setNeutralMode(NeutralMode.Coast);
     this.RIGHT_MOTOR_ONE.setNeutralMode(NeutralMode.Coast);
     this.RIGHT_MOTOR_TWO.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_TWO.setNeutralMode(NeutralMode.Coast);
+    this.RIGHT_MOTOR_THREE.setNeutralMode(NeutralMode.Coast);
   }
 
   public AHRS getGyro()
@@ -178,7 +189,13 @@ public class Drivetrain extends MechanicalSubsystem{
   }
 
   /** Print info to shuffleboard */
-  public void shuffleBoard(){}
+  public void shuffleBoard(){
+    SmartDashboard.putNumber("velocity", this.LEFT_MOTOR_ONE.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("gyroangle", getGyroAngle());
+    SmartDashboard.putNumber("gyro axis", getGyroAxis());
+    SmartDashboard.putNumber("gyroangle", getGyroAngle());
+
+  }
 
 }
 

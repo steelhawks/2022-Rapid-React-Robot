@@ -3,46 +3,88 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
 
 public class Climber extends MechanicalSubsystem {
 
-  public final WPI_TalonSRX WINCH_MOTOR;
-  public final WPI_TalonSRX PIVOT_MOTOR;
+  public final WPI_TalonSRX CLIMBER_MOTOR_LEFT;
+  public final WPI_TalonSRX CLIMBER_MOTOR_RIGHT;
+
+  public final DoubleSolenoid CLIMBER_SOLENOID_LEFT;
+  public final DoubleSolenoid CLIMBER_SOLENOID_RIGHT;
+
+  private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
 
   public Climber() {
-    this.WINCH_MOTOR = new WPI_TalonSRX(Robot.ROBOTMAP.WINCH_PORT);
-    this.PIVOT_MOTOR = new WPI_TalonSRX(Robot.ROBOTMAP.PIVOT_PORT);
+    this.CLIMBER_MOTOR_LEFT = new WPI_TalonSRX(Robot.ROBOTMAP.climberLeftPort);
+    this.CLIMBER_MOTOR_RIGHT = new WPI_TalonSRX(Robot.ROBOTMAP.climberRightPort);
+
+    this.CLIMBER_SOLENOID_LEFT = new DoubleSolenoid(9, type, Robot.ROBOTMAP.climberSoleLeftForward, Robot.ROBOTMAP.climberSoleLeftReverse);
+    this.CLIMBER_SOLENOID_RIGHT = new DoubleSolenoid(9, type, Robot.ROBOTMAP.climberSoleRightForward, Robot.ROBOTMAP.climberSoleRightReverse);
 
     configureMotors();
   }
 
-  public void climberRollWinch() {
-    System.out.println("forward");
-    this.WINCH_MOTOR.set(Robot.ROBOTMAP.climberSpeed);
-  }
-  public void climberUnrollWinch() {
-    System.out.println("backwards");
-    this.WINCH_MOTOR.set(-Robot.ROBOTMAP.climberSpeed);
-  }
-
-  public void climberPivotForward() {
-    System.out.println("pivot");
-    this.PIVOT_MOTOR.set(Robot.ROBOTMAP.pivotSpeed);
+  public void climberRoll(boolean isForward) {
+    System.out.println("climber");
+    if (isForward) {
+      this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
+      this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
+    } else {
+      this.CLIMBER_MOTOR_LEFT.set(-Robot.ROBOTMAP.climberSpeed);
+      this.CLIMBER_MOTOR_RIGHT.set(-Robot.ROBOTMAP.climberSpeed);
+    }
   }
 
-  public void climberPivotReverse() {
-    System.out.println("reverse pivot");
-    this.PIVOT_MOTOR.set(-Robot.ROBOTMAP.pivotSpeed);
+  // public void climberRollWinch() {
+  //   System.out.println("forwards");
+  //   this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
+  // }
+
+  // public void climberUnrollWinch() {
+  //   System.out.println("backwards");
+  //   this.CLIMBER_MOTOR_LEFT.set(-Robot.ROBOTMAP.climberSpeed);
+  // }
+
+  public void climberToggleSolenoid() {
+    if(this.CLIMBER_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward)) {
+      climberRetractSolenoid();
+      System.out.println("Climber Retract");
+    } else {
+      climberExtendSolenoid();
+      System.out.println("Climber Extend");
+    }
   }
+
+  public void climberExtendSolenoid() {
+    this.CLIMBER_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
+    this.CLIMBER_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void climberRetractSolenoid() {
+    this.CLIMBER_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
+    this.CLIMBER_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  // public void climberPivotForward() {
+  //   System.out.println("pivot");
+  //   this.PIVOT_MOTOR.set(Robot.ROBOTMAP.pivotSpeed);
+  // }
+
+  // public void climberPivotReverse() {
+  //   System.out.println("reverse pivot");
+  //   this.PIVOT_MOTOR.set(-Robot.ROBOTMAP.pivotSpeed);
+  // }
 
   public void configureMotors() {
-    this.WINCH_MOTOR.configFactoryDefault();
-    this.PIVOT_MOTOR.configFactoryDefault();
+    this.CLIMBER_MOTOR_LEFT.configFactoryDefault();
+    this.CLIMBER_MOTOR_RIGHT.configFactoryDefault();
 
-    this.WINCH_MOTOR.setNeutralMode(NeutralMode.Brake);
-    this.PIVOT_MOTOR.setNeutralMode(NeutralMode.Brake);
+    this.CLIMBER_MOTOR_LEFT.setNeutralMode(NeutralMode.Brake);
+    this.CLIMBER_MOTOR_RIGHT.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -58,8 +100,8 @@ public class Climber extends MechanicalSubsystem {
 
   @Override
   public boolean stop() {
-    this.WINCH_MOTOR.stopMotor();
-    this.PIVOT_MOTOR.stopMotor();
+    this.CLIMBER_MOTOR_LEFT.stopMotor();
+    this.CLIMBER_MOTOR_RIGHT.stopMotor();
     return false;
   }
 

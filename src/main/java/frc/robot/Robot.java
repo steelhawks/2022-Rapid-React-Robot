@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,8 +39,11 @@ public class Robot extends TimedRobot {
   public static final Storage STORAGE = new Storage(); 
   public static final Climber CLIMBER = new Climber();
 
-  public final Compressor COMPRESSOR = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  public final Compressor COMPRESSOR1 = new Compressor(1, PneumaticsModuleType.CTREPCM);
+  public final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
+  public final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
+  
+  public final PowerDistribution PDP = new PowerDistribution();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -55,6 +60,10 @@ public class Robot extends TimedRobot {
   
     // COMPRESSOR.disable();
     // COMPRESSOR1.disable();
+    // PDP.clearStickyFaults();
+
+    DRIVETRAIN.GYRO.calibrate();
+    DRIVETRAIN.GYRO.reset();
   }
   
   /**
@@ -66,7 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  DRIVETRAIN.shuffleBoard();
+    DRIVETRAIN.shuffleBoard();
   }
   /**
    * This autonomous (along with the chooser code above) shows how to select between different

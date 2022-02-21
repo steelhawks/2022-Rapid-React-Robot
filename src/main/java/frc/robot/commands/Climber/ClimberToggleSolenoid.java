@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class ClimberPivot extends CommandBase {
+public class ClimberToggleSolenoid extends CommandBase {
 
-    public ClimberPivot() {
+    public ClimberToggleSolenoid() {
         addRequirements(Robot.CLIMBER);
     }
 
@@ -15,7 +15,7 @@ public class ClimberPivot extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.CLIMBER.climberPivotForward();
+        Robot.CLIMBER.climberToggleSolenoid();
     }
 
     @Override

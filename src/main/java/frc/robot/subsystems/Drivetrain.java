@@ -33,6 +33,7 @@ public class Drivetrain extends MechanicalSubsystem{
 
   //DIFFERENTIAL DRIVE
   public final DifferentialDrive DIFF_DRIVE;
+  public boolean isForward;
 
   //DRIVETRAIN SHIFTGEAR SOLENOIDS
   public final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
@@ -47,8 +48,8 @@ public class Drivetrain extends MechanicalSubsystem{
   public double twistCoefficient;
 
   //NAVX MXP GYRO
-  private final AHRS GYRO;
-  private final double KP_GYRO;
+  public final AHRS GYRO;
+  public final double KP_GYRO;
 
   public Drivetrain() 
   {
@@ -74,7 +75,7 @@ public class Drivetrain extends MechanicalSubsystem{
     this.KP_GYRO = Robot.ROBOTMAP.KP_GYRO;
 
     //VARIABLE RPM ELECTRO-SHIFT
-    this.rPMCoefficient = 2;//original 1.75
+    this.rPMCoefficient = 1.25;//original 1.75
 
     //TWIST COEFFICIENT
     this.twistCoefficient = 1.1;
@@ -92,7 +93,7 @@ public class Drivetrain extends MechanicalSubsystem{
   //DRIVING METHOD
   public void arcadeDrive(Joystick stick) 
   {
-    this.DIFF_DRIVE.arcadeDrive(stick.getY() / this.rPMCoefficient, stick.getTwist() / this.twistCoefficient, false);
+    this.DIFF_DRIVE.arcadeDrive(stick.getY() / this.rPMCoefficient, stick.getTwist() / this.twistCoefficient, true);
   }
 
   //SHIFTING METHOD
@@ -193,8 +194,7 @@ public class Drivetrain extends MechanicalSubsystem{
     SmartDashboard.putNumber("velocity", this.LEFT_MOTOR_ONE.getSelectedSensorVelocity());
     SmartDashboard.putNumber("gyroangle", getGyroAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
-    SmartDashboard.putNumber("gyroangle", getGyroAngle());
-
+    
   }
 
 }

@@ -15,7 +15,7 @@ public class IntakeRetract extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.INTAKE.intakeRetract();
+        Robot.INTAKE.intakeRetractSolenoid();
     }
 
     @Override

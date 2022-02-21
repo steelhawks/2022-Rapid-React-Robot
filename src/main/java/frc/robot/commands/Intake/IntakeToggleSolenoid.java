@@ -3,8 +3,8 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class ToggleSolenoid extends CommandBase {
-    public ToggleSolenoid() {
+public class IntakeToggleSolenoid extends CommandBase {
+    public IntakeToggleSolenoid() {
         addRequirements(Robot.INTAKE);
     }
 
@@ -15,7 +15,7 @@ public class ToggleSolenoid extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.INTAKE.toggle();
+        Robot.INTAKE.intakeToggleSolenoid();
     }
 
     @Override

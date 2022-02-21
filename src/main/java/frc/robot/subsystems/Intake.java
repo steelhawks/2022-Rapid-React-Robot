@@ -14,14 +14,14 @@ import frc.util.subsystems.MechanicalSubsystem;
 public class Intake extends MechanicalSubsystem {
     
   // TALON SRX MOTOR CONTROLLER
-  public final WPI_TalonSRX intakeMotorOne;
+  public final WPI_TalonSRX INTAKE_MOTOR_ONE;
 
   // SPEED CONTROLLER GROUP
-  public final MotorControllerGroup intakeMotorGroup;
+  public final MotorControllerGroup INTAKE_MOTOR_GROUP;
 
   // SOLENOID
-  public DoubleSolenoid intakeSolenoidLeft;
-  public DoubleSolenoid intakeSolenoidRight;
+  public DoubleSolenoid INTAKE_SOLENOID_LEFT;
+  public DoubleSolenoid INTAKE_SOLENOID_RIGHT;
 
   //Solenoid Type
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
@@ -29,14 +29,14 @@ public class Intake extends MechanicalSubsystem {
   // DRIVETRAIN CONSTRUCTOR
   public Intake() {
     // TALON SRX MOTOR CONTROLLER
-    this.intakeMotorOne = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorOnePort);
+    this.INTAKE_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorOnePort);
 
     // SPEED CONTROLLER GROUPS
-    this.intakeMotorGroup = new MotorControllerGroup(this.intakeMotorOne);
+    this.INTAKE_MOTOR_GROUP = new MotorControllerGroup(this.INTAKE_MOTOR_ONE);
 
     // SOLENOID
-    this.intakeSolenoidLeft = new DoubleSolenoid(9, type, Robot.ROBOTMAP.intakeSoleLeftForward, Robot.ROBOTMAP.intakeSoleLeftReverse);
-    this.intakeSolenoidRight = new DoubleSolenoid(9, type, Robot.ROBOTMAP.intakeSoleRightForward, Robot.ROBOTMAP.intakeSoleRightReverse);
+    this.INTAKE_SOLENOID_LEFT = new DoubleSolenoid(9, type, Robot.ROBOTMAP.intakeSoleLeftForward, Robot.ROBOTMAP.intakeSoleLeftReverse);
+    this.INTAKE_SOLENOID_RIGHT = new DoubleSolenoid(9, type, Robot.ROBOTMAP.intakeSoleRightForward, Robot.ROBOTMAP.intakeSoleRightReverse);
     
     configureMotors();
   }
@@ -44,69 +44,69 @@ public class Intake extends MechanicalSubsystem {
   public void spinRoller(boolean isForward) {
     System.out.println("spinning motors");
     if (isForward) {
-      this.intakeMotorGroup.set(-Robot.ROBOTMAP.intakeSpeed);
+      this.INTAKE_MOTOR_GROUP.set(-Robot.ROBOTMAP.intakeSpeed);
     } else {
-      this.intakeMotorGroup.set(Robot.ROBOTMAP.intakeSpeed);
+      this.INTAKE_MOTOR_GROUP.set(Robot.ROBOTMAP.intakeSpeed);
     }
   }
 
   public void spinRoller(double speed) {
     System.out.println("intake set to spin at:" + speed);
-    this.intakeMotorGroup.set(-speed);
+    this.INTAKE_MOTOR_GROUP.set(-speed);
   }
 
   public void spinRollerReverse(double speed) {
     System.out.println("intake spinning out at:" + speed);
-    this.intakeMotorGroup.set(speed);
+    this.INTAKE_MOTOR_GROUP.set(speed);
   }
 
   public boolean stopRoll() {
-    this.intakeMotorGroup.stopMotor();
+    this.INTAKE_MOTOR_GROUP.stopMotor();
     return true;
   }
 
-  public void toggle() {
-    if (this.intakeSolenoidLeft.get().equals(DoubleSolenoid.Value.kForward)) {
-      intakeRetract();
+  public void intakeToggleSolenoid() {
+    if (this.INTAKE_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward)) {
+      intakeRetractSolenoid();
       System.out.println("toggle: retract intake pistons");
     } else {
-      intakeExtend();
+      intakeExtendSolenoid();
       System.out.println("toggle: extend intake pistons");
     }
     
   }
 
-  public void intakeExtend() {
+  public void intakeExtendSolenoid() {
     System.out.println("extend intake");
-    this.intakeSolenoidLeft.set(DoubleSolenoid.Value.kForward);
-    this.intakeSolenoidRight.set(DoubleSolenoid.Value.kForward);
+    this.INTAKE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
+    this.INTAKE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void intakeRetract() {
+  public void intakeRetractSolenoid() {
     System.out.println("retract");
-    this.intakeSolenoidLeft.set(DoubleSolenoid.Value.kReverse);
-    this.intakeSolenoidRight.set(DoubleSolenoid.Value.kReverse);
+    this.INTAKE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
+    this.INTAKE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void configureMotors() {
-    this.intakeMotorOne.configFactoryDefault();
+    this.INTAKE_MOTOR_ONE.configFactoryDefault();
 
-    this.intakeMotorOne.setNeutralMode(NeutralMode.Coast);
+    this.INTAKE_MOTOR_ONE.setNeutralMode(NeutralMode.Coast);
   }
 
   public void smartDashboard() {
-    SmartDashboard.putNumber("Intake Motor One Speed", this.intakeMotorOne.get());
+    SmartDashboard.putNumber("Intake Motor One Speed", this.INTAKE_MOTOR_ONE.get());
   }
 
   public boolean isAlive() {
-    return intakeMotorOne.isAlive();
+    return INTAKE_MOTOR_ONE.isAlive();
   }
 
   public void ping() {
   }
 
   public boolean stop() {
-    this.intakeMotorOne.stopMotor();
+    this.INTAKE_MOTOR_ONE.stopMotor();
     return true;
   }
 

@@ -19,7 +19,7 @@ public class StorageIn extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.STORAGE.storageIn(false);
+    Robot.STORAGE.storageIn(true);
   }
 
   @Override

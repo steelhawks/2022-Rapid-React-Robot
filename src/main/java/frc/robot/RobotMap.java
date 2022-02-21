@@ -44,14 +44,15 @@ public class RobotMap
   public final int intakeSoleRightReverse = 3;
   public final double intakeSpeed = 0.75;
 
-
-
-
   //Climber ??
-    public final int WINCH_PORT = 3;
-    public final int PIVOT_PORT = 8;
+    public final int climberLeftPort = 12;
+    public final int climberRightPort = 14;
+    public final int climberSoleLeftForward = 4;
+    public final int climberSoleLeftReverse = 5;
+    public final int climberSoleRightForward = 6;
+    public final int climberSoleRightReverse = 7;
     public final double climberSpeed = 0.5;
-    public final double pivotSpeed = 0.1;
+    
 
   /*****
    Constructor method

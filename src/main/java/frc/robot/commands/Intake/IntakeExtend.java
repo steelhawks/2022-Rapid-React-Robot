@@ -15,7 +15,7 @@ public class IntakeExtend extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.INTAKE.intakeExtend();
+        Robot.INTAKE.intakeExtendSolenoid();
     }
 
     @Override

@@ -15,12 +15,12 @@ public class ClimberRollWinch extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.CLIMBER.climberRollWinch();
+        Robot.CLIMBER.climberRoll(true);
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
       
     @Override

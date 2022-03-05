@@ -14,7 +14,7 @@ public class RobotMap
    *****/
 
   //Right Motor Ports
-  private final int RIGHT_MOTOR_PORT_UP = 2;
+  private final int RIGHT_MOTOR_PORT_UP = 2;//2
   private final int LEFT_MOTOR_PORT_UP = 14;
   
   //Left Motor Ports

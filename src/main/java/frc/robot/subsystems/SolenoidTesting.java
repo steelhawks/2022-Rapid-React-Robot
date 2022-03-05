@@ -13,7 +13,7 @@ public class SolenoidTesting extends SubsystemBase {
 
     public SolenoidTesting(){
         this.solenoidone = new DoubleSolenoid(type, 0, 1);
-        this.solenoidtwo = new DoubleSolenoid(type, 2, 3);
+        this.solenoidtwo = new DoubleSolenoid(type, 3, 2);
     }
 
     public void toggleSolenoid() {

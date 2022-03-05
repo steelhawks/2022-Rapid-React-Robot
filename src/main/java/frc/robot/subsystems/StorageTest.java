@@ -33,9 +33,9 @@ public class StorageTest extends SubsystemBase {
         this.UP_M_GROUP = new MotorControllerGroup(this.UP_M_LEFT, this.UP_M_RIGHT);
         this.DOWN_M_GROUP = new MotorControllerGroup(this.DOWN_M_LEFT, this.DOWN_M_RIGHT);
 
-        this.UP_M_RIGHT.setInverted(true);
-        this.DOWN_M_GROUP.setInverted(true);
-        this.DOWN_M_RIGHT.setInverted(true);
+        // this.UP_M_RIGHT.setInverted(true);
+        // this.DOWN_M_GROUP.setInverted(true);
+        // this.DOWN_M_RIGHT.setInverted(true);
     
         configureMotors();
       }

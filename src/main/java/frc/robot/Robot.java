@@ -27,7 +27,6 @@ public class Robot extends TimedRobot
   public static final CommandLinker COMMAND_LINKER = new CommandLinker();
   public double count = -0.99;
 
-  public static final Music MUSIC = new Music();
   
   public static final StorageTest INTAKETEST = new StorageTest();
   public static final SolenoidTesting SOLENOID_TESTING = new SolenoidTesting();
@@ -48,8 +47,6 @@ public class Robot extends TimedRobot
     COMMAND_LINKER.configureRegisteredSubsystems();  
     COMMAND_LINKER.configureCommands();
 
-    MUSIC.addIntra();
-    MUSIC.addMusic();
   }
 
   @Override
@@ -82,7 +79,6 @@ public class Robot extends TimedRobot
   public void teleopInit() 
   {
     CommandScheduler.getInstance().enable();
-    MUSIC.playMusic();
 
   }
   public void teleopPeriodic() 

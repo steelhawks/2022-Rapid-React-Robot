@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsBase;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.PowerDistribution;
+// import edu.wpi.first.wpilibj.Compressor;
+// import edu.wpi.first.wpilibj.PneumaticsBase;
+// import edu.wpi.first.wpilibj.PneumaticsControlModule;
+// import edu.wpi.first.wpilibj.PneumaticsModuleType;
+// import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,6 +17,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
+import frc.util.subsystems.pathcorder.Follower;
+import frc.util.subsystems.pathcorder.Recorder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -38,11 +40,13 @@ public class Robot extends TimedRobot {
   public static final ButtonMap BUTTON_MAP = new ButtonMap(); 
   public static final Storage STORAGE = new Storage(); 
   public static final Climber CLIMBER = new Climber();
+  public static final Recorder RECORDER = new Recorder();
+  public static final Follower FOLLOWER = new Follower();
 
-  public final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  public final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
+  // public final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
+  // public final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
-  public final PowerDistribution PDP = new PowerDistribution();
+  // public final PowerDistribution PDP = new PowerDistribution();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -111,7 +115,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    CommandScheduler.getInstance().enable();
+
+  }
 
   /** This function is called periodically during operator control. */
   @Override

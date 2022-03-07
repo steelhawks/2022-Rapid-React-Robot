@@ -1,11 +1,20 @@
 package frc.robot;
 
+import java.util.ArrayList;
+
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 public class RobotMap 
 {
 
   public RobotMap() {}
   
   /*Store instance variables, values, ports needed for the robot*/
+
+  public final String pathName = "";
+  public ArrayList<String> paths = new ArrayList<String>();
+  public final String deployDirectory = "";
+  public SequentialCommandGroup autonCommands = new SequentialCommandGroup();
 
   //Joystick Input Ports
 

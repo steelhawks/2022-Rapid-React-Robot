@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
+import frc.util.subsystems.pathcorder.JoystickRecorder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -51,6 +52,9 @@ public class Drivetrain extends MechanicalSubsystem{
   public final AHRS GYRO;
   public final double KP_GYRO;
 
+  //PATHCORDER
+  public int count = 0;
+
   public Drivetrain() 
   {
     //SPARK MAX LEFT MOTORS
@@ -78,7 +82,7 @@ public class Drivetrain extends MechanicalSubsystem{
     this.rPMCoefficient = 1.25;//original 1.75
 
     //TWIST COEFFICIENT
-    this.twistCoefficient = 1.1;
+    this.twistCoefficient = 1.25;
 
     //DRIVETRAIN SOLENOID
     this.DRIVE_SOLENOID_LEFT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOn, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOff);
@@ -93,7 +97,13 @@ public class Drivetrain extends MechanicalSubsystem{
   //DRIVING METHOD
   public void arcadeDrive(Joystick stick) 
   {
-    this.DIFF_DRIVE.arcadeDrive(stick.getY() / this.rPMCoefficient, stick.getTwist() / this.twistCoefficient, true);
+    double y = stick.getY();
+    double rotate = stick.getTwist();
+    this.DIFF_DRIVE.arcadeDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);
+    if (Robot.RECORDER.isRecording) {
+      count++;
+      Robot.RECORDER.recordJoystick(new JoystickRecorder(y, rotate, false, count));
+    }
   }
 
   //SHIFTING METHOD
@@ -177,10 +187,6 @@ public class Drivetrain extends MechanicalSubsystem{
     return false;
   }
 
-  public void motorTimeout(){
-    System.out.println(LEFT_MOTOR_ONE.getExpiration());
-  }
-
   /** Pings the subsystem. */
   public void ping(){}
 
@@ -191,7 +197,10 @@ public class Drivetrain extends MechanicalSubsystem{
 
   /** Print info to shuffleboard */
   public void shuffleBoard(){
-    SmartDashboard.putNumber("velocity", this.LEFT_MOTOR_ONE.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("L1 velocity", this.LEFT_MOTOR_ONE.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("L3 velocity", this.LEFT_MOTOR_THREE.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("R1 velocity", this.RIGHT_MOTOR_ONE.getSelectedSensorVelocity());
+
     SmartDashboard.putNumber("gyroangle", getGyroAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
     

@@ -22,6 +22,5 @@ public class AutonPath {
     encoderRightValues = new ArrayList<Double>(0);
     encoderLeftValues = new ArrayList<Double>(0);
     joystickButtonInputs = new ArrayList<Double>(0);
-
   }
 }

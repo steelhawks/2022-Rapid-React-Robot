@@ -34,19 +34,20 @@ public class Follower {
 
   public void follow(int pathIndex) {
     AutonPath currentPath = AutonPaths.get(pathIndex);
+    isFinished = false;
 
     // FOLLOW JOYSTICK RECORDING
     if (index < currentPath.joystickYValues.size()) {
       Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index),
           currentPath.joystickRotationValues.get(index));
 
+          index++;
       // FOLLLOW BUTTON RECORDING
       
       //int currentButtonInput = (int)Math.round(currentPath.joystickButtonInputs.get(index));
       //readButtonInput(currentButtonInput); #READ OTHER SUBSYSTEM BUTTON PRESSES
       
       // DOUBLING FILES TO ENSURE ACCURACY
-      index++;
       // if (shouldDouble == true) 
       // {
       //   shouldDouble = false;
@@ -63,6 +64,7 @@ public class Follower {
     {
       Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(0, 0);
       System.out.println(index);
+      System.out.println("finished running path: " + Robot.ROBOTMAP.paths.get(pathIndex));
       pathIndex++;
       isFinished = true;
     }

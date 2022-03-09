@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autonomous.Follow;
+import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -47,7 +49,13 @@ public class Robot extends TimedRobot {
   public static final Recorder RECORDER = new Recorder();
   public static final Follower FOLLOWER = new Follower();
   public static final PathSelector PATH_SELECTOR = new PathSelector();
+  
+  
   public static final Command follow = new Follow();
+  public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
+  public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
+
+  public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new SampleAutopath1());
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -63,8 +71,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    ROBOTMAP.paths.add("testpath");
-    ROBOTMAP.paths.add("finaltestpath");
+    ROBOTMAP.paths.add("testpath.csv");
+    ROBOTMAP.paths.add("finaltestpath.csv");
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -98,10 +106,9 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-
-
+    aGroup.initialize();
   }
-
+  
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
@@ -109,15 +116,15 @@ public class Robot extends TimedRobot {
     
     switch (m_autoSelected) {
       case kCustomAuto:
-        // Put custom auto code here
-        break;
+      // Put custom auto code here
+      break;
       case kDefaultAuto:
       default:
-        // Put default auto code here
-        break;
+      // Put default auto code here
+      break;
     }
 
-    follow.execute();
+    aGroup.execute();
   }
 
   /** This function is called once when teleop is enabled. */

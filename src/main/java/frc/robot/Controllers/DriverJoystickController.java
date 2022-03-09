@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
 import frc.robot.commands.Drivetrain.ShiftGears;
+import frc.robot.commands.Pathcorder.EndRecording;
+import frc.robot.commands.Pathcorder.StartRecording;
 
 
 //Not made yet
@@ -26,6 +28,12 @@ public class DriverJoystickController {
     // DRIVETRAIN
     Button shift = this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton);
     shift.whenPressed(new ShiftGears());
+
+    Button startRecording = this.controller.mapButton(Robot.BUTTON_MAP.startRecordingButton);
+    startRecording.whenPressed(new StartRecording());
+    
+    Button endRecording = this.controller.mapButton(Robot.BUTTON_MAP.endRecordingButton);
+    endRecording.whenPressed(new EndRecording());
 
   }
 }

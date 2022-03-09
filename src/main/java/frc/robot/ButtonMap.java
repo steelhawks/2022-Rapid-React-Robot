@@ -35,8 +35,8 @@ public class ButtonMap {
 //   public final int visionRequestBallButton = 9;
 //   public final int visionRequestConnectButton = 12;
 
-//   public final int startRecordingButton = 5;
-//   public final int endRecordingButton = 6;
+  public final int startRecordingButton = 5;
+  public final int endRecordingButton = 6;
 
 //   public final int turretToggleTestingButton = 8;
 

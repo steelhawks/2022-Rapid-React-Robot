@@ -5,9 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.util.subsystems.pathcorder;
-
-
+package frc.util.pathcorder;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,6 +45,7 @@ public class Recorder {
     logger.writeData(stick.joystickY, stick.joystickTwist, stick.count, this.buttonPressed);
     this.resetButton();
   }
+  
 //   public void recordEncoderValues(Encorder enc) {
 //     logger.writeData(enc.rightEncoder, enc.leftEncoder);
 //   }

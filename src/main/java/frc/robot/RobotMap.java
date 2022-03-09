@@ -11,14 +11,14 @@ public class RobotMap
   
   /*Store instance variables, values, ports needed for the robot*/
 
-  public final String pathName = "";
-  public ArrayList<String> paths = new ArrayList<String>();
-  public final String deployDirectory = "";
+
+  public final String pathName = "deploy";
+  public final String deployDirectory = "C:/Code/2020AutonBot/deploy";
   public SequentialCommandGroup autonCommands = new SequentialCommandGroup();
+  public ArrayList<String> paths = new ArrayList<String>();
 
   //Joystick Input Ports
 
-  
   final int joystickPortOne = 0;
 
   //DRIVETRAIN Motor ID

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.util.subsystems.pathcorder;
+package frc.util.pathcorder;
 
 import java.util.ArrayList;
 

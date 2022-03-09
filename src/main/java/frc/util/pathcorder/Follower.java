@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.util.subsystems.pathcorder;
+package frc.util.pathcorder;
 
 import edu.wpi.first.wpilibj.Filesystem;
 //import edu.wpi.first.wpilibj.Joystick;
@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import frc.robot.Robot;
-import frc.util.subsystems.pathcorder.AutonPath;
+import frc.util.pathcorder.AutonPath;
 
 public class Follower {
 
@@ -29,9 +29,10 @@ public class Follower {
   public boolean shouldDouble = false;
   public boolean isFinished = false;
   private ArrayList<AutonPath> AutonPaths = new ArrayList<AutonPath>(0);
-  private int pathIndex = 0;
 
-  public void follow() {
+  public Follower(){}
+
+  public void follow(int pathIndex) {
     AutonPath currentPath = AutonPaths.get(pathIndex);
 
     // FOLLOW JOYSTICK RECORDING
@@ -40,21 +41,22 @@ public class Follower {
           currentPath.joystickRotationValues.get(index));
 
       // FOLLLOW BUTTON RECORDING
-      int currentButtonInput = (int)Math.round(currentPath.joystickButtonInputs.get(index));
-      readButtonInput(currentButtonInput);
+      
+      //int currentButtonInput = (int)Math.round(currentPath.joystickButtonInputs.get(index));
+      //readButtonInput(currentButtonInput); #READ OTHER SUBSYSTEM BUTTON PRESSES
       
       // DOUBLING FILES TO ENSURE ACCURACY
       index++;
-      if (shouldDouble == true) 
-      {
-        shouldDouble = false;
-        index++;
-      } 
-      else {
-        shouldDouble = true;
-      }
+      // if (shouldDouble == true) 
+      // {
+      //   shouldDouble = false;
+      //   index++;
+      // } 
+      // else {
+      //   shouldDouble = true;
+      // }
 
-      isFinished = false;
+      // isFinished = false;
     } 
 
     else 
@@ -71,7 +73,7 @@ public class Follower {
       this.AutonPaths.clear();
       // insert path to csv
       for (String pathName : paths) {
-        System.out.println("PATH NAME" + pathName);
+        System.out.println("PATH NAME: " + pathName);
         Path path = Paths.get(pathName);
         Path fileName = path.getFileName();
         File TBR = fileName.toFile();
@@ -91,9 +93,9 @@ public class Follower {
     try {
 
       String filePathName = Filesystem.getDeployDirectory().toString() + "/" + fileName;
-      System.out.println(filePathName);
+      System.out.println(filePathName + "found filePathName");
       File exFile = new File(filePathName);
-      System.out.println(exFile);
+      System.out.println(exFile + "found exFIle");
       FileReader in = new FileReader(exFile);
       System.out.println("made filereader");
       // System.out.println("File reader" + in.ready());
@@ -101,9 +103,13 @@ public class Follower {
       System.out.println("made bufferedreader");
       // System.out.println("buffered reader" + br.ready());
       br.readLine();
+      System.out.println("readline1");
       br.readLine();
+      System.out.println("readline2");
       AutonPath newPath = new AutonPath();
+      System.out.println("new AutonPath");
       String line = null;
+      int count = 0;
 
       while ((line = br.readLine()) != null) {
         String[] joystickValue = line.split(",");
@@ -121,48 +127,50 @@ public class Follower {
         newPath.joystickYValues.add(joystickY);
         newPath.joystickRotationValues.add(joystickRotation);
         newPath.joystickButtonInputs.add(joystickButtonInput);
-
+        System.out.println("add yrb" + count++);
       }
+      System.out.println("finished reading newpath");
       AutonPaths.add(newPath);
+      System.out.println("finished adding newpath");
       br.close();
-      // // br.read();
-      // // br.ready();
+      System.out.println("closed buffer reader");
+      
     } catch (Exception e) {
       System.out.println("Could not find file");
+      e.printStackTrace();
     }
   }
 
+  // private void readButtonInput(int buttonInput){
+  //   if(buttonInput == -1){
+  //     // do nothing
+  //   }
+  //   else if(buttonInput == Robot.BUTTON_MAP.intakeToggleSolenoidButton){
+  //     Robot.INTAKE.intakeToggleSolenoid();
+  //   }
+  //   else if(buttonInput == Robot.BUTTON_MAP.intakeSpinButton){
+  //     Robot.INTAKE.spinRoller(Robot.ROBOTMAP.intakeSpeed);
+  //   }
+  //   else if(buttonInput == -Robot.BUTTON_MAP.intakeSpinButton){
+  //     Robot.INTAKE.stop();
+  //   }
+  //   else if(buttonInput == Robot.BUTTON_MAP.storageMoveBallsUpButton){
+  //     Robot.STORAGE.storageRun(true);
+  //   }
+  //   else if(buttonInput == -Robot.BUTTON_MAP.storageMoveBallsUpButton){
+  //     Robot.STORAGE.stop();
+  //   }
+  //   else if(buttonInput == Robot.BUTTON_MAP.storageInButton){
+  //     Robot.STORAGE.storageIn(true);
+  //   }
+  //   else if(buttonInput == Robot.BUTTON_MAP.storageOutButton){
+  //     Robot.STORAGE.storageIn(false);
+  //   }
+  //   else if(buttonInput == -Robot.BUTTON_MAP.storageOutButton) {
+  //     Robot.STORAGE.stop();
+  //   }
 
-  private void readButtonInput(int buttonInput){
-    if(buttonInput == -1){
-      // do nothing
-    }
-    else if(buttonInput == Robot.BUTTON_MAP.intakeToggleSolenoidButton){
-      Robot.INTAKE.intakeToggleSolenoid();
-    }
-    else if(buttonInput == Robot.BUTTON_MAP.intakeSpinButton){
-      Robot.INTAKE.spinRoller(Robot.ROBOTMAP.intakeSpeed);
-    }
-    else if(buttonInput == -Robot.BUTTON_MAP.intakeSpinButton){
-      Robot.INTAKE.stop();
-    }
-    else if(buttonInput == Robot.BUTTON_MAP.storageMoveBallsUpButton){
-      Robot.STORAGE.storageRun(true);
-    }
-    else if(buttonInput == -Robot.BUTTON_MAP.storageMoveBallsUpButton){
-      Robot.STORAGE.stop();
-    }
-    else if(buttonInput == Robot.BUTTON_MAP.storageInButton){
-      Robot.STORAGE.storageIn(true);
-    }
-    else if(buttonInput == Robot.BUTTON_MAP.storageOutButton){
-      Robot.STORAGE.storageIn(false);
-    }
-    else if(buttonInput == -Robot.BUTTON_MAP.storageOutButton) {
-      Robot.STORAGE.stop();
-    }
-
-  }
+  // }
 
   // String csvFile = " ";
   // BufferedReader br = null;

@@ -1,4 +1,4 @@
-package frc.robot.commands.Pathcorder;
+package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -15,7 +15,9 @@ public class Follow extends CommandBase {
   @Override
   public void execute() 
   {
-      Robot.FOLLOWER.follow();    
+      Robot.FOLLOWER.follow(2601); //SAMPLE TEMPLATE FOR A AUTON DRIVETRAIN COMMAND
+      // input the index number of the path from String array in ROBOTMAP.paths
+      // this runs that csv file and makes it into a AutonPath Object and runs it
   }
 
   @Override

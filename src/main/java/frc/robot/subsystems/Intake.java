@@ -35,7 +35,7 @@ public class Intake extends MechanicalSubsystem {
     this.INTAKE_MOTOR_GROUP = new MotorControllerGroup(this.INTAKE_MOTOR_ONE);
 
     // SOLENOID
-    this.INTAKE_SOLENOID_LEFT = new DoubleSolenoid(9, type, 4, 5);
+    this.INTAKE_SOLENOID_LEFT = new DoubleSolenoid(9, type, 0, 1);
     this.INTAKE_SOLENOID_RIGHT = new DoubleSolenoid(8, type, 6, 7);
     
     configureMotors();

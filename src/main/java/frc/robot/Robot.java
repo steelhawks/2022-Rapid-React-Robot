@@ -12,13 +12,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Autonomous.Follow;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
-import frc.util.subsystems.pathcorder.Follower;
-import frc.util.subsystems.pathcorder.Recorder;
+import frc.util.pathcorder.Follower;
+import frc.util.pathcorder.Recorder;
+import frc.util.pathcorder.pathselector.PathSelector;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,13 +43,11 @@ public class Robot extends TimedRobot {
   public static final ButtonMap BUTTON_MAP = new ButtonMap(); 
   public static final Storage STORAGE = new Storage(); 
   public static final Climber CLIMBER = new Climber();
+  
   public static final Recorder RECORDER = new Recorder();
   public static final Follower FOLLOWER = new Follower();
-
-  // public final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  // public final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
-  
-  // public final PowerDistribution PDP = new PowerDistribution();
+  public static final PathSelector PATH_SELECTOR = new PathSelector();
+  public static final Command follow = new Follow();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -61,13 +62,13 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-  
-    // COMPRESSOR.disable();
-    // COMPRESSOR1.disable();
-    // PDP.clearStickyFaults();
 
-    DRIVETRAIN.GYRO.calibrate();
-    DRIVETRAIN.GYRO.reset();
+    ROBOTMAP.paths.add("testpath");
+    ROBOTMAP.paths.add("finaltestpath");
+
+    Robot.FOLLOWER.importPath(ROBOTMAP.paths);
+    PATH_SELECTOR.presetPaths();
+    PATH_SELECTOR.loadPresetPath();
   }
   
   /**
@@ -93,15 +94,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
+    
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
@@ -111,13 +116,14 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
+
+    follow.execute();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
     CommandScheduler.getInstance().enable();
-
   }
 
   /** This function is called periodically during operator control. */

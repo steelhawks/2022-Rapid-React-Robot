@@ -1,12 +1,10 @@
 package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.Storage.*;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
-
 
 
 public class XBoxController {
@@ -18,9 +16,6 @@ public class XBoxController {
   }
 
   public void mapButtons() {
-
-    //TODO: add all buttons on the xbox controller
-   
 
     // Storage 
     this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsUpButton)

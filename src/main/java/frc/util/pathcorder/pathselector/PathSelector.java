@@ -14,23 +14,17 @@
 // import java.util.ArrayList;
 // import java.io.File;
 
-package frc.util.subsystems.pathcorder;
+package frc.util.pathcorder.pathselector;
 import frc.robot.Robot;
-import frc.util.subsystems.pathcorder.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 
-
-
-
-
-
 public class PathSelector {
 
-  private SendableChooser<DashboardPath> chooser;
+  public static SendableChooser<DashboardPath> chooser;
 
   public PathSelector(){
     chooser = new SendableChooser<>();
@@ -44,7 +38,9 @@ public class PathSelector {
       String optionName = paths.get(i).pathName;
       chooser.addOption(optionName, paths.get(i));
     }
+    chooser.setDefaultOption("testpath", pathList.path1);
     SmartDashboard.putData("Preset Path", chooser);
+
   }
 
   public void loadPresetPath(){

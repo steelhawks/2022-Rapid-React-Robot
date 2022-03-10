@@ -8,7 +8,8 @@
 package frc.util.pathcorder;
 
 import edu.wpi.first.wpilibj.Filesystem;
-//import edu.wpi.first.wpilibj.Joystick;
+import org.apache.commons.io.input.ReversedLinesFileReader;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -129,7 +130,6 @@ public class Follower {
         newPath.joystickYValues.add(joystickY);
         newPath.joystickRotationValues.add(joystickRotation);
         newPath.joystickButtonInputs.add(joystickButtonInput);
-        System.out.println("add yrb" + count++);
       }
       System.out.println("finished reading newpath");
       AutonPaths.add(newPath);

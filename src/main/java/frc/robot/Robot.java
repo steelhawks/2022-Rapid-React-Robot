@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Autonomous.Follow;
 import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.Climber;
@@ -55,8 +56,7 @@ public class Robot extends TimedRobot {
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
-  public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new SampleAutopath1());
-
+  public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new WaitCommand(5), new SampleAutopath1());
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -103,9 +103,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    m_autoSelected = m_chooser.getSelected();
+    //m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    //System.out.println("Auto selected: " + m_autoSelected);
+    
     aGroup.initialize();
   }
   

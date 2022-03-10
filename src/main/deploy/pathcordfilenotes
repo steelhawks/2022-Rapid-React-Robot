@@ -1,4 +1,0 @@
-remove the extra zeros at the end,
-since it results in an empty string that cannot be found
-
-might as well remove the extra comma at the end

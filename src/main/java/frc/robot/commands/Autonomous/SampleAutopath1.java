@@ -6,7 +6,6 @@ import frc.robot.Robot;
 public class SampleAutopath1 extends CommandBase 
 {
 
-  boolean isFinished = false;
     
   public SampleAutopath1() {
       addRequirements(Robot.DRIVETRAIN);
@@ -14,7 +13,6 @@ public class SampleAutopath1 extends CommandBase
 
   @Override
   public void initialize() {
-    this.isFinished = Robot.FOLLOWER.isFinished;
   }
 
   @Override
@@ -26,7 +24,7 @@ public class SampleAutopath1 extends CommandBase
   @Override
   public boolean isFinished() 
   {
-    return isFinished;
+    return Robot.FOLLOWER.isFinished;
   }
 
   //runs the command until the follow method finishes and returns true

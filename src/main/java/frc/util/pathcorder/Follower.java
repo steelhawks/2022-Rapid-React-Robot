@@ -64,9 +64,8 @@ public class Follower {
     else 
     {
       Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(0, 0);
-      System.out.println(index);
-      System.out.println("finished running path: " + Robot.ROBOTMAP.paths.get(pathIndex));
-      pathIndex++;
+      System.out.println(index + " finished running path");
+      index = 0;
       isFinished = true;
     }
   }
@@ -112,7 +111,6 @@ public class Follower {
       AutonPath newPath = new AutonPath();
       System.out.println("new AutonPath");
       String line = null;
-      int count = 0;
 
       while ((line = br.readLine()) != null) {
         String[] joystickValue = line.split(",");

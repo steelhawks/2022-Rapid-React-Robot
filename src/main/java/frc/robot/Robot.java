@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
-  public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new WaitCommand(5), new SampleAutopath1());
+  public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new SampleAutopath1());
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     ROBOTMAP.paths.add("testpath.csv");
-    ROBOTMAP.paths.add("finaltestpath.csv");
+    ROBOTMAP.paths.add("clockcircle.csv");
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -107,7 +107,8 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     //System.out.println("Auto selected: " + m_autoSelected);
     
-    aGroup.initialize();
+    CommandScheduler.getInstance().schedule(aGroup);
+    aGroup.execute();
   }
   
   /** This function is called periodically during autonomous. */
@@ -115,17 +116,16 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
     
-    switch (m_autoSelected) {
-      case kCustomAuto:
-      // Put custom auto code here
-      break;
-      case kDefaultAuto:
-      default:
-      // Put default auto code here
-      break;
-    }
+    // switch (m_autoSelected) {
+    //   case kCustomAuto:
+    //   // Put custom auto code here
+    //   break;
+    //   case kDefaultAuto:
+    //   default:
+    //   // Put default auto code here
+    //   break;
+    // }
 
-    aGroup.execute();
   }
 
   /** This function is called once when teleop is enabled. */

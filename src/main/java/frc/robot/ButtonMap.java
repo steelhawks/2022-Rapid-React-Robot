@@ -23,6 +23,12 @@ public class ButtonMap {
 
   public final int storageMoveBallsUpButton = Gamepad.kGamepadButtonShoulderR;
   public final int storageMoveBallsReverseButton = Gamepad.kGamepadButtonShoulderL;
+
+  public final int visionGoToBall = 7;
+  public final int visionAlignToHub = 8;
+  
+  public final int visionFaceLimelightUp = 11;
+  public final int visionFaceLimelightDown = 12;
   // public final int storageMoveBallsInButton = Gamepad.kGamepadButtonX;
   // public final int storageMoveBallsOutButton;
 

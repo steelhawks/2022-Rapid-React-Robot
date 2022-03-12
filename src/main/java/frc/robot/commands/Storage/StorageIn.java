@@ -30,7 +30,7 @@ public class StorageIn extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (interrupted) {
-      Robot.STORAGE.storageMotorStop();
+      Robot.STORAGE.stop();
     }
   }
 }

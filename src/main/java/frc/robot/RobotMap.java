@@ -53,6 +53,9 @@ public class RobotMap
     public final int climberSoleRightReverse = 7;
     public final double climberSpeed = 0.5;
     
+  //Vision:
+  public final int LimelightMotorPort = 7;
+  public final int beambreakerPort = 1;
 
   /*****
    Constructor method

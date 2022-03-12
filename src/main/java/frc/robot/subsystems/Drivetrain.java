@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS; 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
+import frc.util.Limelight;
 import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -50,6 +51,14 @@ public class Drivetrain extends MechanicalSubsystem{
   //NAVX MXP GYRO
   public final AHRS GYRO;
   public final double KP_GYRO;
+
+  //Vision
+  private final int ANGLE_LENIENCY = 5;
+  private final double Y_LOWER_LIMIT = -18;
+  private final double X_THRESHOLD = 8;
+  
+  private final int LEAVE_HUB_TIME = 2;
+  private final int ENTER_HUB_TIME = 2;
 
   public Drivetrain() 
   {
@@ -195,6 +204,134 @@ public class Drivetrain extends MechanicalSubsystem{
     SmartDashboard.putNumber("gyroangle", getGyroAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
     
+  }
+
+    //VISION STUFF
+
+  // LOOK FOR BALL
+  public void spinRobot() {
+    this.DIFF_DRIVE.arcadeDrive(0, 0.7);
+  }
+
+  
+  public boolean goToBall(){
+
+    // Limelight.setPipeline(Robot.VISION.isRedAlliance ? 0 : 1);
+    // Limelight.setPipeline(Robot.VISION.getBallPipeline());
+    if(! Robot.VISION.isCargoPipeline()){
+      return true;
+    }
+    
+    // Robot.VISION.switchToBallPipeline();
+
+    if(!Limelight.hasValidTarget()) {
+      spinRobot();
+      // Limelight.updateValues();
+      Robot.VISION.updateNetworkValues();
+      
+    }
+    
+    
+    if(Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline()){
+      if(Limelight.getYOffset() > Y_LOWER_LIMIT){
+        gyroMoveStraight(0.75, 8 * -Limelight.getXOffset());
+      }
+      else if(Math.abs(Limelight.getXOffset()) > X_THRESHOLD){
+        gyroMoveStraight(0, 5 * -Limelight.getXOffset());
+      }else{
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // public void goToHub(){
+  //   if(Limelight.hasValidTarget() && Robot.VISION.isHubPipeline())
+  //   gyroMoveStraight(0.4, 2 * Limelight.getXOffset());
+  // }
+
+  public boolean rotateToHub() {
+
+    Robot.VISION.switchToHubPipeline();
+
+    if (!Limelight.hasValidTarget()) {
+      spinRobot();
+      Robot.VISION.updateNetworkValues();
+    } 
+
+    double hubAngle = Limelight.getXOffset();
+    boolean angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;;
+
+    if (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline() && !angleInRange){
+      this.LEFT_M_GROUP.set(hubAngle / 60);
+      this.RIGHT_M_GROUP.set(-hubAngle / 60);
+
+      hubAngle = Limelight.getXOffset();
+      angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;
+
+    } 
+
+    return angleInRange;
+  }
+
+  public void straightHub() {
+
+    double hubArea = Limelight.getArea();
+
+    if (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline()){
+      this.LEFT_M_GROUP.set(0.2 / hubArea);
+      this.RIGHT_M_GROUP.set(0.2 / hubArea);
+
+      hubArea = Limelight.getArea();
+      
+    } 
+
+    // move straight a set amount then turn 180
+    // enterHub();
+    // rotateRobot();
+    // leaveHub();
+  }
+
+  // Turns robot 180 degrees
+  private void rotateRobot() {
+    this.DIFF_DRIVE.arcadeDrive(0, 180);
+  }
+
+  private void enterHub() {
+    long timeStarted = System.currentTimeMillis();
+
+    while (System.currentTimeMillis() - timeStarted < ENTER_HUB_TIME) {
+      this.LEFT_M_GROUP.set(0.3);
+      this.RIGHT_M_GROUP.set(0.3);
+    }
+  }
+
+  private void leaveHub() {
+    long timeStarted = System.currentTimeMillis();
+
+    while (System.currentTimeMillis() - timeStarted < LEAVE_HUB_TIME) {
+      this.LEFT_M_GROUP.set(0.5);
+      this.RIGHT_M_GROUP.set(0.5);
+    }
+  }
+    
+  public void turn(double angle, double speed){
+    if (angle > ANGLE_LENIENCY) {
+      this.LEFT_M_GROUP.set(speed);
+      this.RIGHT_M_GROUP.set(-speed);
+    } else {
+      this.RIGHT_M_GROUP.set(speed);
+      this.LEFT_M_GROUP.set(-speed);
+    }
+
+  }
+  public void alignTape() {
+    if(Robot.VISION.getLineAngle() > ANGLE_LENIENCY || Robot.VISION.getLineAngle() < -ANGLE_LENIENCY) {
+      turn(Robot.VISION.getLineAngle(), 0.25);
+    } else { 
+      Robot.DRIVETRAIN.rotate(0.1);
+    }
   }
 
 }

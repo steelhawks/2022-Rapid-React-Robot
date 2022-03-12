@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import java.io.Externalizable;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -15,6 +21,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
+import frc.robot.subsystems.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,8 +42,11 @@ public class Robot extends TimedRobot {
   public static final ButtonMap BUTTON_MAP = new ButtonMap(); 
   public static final Storage STORAGE = new Storage(); 
   public static final Climber CLIMBER = new Climber();
+  public static final Vision VISION = new Vision();
   public static final PowerDistribution PDP = new PowerDistribution();
-  private String m_autoSelected;
+  public static final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
+  public static final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
+  // private String m_autoSelected;
   
 
   /**
@@ -55,6 +65,8 @@ public class Robot extends TimedRobot {
 
     Shuffleboard.getTab("Subsystem");    
     PDP.clearStickyFaults();
+    COMPRESSOR_ONE.disable();
+    COMPRESSOR_TWO.disable();
   }
 
   /**
@@ -65,7 +77,10 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    DRIVETRAIN.shuffleBoard();
+    VISION.updateNetworkValues();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -79,32 +94,45 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    // m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // System.out.println("Auto selected: " + m_autoSelected);
+    CommandScheduler.getInstance().enable();   
+    VISION.switchToBallPipeline();
+    VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    CommandScheduler.getInstance().run();
+    // DRIVETRAIN.rotateToHub();
+
+    // if (DRIVETRAIN.goToBall()) {
+    //   if(DRIVETRAIN.rotateToHub()){
+    //     DRIVETRAIN.straightHub();
+    //   }
+    // }
+
+    // DRIVETRAIN.goToBall();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    CommandScheduler.getInstance().enable();
+    
+    
+    VISION.switchToBallPipeline();
+    VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
+  }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
+
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

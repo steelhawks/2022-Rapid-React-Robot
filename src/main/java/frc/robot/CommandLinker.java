@@ -28,6 +28,7 @@ public class CommandLinker
     CommandScheduler.getInstance().registerSubsystem(Robot.DRIVETRAIN);
     CommandScheduler.getInstance().registerSubsystem(Robot.STORAGE);
     CommandScheduler.getInstance().registerSubsystem(Robot.CLIMBER);
+    CommandScheduler.getInstance().registerSubsystem(Robot.VISION);
   }
 
   public void configurePeriodicBindings() {

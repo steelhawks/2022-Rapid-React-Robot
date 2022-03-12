@@ -3,7 +3,8 @@ package frc.robot.Controllers;
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.Robot;
-import frc.robot.commands.Drivetrain.ShiftGears;
+import frc.robot.commands.Drivetrain.*;
+import frc.robot.commands.Vision.*;
 
 
 //Not made yet
@@ -27,5 +28,18 @@ public class DriverJoystickController {
     this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton)
        .whenPressed(new ShiftGears());
 
+
+    // VISION
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
+        .whenPressed(new LimelightDown());
+        
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
+        .whenPressed(new LimelightUp());
+
+    this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
+        .whileHeld(new GoToBall());
+
+    this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
+        .whileHeld(new AlignToHub());
   }
 }

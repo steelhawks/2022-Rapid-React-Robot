@@ -19,16 +19,16 @@ public class XBoxController {
 
     // Storage 
     this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsUpButton)
-        .whenHeld(new StorageUp(Robot.STORAGE));
+        .whenHeld(new StorageUp());
 
     this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsReverseButton)
-        .whenHeld(new StorageDown(Robot.STORAGE));
+        .whenHeld(new StorageDown());
 
     //Intake to Storage
     this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
-        .whenHeld(new StorageIn(Robot.STORAGE));
+        .whenHeld(new StorageIn());
     this.controller.mapButton(Robot.BUTTON_MAP.storageOutButton)
-        .whenHeld(new StorageOut(Robot.STORAGE));
+        .whenHeld(new StorageOut());
 
     //Intake
     this.controller.mapButton(Robot.BUTTON_MAP.intakeSpinButton)

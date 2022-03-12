@@ -7,11 +7,8 @@ import frc.robot.Robot;
 
 public class StorageDown extends CommandBase {
 
-  private final Storage m_intakeTest;
-
-  public StorageDown(Storage subsystem) {
-    m_intakeTest = subsystem;
-    addRequirements(m_intakeTest);
+  public StorageDown() {
+    addRequirements(Robot.STORAGE);
   }
 
   @Override

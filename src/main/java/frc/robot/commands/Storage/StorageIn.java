@@ -6,12 +6,10 @@ import frc.robot.subsystems.Storage;
 
 public class StorageIn extends CommandBase {
 
-  private final Storage m_intakeTest;
-
-  public StorageIn(Storage subsystem) {
-    m_intakeTest = subsystem;
-    addRequirements(m_intakeTest);
+  public StorageIn() {
+    addRequirements(Robot.STORAGE);
   }
+
 
   @Override
   public void initialize() {

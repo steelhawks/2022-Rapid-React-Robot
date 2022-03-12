@@ -11,6 +11,8 @@ import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -103,6 +105,7 @@ public class Drivetrain extends MechanicalSubsystem{
       count++;
       Robot.RECORDER.recordJoystick(new JoystickRecorder(y, rotate, false, count));
     }
+
   }
 
   //SHIFTING METHOD
@@ -196,9 +199,16 @@ public class Drivetrain extends MechanicalSubsystem{
 
   /** Print info to shuffleboard */
   public void shuffleBoard(){
-    // SmartDashboard.putNumber("L1 velocity", this.LEFT_MOTOR_ONE.getSelectedSensorVelocity());
-    // SmartDashboard.putNumber("L3 velocity", this.LEFT_MOTOR_THREE.getSelectedSensorVelocity());
-    // SmartDashboard.putNumber("R1 velocity", this.RIGHT_MOTOR_ONE.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("L1 velocity", this.LEFT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
+    SmartDashboard.putNumber("L3 velocity", this.LEFT_MOTOR_THREE.getSensorCollection().getIntegratedSensorVelocity());
+    SmartDashboard.putNumber("R1 velocity", this.RIGHT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
+    SmartDashboard.putNumber("R2 velocity", this.RIGHT_MOTOR_TWO.getSensorCollection().getIntegratedSensorVelocity());
+
+    SmartDashboard.putNumber("TalonFXControlMode.Velocity", TalonFXControlMode.Velocity.value);
+    SmartDashboard.putNumber("TalonFXControlMode.PercentOutput", TalonFXControlMode.PercentOutput.value);
+    SmartDashboard.putNumber("TalonFXControlMode.Position", TalonFXControlMode.Position.value);
+
+
 
     SmartDashboard.putNumber("gyroangle", getGyroAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());

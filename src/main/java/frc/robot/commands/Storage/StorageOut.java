@@ -6,11 +6,8 @@ import frc.robot.subsystems.Storage;
 
 public class StorageOut extends CommandBase {
 
-  private final Storage m_intakeTest;
-
-  public StorageOut(Storage subsystem) {
-    m_intakeTest = subsystem;
-    addRequirements(m_intakeTest);
+  public StorageOut() {
+    addRequirements(Robot.STORAGE);
   }
 
   @Override

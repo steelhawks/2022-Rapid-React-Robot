@@ -6,6 +6,7 @@ import frc.robot.Robot;
 import frc.robot.commands.Drivetrain.ShiftGears;
 import frc.robot.commands.Pathcorder.EndRecording;
 import frc.robot.commands.Pathcorder.StartRecording;
+import frc.robot.commands.Vision.*;
 
 
 //Not made yet
@@ -35,5 +36,18 @@ public class DriverJoystickController {
     Button endRecording = this.controller.mapButton(Robot.BUTTON_MAP.endRecordingButton);
     endRecording.whenPressed(new EndRecording());
 
+
+    // VISION
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
+        .whenPressed(new LimelightDown());
+        
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
+        .whenPressed(new LimelightUp());
+
+    this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
+        .whileHeld(new GoToBall());
+
+    this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
+        .whileHeld(new AlignToHub());
   }
 }

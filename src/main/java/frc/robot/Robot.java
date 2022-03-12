@@ -29,6 +29,7 @@ import frc.util.pathcorder.pathselector.PathSelector;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -59,6 +60,8 @@ public class Robot extends TimedRobot {
   public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new SampleAutopath1());
 
   private final AnalogInput ultrasonic = new AnalogInput(0);
+
+  public static final Vision VISION = new Vision();
 
   boolean previous = true;
   DigitalInput beamI = new DigitalInput(1);
@@ -98,6 +101,9 @@ public class Robot extends TimedRobot {
     double voltage_scale_factor = 5/ RobotController.getVoltage5V();
     double currentDistanceCentimeters = rawValue * voltage_scale_factor * 0.125;
     double currentDistanceInches = rawValue * voltage_scale_factor * 0.0492;
+    
+    VISION.updateNetworkValues();
+  
 
     SmartDashboard.putNumber("dist cm", currentDistanceCentimeters);
     SmartDashboard.putNumber("dist in", currentDistanceInches);
@@ -145,12 +151,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    //m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    //System.out.println("Auto selected: " + m_autoSelected);
-    
     CommandScheduler.getInstance().schedule(aGroup);
     aGroup.execute();
+    
+    CommandScheduler.getInstance().enable();   
+    VISION.switchToBallPipeline();
+    VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
   }
   
   /** This function is called periodically during autonomous. */
@@ -158,22 +164,24 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
     
-    // switch (m_autoSelected) {
-    //   case kCustomAuto:
-    //   // Put custom auto code here
-    //   break;
-    //   case kDefaultAuto:
-    //   default:
-    //   // Put default auto code here
-    //   break;
+    // DRIVETRAIN.rotateToHub();
+
+    // if (DRIVETRAIN.goToBall()) {
+    //   if(DRIVETRAIN.rotateToHub()){
+    //     DRIVETRAIN.straightHub();
+    //   }
     // }
 
+    // DRIVETRAIN.goToBall();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
     CommandScheduler.getInstance().enable();
+    
+    VISION.switchToBallPipeline();
+    VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
   }
 
   /** This function is called periodically during operator control. */

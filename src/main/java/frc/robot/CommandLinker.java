@@ -2,12 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Controllers.DriverJoystickController;
 import frc.robot.Controllers.XBoxController;
 import frc.robot.commands.Drivetrain.DiffDrive;
-import frc.robot.commands.Drivetrain.ShiftGears;
 import frc.util.Gamepad;
 
 

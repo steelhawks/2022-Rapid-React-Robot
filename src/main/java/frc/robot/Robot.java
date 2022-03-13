@@ -10,13 +10,16 @@ package frc.robot;
 // import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Storage.*;
@@ -57,15 +60,21 @@ public class Robot extends TimedRobot {
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
-  public static final SequentialCommandGroup aGroup = new SequentialCommandGroup(new SampleAutopath0(), new SampleAutopath1());
+  public static final SequentialCommandGroup autopath = new SequentialCommandGroup(new ParallelRaceGroup(new AutoShoot(), new WaitCommand(2)), new SampleAutopath0());
 
-  private final AnalogInput ultrasonic = new AnalogInput(0);
+  public static int ballCount = 0;
+
+  // private final AnalogInput ultrasonic = new AnalogInput(0);
 
   public static final Vision VISION = new Vision();
 
-  boolean previous = true;
-  DigitalInput beamI = new DigitalInput(1);
-  int count1 = 0;
+  // boolean previous = true;
+  // DigitalInput beamI = new DigitalInput(1);
+  // int count1 = 0;
+
+  Ultrasonic ultrasonic = new Ultrasonic(2, 3); 
+ 
+  
 
 
   /**
@@ -78,8 +87,8 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configurePeriodicBindings();
     Robot.COMMAND_LINKER.configureCommands();
 
-    ROBOTMAP.paths.add("testpath.csv");
-    ROBOTMAP.paths.add("clockcircle.csv");
+    ROBOTMAP.paths.add("driveoutfromhub.csv");
+    ROBOTMAP.paths.add("ba.csv");
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -97,45 +106,50 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     DRIVETRAIN.shuffleBoard();
 
-    double rawValue = ultrasonic.getValue();
-    double voltage_scale_factor = 5/ RobotController.getVoltage5V();
-    double currentDistanceCentimeters = rawValue * voltage_scale_factor * 0.125;
-    double currentDistanceInches = rawValue * voltage_scale_factor * 0.0492;
+    // SmartDashboard.putBoolean("beam intact", beam.get());
+    SmartDashboard.putNumber("ultrainch", ultrasonic.getRangeInches()); 
+
+    // double rawValue = ultrasonic.getValue();
+    
+    // double voltage_scale_factor = 5/ RobotController.getVoltage5V();
+    // double currentDistanceCentimeters = rawValue * voltage_scale_factor * 0.125;
+    // double currentDistanceInches = rawValue * voltage_scale_factor * 0.0492;
     
     VISION.updateNetworkValues();
   
 
-    SmartDashboard.putNumber("dist cm", currentDistanceCentimeters);
-    SmartDashboard.putNumber("dist in", currentDistanceInches);
+    // SmartDashboard.putNumber("dist cm", currentDistanceCentimeters);
+    // SmartDashboard.putNumber("dist in", currentDistanceInches);
     
-    boolean light = beamI.get();
+    // boolean light = beamI.get();
     
-    if(light) {
-      previous = beamI.get(); 
-    } else {
-      if(!light == previous){
-        count1++; 
-        previous = beamI.get(); 
-      }
-    }
-    Shuffleboard.getTab("commands");
+    // if(light) {
+    //   previous = beamI.get(); 
+    // } else {
+    //   if(!light == previous){
+    //     count1++; 
+    //     previous = beamI.get(); 
+    //   }
+    // }
+    // Shuffleboard.getTab("commands");
     
-    SmartDashboard.putBoolean("beam", light); 
-    SmartDashboard.putNumber("beam Intake", count1);
+    // SmartDashboard.putBoolean("beam", light); 
+    // SmartDashboard.putNumber("beam Intake", count1);
     //intake 
-    SmartDashboard.putData("intakeretract", new IntakeRetract());
-    SmartDashboard.putData("intakeextend", new IntakeExtend());
-    SmartDashboard.putData("intakespin", new IntakeSpin());
-    SmartDashboard.putData("intakespinreverse", new IntakeSpinReverse());
-    //storage
-    SmartDashboard.putData("storageDown", new StorageDown());
-    SmartDashboard.putData("sushiIn", new StorageIn());
-    SmartDashboard.putData("sushiOut", new StorageOut());
-    SmartDashboard.putData("storageUp", new StorageUp());
-    //climber 
-    SmartDashboard.putData("climberrollwinch", new ClimberRollWinch());
-    SmartDashboard.putData("climberunrollwinch", new ClimberUnrollWinch());
-    SmartDashboard.putData("climbertoggle", new ClimberToggleSolenoid());
+    // // ShuffleboardTab
+    // SmartDashboard.putData("intakeretract", new IntakeRetract());
+    // SmartDashboard.putData("intakeextend", new IntakeExtend());
+    // SmartDashboard.putData("intakespin", new IntakeSpin());
+    // SmartDashboard.putData("intakespinreverse", new IntakeSpinReverse());
+    // //storage
+    // SmartDashboard.putData("storageDown", new StorageDown());
+    // SmartDashboard.putData("sushiIn", new StorageIn());
+    // SmartDashboard.putData("sushiOut", new StorageOut());
+    // SmartDashboard.putData("storageUp", new StorageUp());
+    // //climber 
+    // SmartDashboard.putData("climberrollwinch", new ClimberRollWinch());
+    // SmartDashboard.putData("climberunrollwinch", new ClimberUnrollWinch());
+    // SmartDashboard.putData("climbertoggle", new ClimberToggleSolenoid());
   
   }
   /**
@@ -151,18 +165,23 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    CommandScheduler.getInstance().schedule(aGroup);
-    aGroup.execute();
+    CommandScheduler.getInstance().schedule(autopath);
+    autopath.execute();
     
     CommandScheduler.getInstance().enable();   
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
+    STORAGE.storageMotorStop();
   }
   
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
+
+
+    //How to call autonPickUpBall()
+    //VISION.autonPickUpBall();
     
     // DRIVETRAIN.rotateToHub();
 
@@ -175,13 +194,18 @@ public class Robot extends TimedRobot {
     // DRIVETRAIN.goToBall();
   }
 
+  
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    autopath.cancel();
     CommandScheduler.getInstance().enable();
     
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
+    INTAKE.stopRoll();
+    STORAGE.storageMotorStop();
+    INTAKE.stopRoll();
   }
 
   /** This function is called periodically during operator control. */

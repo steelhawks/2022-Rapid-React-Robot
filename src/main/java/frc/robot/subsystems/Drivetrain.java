@@ -251,10 +251,10 @@ public class Drivetrain extends MechanicalSubsystem{
     
     if(Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline()){
       if(Limelight.getYOffset() > Y_LOWER_LIMIT){
-        gyroMoveStraight(0.8, 8 * Limelight.getXOffset());
+        gyroMoveStraight(0.8, 8 * -Limelight.getXOffset());
       }
       else if(Math.abs(Limelight.getXOffset()) > X_THRESHOLD){
-        gyroMoveStraight(0, 4 * Limelight.getXOffset());
+        gyroMoveStraight(0, 4 * -Limelight.getXOffset());
       }else{
         return true; // intake here
       }

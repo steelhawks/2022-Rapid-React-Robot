@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +29,13 @@ public class Vision extends SensorSubsystem {
     public boolean limelightUp = false;
 
     public final Servo LIMELIGHT_MOTOR;
+    
+    // public final DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
+    // public final DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort);
+    public int count = 0;
+    public boolean previousIntact = true;
+
+
 
     public Vision(){
         Limelight.init();
@@ -79,7 +87,7 @@ public class Vision extends SensorSubsystem {
         updateLineAngle();
         updateAllianceColor();
         setPipelineColor();
-
+        //SmartDashboard.putBoolean("intact", beamI.get());
         shuffleBoard();
     }
 
@@ -132,7 +140,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightDown(){
         if (limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(55);
+            LIMELIGHT_MOTOR.setAngle(15);
             limelightUp = false;
         }
         
@@ -215,5 +223,35 @@ public class Vision extends SensorSubsystem {
     }    
     public void toggleDetect(){
         detectMode = detectMode.equals("BALL") ? "HUB" : "BALL";
+    }
+
+
+
+
+    public void autonPickUpBall(){
+    //     
+    
+    //    if(beamI.get()){
+    //         Robot.INTAKE.spinRoller(false);; //runs intake at start of auton
+    //         Robot.STORAGE.storageIn(true); //runs sushi rollers at start of auton
+    //         if(!previousIntact){
+    //             Robot.INTAKE.stopRoll();
+    //             Robot.STORAGE.storageMotorStop();
+    //             // Robot.STORAGE.storageInStop();
+    //             // Robot.STORAGE.storageUpStop();
+    //             Robot.INTAKE.stopRoll();
+    //             count++;
+    //         }else{
+    //             previousIntact = true;
+    //         }
+    //     }
+    //     if(!beamI.get()){
+    //         Robot.INTAKE.stopRoll();
+    //         Robot.STORAGE.storageIn(true);
+    //         Robot.STORAGE.storageRun(false);
+        
+    //         previousIntact = false;
+      
+    //     }
     }
 }

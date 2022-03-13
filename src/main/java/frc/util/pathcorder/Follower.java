@@ -8,7 +8,7 @@
 package frc.util.pathcorder;
 
 import edu.wpi.first.wpilibj.Filesystem;
-import org.apache.commons.io.input.ReversedLinesFileReader;
+//import org.apache.commons.io.input.ReversedLinesFileReader;
 
 
 import java.io.BufferedReader;
@@ -40,7 +40,7 @@ public class Follower {
     // FOLLOW JOYSTICK RECORDING
     if (index < currentPath.joystickYValues.size()) {
       Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index),
-          currentPath.joystickRotationValues.get(index));
+          currentPath.joystickRotationValues.get(index),false);
 
           index++;
       // FOLLLOW BUTTON RECORDING

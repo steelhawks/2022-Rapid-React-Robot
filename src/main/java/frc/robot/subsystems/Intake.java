@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -25,6 +26,10 @@ public class Intake extends MechanicalSubsystem {
 
   //Solenoid Type
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
+
+  // BEAM BREAKER
+  public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort);
+  boolean previousIntake = true;
 
   // DRIVETRAIN CONSTRUCTOR
   public Intake() {
@@ -113,5 +118,12 @@ public class Intake extends MechanicalSubsystem {
 
   public void shuffleBoard() {
 	
+  }
+
+  public void countIntake(){
+    if(previousIntake != beamI.get() && beamI.get()){
+      Robot.ballCount++;
+    }
+    previousIntake = beamI.get();
   }
 }

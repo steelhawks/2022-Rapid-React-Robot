@@ -21,14 +21,14 @@ public class RobotMap
   public final int drivetrainRightMotorPortTwo = 5;
   public final int drivetrainRightMotorPortThree = 6;
 
-  public final int drivetrainSolenoidLeftPortOn = 0; //make sure it is right
-  public final int drivetrainSolenoidLeftPortOff = 1;
-  public final int drivetrainSolenoidRightPortOn = 2;
-  public final int drivetrainSolenoidRightPortOff = 3;
+  public final int drivetrainSolenoidPortOn = 0; //make sure it is right
+  public final int drivetrainSolenoidPortOff = 1;
+
 
 
   //Storage % Shooter Motor ID
-  public final int storageMotorPortUp = 7;
+  public final int storageMotorPortUpOne = 10;
+  public final int storageMotorPortUpTwo = 9;
   public final int storageMotorPortIn = 13;
   public final double storageSpeedUp = 0.75;
   public final double storageSpeedIn = 1;
@@ -38,10 +38,8 @@ public class RobotMap
 
   //Intake Motor & solenoids
   public final int intakeMotorOnePort = 11;
-  public final int intakeSoleLeftForward = 0;
-  public final int intakeSoleLeftReverse = 1;
-  public final int intakeSoleRightForward = 2;
-  public final int intakeSoleRightReverse = 3;
+  public final int intakeSoleForward = 2;
+  public final int intakeSoleReverse = 3;
   public final double intakeSpeed = 0.75;
 
   //Climber ??

@@ -37,7 +37,7 @@ public class Drivetrain extends MechanicalSubsystem{
 
   //DRIVETRAIN SHIFTGEAR SOLENOIDS
   public final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
-  public DoubleSolenoid DRIVE_SOLENOID_LEFT;
+  public DoubleSolenoid DRIVE_SOLENOID;
   public DoubleSolenoid DRIVE_SOLENOID_RIGHT;
 
   //VARIABLE RPM ELECTRO-SHIFT
@@ -81,8 +81,7 @@ public class Drivetrain extends MechanicalSubsystem{
     this.twistCoefficient = 1.1;
 
     //DRIVETRAIN SOLENOID
-    this.DRIVE_SOLENOID_LEFT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOn, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOff);
-    this.DRIVE_SOLENOID_RIGHT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidRightPortOn, Robot.ROBOTMAP.drivetrainSolenoidRightPortOff);
+    this.DRIVE_SOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.drivetrainSolenoidPortOn, Robot.ROBOTMAP.drivetrainSolenoidPortOff);
 
     this.LEFT_M_GROUP.setInverted(false);
     this.RIGHT_M_GROUP.setInverted(true);
@@ -99,7 +98,7 @@ public class Drivetrain extends MechanicalSubsystem{
   //SHIFTING METHOD
   public void shiftGear() 
   {
-    if (this.DRIVE_SOLENOID_LEFT.get() == DoubleSolenoid.Value.kForward) {
+    if (this.DRIVE_SOLENOID.get() == DoubleSolenoid.Value.kForward) {
       highGear();
     } else {
       lowGear();
@@ -108,13 +107,11 @@ public class Drivetrain extends MechanicalSubsystem{
   }
 
   public void lowGear() {
-    this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
-    this.DRIVE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kForward);
+    this.DRIVE_SOLENOID.set(DoubleSolenoid.Value.kForward);
   }
 
   public void highGear() {
-    this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
-    this.DRIVE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
+    this.DRIVE_SOLENOID.set(DoubleSolenoid.Value.kReverse);
   }
 
   //MOVING STRAIGHT USING THE GYRO METHOD

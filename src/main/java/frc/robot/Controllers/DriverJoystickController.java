@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
 import frc.robot.commands.Drivetrain.ShiftGears;
+import frc.robot.commands.Storage.StorageTest;
 
 
 //Not made yet
@@ -26,6 +27,12 @@ public class DriverJoystickController {
     // DRIVETRAIN
     Button shift = this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton);
     shift.whenPressed(new ShiftGears());
+
+    //TEST
+    Button top = this.controller.mapButton(11);
+    top.whileHeld(new StorageTest(Robot.STORAGE, 0));
+    Button bottom = this.controller.mapButton(12);
+    bottom.whileHeld(new StorageTest(Robot.STORAGE, 1));
 
   }
 }

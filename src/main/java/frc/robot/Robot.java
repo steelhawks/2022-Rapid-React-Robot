@@ -39,8 +39,7 @@ public class Robot extends TimedRobot {
   public static final Storage STORAGE = new Storage(); 
   public static final Climber CLIMBER = new Climber();
 
-  public final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  public final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
+  public final Compressor COMPRESSOR = new Compressor(0, PneumaticsModuleType.CTREPCM);
   
   public final PowerDistribution PDP = new PowerDistribution();
 
@@ -59,7 +58,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
   
     // COMPRESSOR.disable();
-    // COMPRESSOR1.disable();
     // PDP.clearStickyFaults();
 
     DRIVETRAIN.GYRO.calibrate();

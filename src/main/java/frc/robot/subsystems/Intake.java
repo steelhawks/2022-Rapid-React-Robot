@@ -21,14 +21,13 @@ public class Intake extends MechanicalSubsystem {
   public final MotorControllerGroup INTAKE_MOTOR_GROUP;
 
   // SOLENOID
-  public DoubleSolenoid INTAKE_SOLENOID_LEFT;
-  public DoubleSolenoid INTAKE_SOLENOID_RIGHT;
+  public DoubleSolenoid INTAKE_SOLENOID;
 
   //Solenoid Type
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
 
   // BEAM BREAKER
-  public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort);
+  public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortOne);
   boolean previousIntake = true;
 
   // DRIVETRAIN CONSTRUCTOR
@@ -40,8 +39,7 @@ public class Intake extends MechanicalSubsystem {
     this.INTAKE_MOTOR_GROUP = new MotorControllerGroup(this.INTAKE_MOTOR_ONE);
 
     // SOLENOID
-    this.INTAKE_SOLENOID_LEFT = new DoubleSolenoid(9, type, 0, 1);
-    this.INTAKE_SOLENOID_RIGHT = new DoubleSolenoid(8, type, 6, 7);
+    this.INTAKE_SOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.intakeSoleForward, Robot.ROBOTMAP.intakeSoleReverse);
     
     configureMotors();
   }
@@ -71,7 +69,7 @@ public class Intake extends MechanicalSubsystem {
   }
 
   public void intakeToggleSolenoid() {
-    if (this.INTAKE_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward)) {
+    if (this.INTAKE_SOLENOID.get().equals(DoubleSolenoid.Value.kForward)) {
       intakeRetractSolenoid();
       System.out.println("toggle: retract intake pistons");
     } else {
@@ -83,14 +81,12 @@ public class Intake extends MechanicalSubsystem {
 
   public void intakeExtendSolenoid() {
     System.out.println("extend intake");
-    this.INTAKE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
-    this.INTAKE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kForward);
+    this.INTAKE_SOLENOID.set(DoubleSolenoid.Value.kForward);
   }
 
   public void intakeRetractSolenoid() {
     System.out.println("retract");
-    this.INTAKE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
-    this.INTAKE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
+    this.INTAKE_SOLENOID.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void configureMotors() {

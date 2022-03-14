@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Storage.*;
+import frc.robot.commands.Vision.*;
 import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
 import frc.util.pathcorder.Follower;
@@ -50,6 +51,7 @@ public class Robot extends TimedRobot {
   public static final ButtonMap BUTTON_MAP = new ButtonMap(); 
   public static final Storage STORAGE = new Storage(); 
   public static final Climber CLIMBER = new Climber();
+  public static final Vision VISION = new Vision();
   
   public static final Recorder RECORDER = new Recorder();
   public static final Follower FOLLOWER = new Follower();
@@ -60,13 +62,29 @@ public class Robot extends TimedRobot {
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
-  public static final SequentialCommandGroup autopath = new SequentialCommandGroup(new ParallelRaceGroup(new AutoShoot(), new WaitCommand(2)), new SampleAutopath0());
-
+  public static final SequentialCommandGroup routine1 = 
+    new SequentialCommandGroup(
+        new ParallelRaceGroup(
+            new AutoShoot(), new WaitCommand(2)),
+        new SampleAutopath0());
+        
+  public static final SequentialCommandGroup routine2 = 
+    new SequentialCommandGroup(
+      new ParallelRaceGroup(
+          new AutoShoot(), new WaitCommand(2)),
+      new SampleAutopath0(), //same thing as (shoot) and (go towards general area of ball)
+      new ParallelRaceGroup(
+          new GoToBall(), new RunAllOfStorage(),new WaitCommand(1.5)), //then Go to ball for hopefully 2 seconds
+      new StopAllOfStorage(),
+      new SampleAutopath1(), // drive back,
+      new AlignToHub()
+    ); 
+          
   public static int ballCount = 0;
 
-  // private final AnalogInput ultrasonic = new AnalogInput(0);
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  Command m_autonomousCommand;
 
-  public static final Vision VISION = new Vision();
 
   // boolean previous = true;
   // DigitalInput beamI = new DigitalInput(1);
@@ -87,12 +105,19 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configurePeriodicBindings();
     Robot.COMMAND_LINKER.configureCommands();
 
-    ROBOTMAP.paths.add("driveoutfromhub.csv");
-    ROBOTMAP.paths.add("ba.csv");
+    ROBOTMAP.paths.add("driveoutfromhub.csv"); //0
+    ROBOTMAP.paths.add("ba.csv"); //1
+    
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
     PATH_SELECTOR.loadPresetPath();
+
+    m_chooser.setDefaultOption("Simple Auto", routine1);
+    m_chooser.addOption("Complex Auto", routine2);
+    SmartDashboard.putData("choose auto", m_chooser);
+
+    CommandScheduler.getInstance().enable();  
   }
   
   /**
@@ -104,23 +129,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
     DRIVETRAIN.shuffleBoard();
 
     // SmartDashboard.putBoolean("beam intact", beam.get());
     SmartDashboard.putNumber("ultrainch", ultrasonic.getRangeInches()); 
+        // SmartDashboard.putData("intakeextend", new IntakeExtend());
 
-    // double rawValue = ultrasonic.getValue();
-    
-    // double voltage_scale_factor = 5/ RobotController.getVoltage5V();
-    // double currentDistanceCentimeters = rawValue * voltage_scale_factor * 0.125;
-    // double currentDistanceInches = rawValue * voltage_scale_factor * 0.0492;
-    
+
     VISION.updateNetworkValues();
   
-
-    // SmartDashboard.putNumber("dist cm", currentDistanceCentimeters);
-    // SmartDashboard.putNumber("dist in", currentDistanceInches);
-    
     // boolean light = beamI.get();
     
     // if(light) {
@@ -131,27 +149,8 @@ public class Robot extends TimedRobot {
     //     previous = beamI.get(); 
     //   }
     // }
-    // Shuffleboard.getTab("commands");
-    
-    // SmartDashboard.putBoolean("beam", light); 
-    // SmartDashboard.putNumber("beam Intake", count1);
-    //intake 
-    // // ShuffleboardTab
-    // SmartDashboard.putData("intakeretract", new IntakeRetract());
-    // SmartDashboard.putData("intakeextend", new IntakeExtend());
-    // SmartDashboard.putData("intakespin", new IntakeSpin());
-    // SmartDashboard.putData("intakespinreverse", new IntakeSpinReverse());
-    // //storage
-    // SmartDashboard.putData("storageDown", new StorageDown());
-    // SmartDashboard.putData("sushiIn", new StorageIn());
-    // SmartDashboard.putData("sushiOut", new StorageOut());
-    // SmartDashboard.putData("storageUp", new StorageUp());
-    // //climber 
-    // SmartDashboard.putData("climberrollwinch", new ClimberRollWinch());
-    // SmartDashboard.putData("climberunrollwinch", new ClimberUnrollWinch());
-    // SmartDashboard.putData("climbertoggle", new ClimberToggleSolenoid());
-  
   }
+
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
    * autonomous modes using the dashboard. The sendable chooser code works with the Java
@@ -165,20 +164,22 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    CommandScheduler.getInstance().schedule(autopath);
-    autopath.execute();
-    
-    CommandScheduler.getInstance().enable();   
+    // CommandScheduler.getInstance().schedule(routine1);
+    // routine1.execute();
+     
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     STORAGE.storageMotorStop();
+
+    m_autonomousCommand = m_chooser.getSelected();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
   
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    CommandScheduler.getInstance().run();
-
 
     //How to call autonPickUpBall()
     //VISION.autonPickUpBall();
@@ -198,20 +199,29 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    autopath.cancel();
-    CommandScheduler.getInstance().enable();
+
+    //routine1.cancel();
+
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
     
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     INTAKE.stopRoll();
     STORAGE.storageMotorStop();
     INTAKE.stopRoll();
+
+    //TO TEST ALL OF STORAGE AND STOP
+    SmartDashboard.putData("All Of Storage", new RunAllOfStorage()); 
+    SmartDashboard.putData("Stop All Of Storage", new StopAllOfStorage());
+
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -229,4 +239,25 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+
+    // Shuffleboard.getTab("commands");
+    
+    // SmartDashboard.putBoolean("beam", light); 
+    // SmartDashboard.putNumber("beam Intake", count1);
+    //intake 
+    // // ShuffleboardTab
+    // SmartDashboard.putData("intakeretract", new IntakeRetract());
+    // SmartDashboard.putData("intakeextend", new IntakeExtend());
+    // SmartDashboard.putData("intakespin", new IntakeSpin());
+    // SmartDashboard.putData("intakespinreverse", new IntakeSpinReverse());
+    // //storage
+    // SmartDashboard.putData("storageDown", new StorageDown());
+    // SmartDashboard.putData("sushiIn", new StorageIn());
+    // SmartDashboard.putData("sushiOut", new StorageOut());
+    // SmartDashboard.putData("storageUp", new StorageUp());
+    // //climber 
+    // SmartDashboard.putData("climberrollwinch", new ClimberRollWinch());
+    // SmartDashboard.putData("climberunrollwinch", new ClimberUnrollWinch());
+    // SmartDashboard.putData("climbertoggle", new ClimberToggleSolenoid());
 }

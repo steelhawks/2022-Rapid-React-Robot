@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
-public class AlignToHub extends CommandBase {
-
-  public AlignToHub() {}
+public class RunAllOfStorage extends CommandBase {
+    
+  public RunAllOfStorage() {}
 
   @Override
   public Set<Subsystem> getRequirements() 
   {
     Set<Subsystem> list = new HashSet<Subsystem>();
-    list.add(Robot.DRIVETRAIN);
+    list.add(Robot.INTAKE);
+    list.add(Robot.STORAGE);
     return list;
   }
 
@@ -25,9 +26,11 @@ public class AlignToHub extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.VISION.switchToHubPipeline();
-    Robot.DRIVETRAIN.rotateToHub();
-    // Robot.DRIVETRAIN.straightHub(); //Danger
+    // run EVERYTHING for INTAKING THE BALL
+    Robot.INTAKE.spinRoller(false);
+    Robot.STORAGE.storageIn(false); //sushi IN
+    Robot.STORAGE.storageRun(true); //storage UP
+
   }
     
   @Override

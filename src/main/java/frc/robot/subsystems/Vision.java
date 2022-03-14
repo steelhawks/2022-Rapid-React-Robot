@@ -140,7 +140,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightDown(){
         if (limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(15);
+            LIMELIGHT_MOTOR.setAngle(35);
             limelightUp = false;
         }
         
@@ -151,7 +151,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightUp(){
         if (!limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(165);
+            LIMELIGHT_MOTOR.setAngle(175);
             limelightUp = true;
         }
         

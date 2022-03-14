@@ -6,6 +6,7 @@ import frc.robot.Robot;
 import frc.robot.commands.Drivetrain.ShiftGears;
 import frc.robot.commands.Pathcorder.EndRecording;
 import frc.robot.commands.Pathcorder.StartRecording;
+import frc.robot.commands.Storage.StorageTest;
 import frc.robot.commands.Vision.*;
 
 
@@ -24,8 +25,6 @@ public class DriverJoystickController {
 
   public void mapButtons() {
 
-    //TODO: add all buttons on the joystick
-
     // DRIVETRAIN
     Button shift = this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton);
     shift.whenPressed(new ShiftGears());
@@ -36,18 +35,26 @@ public class DriverJoystickController {
     Button endRecording = this.controller.mapButton(Robot.BUTTON_MAP.endRecordingButton);
     endRecording.whenPressed(new EndRecording());
 
+    //TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGG
+    Button top = this.controller.mapButton(11);
+    top.whileHeld(new StorageTest(0));
+    Button bottom = this.controller.mapButton(12);
+    bottom.whileHeld(new StorageTest(1));
 
-    // VISION
-    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
-        .whenPressed(new LimelightDown());
+
+
+    // // VISION
+    // this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
+    //     .whenPressed(new LimelightDown());
         
-    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
-        .whenPressed(new LimelightUp());
+    // this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
+    //     .whenPressed(new LimelightUp());
 
-    this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
-        .whileHeld(new GoToBall());
+    // this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
+    //     .whileHeld(new GoToBall());
 
-    this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
-        .whileHeld(new AlignToHub());
+    // this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
+    //     .whileHeld(new AlignToHub());
+    
   }
 }

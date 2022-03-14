@@ -40,8 +40,7 @@ public class Drivetrain extends MechanicalSubsystem{
 
   //DRIVETRAIN SHIFTGEAR SOLENOIDS
   public final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
-  public DoubleSolenoid DRIVE_SOLENOID_LEFT;
-  public DoubleSolenoid DRIVE_SOLENOID_RIGHT;
+  public DoubleSolenoid DRIVE_SOLENOID;
 
   //VARIABLE RPM ELECTRO-SHIFT
   public int shiftStatus;
@@ -89,14 +88,13 @@ public class Drivetrain extends MechanicalSubsystem{
     this.KP_GYRO = Robot.ROBOTMAP.KP_GYRO;
 
     //VARIABLE RPM ELECTRO-SHIFT
-    this.rPMCoefficient = 1.25;//original 1.75
+    this.rPMCoefficient = 1;//original 1.75
 
     //TWIST COEFFICIENT
     this.twistCoefficient = 1.25;
 
     //DRIVETRAIN SOLENOID
-    this.DRIVE_SOLENOID_LEFT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOn, Robot.ROBOTMAP.drivetrainSolenoidLeftPortOff);
-    this.DRIVE_SOLENOID_RIGHT = new DoubleSolenoid(8, type, Robot.ROBOTMAP.drivetrainSolenoidRightPortOn, Robot.ROBOTMAP.drivetrainSolenoidRightPortOff);
+    this.DRIVE_SOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.drivetrainSolenoidPortOn, Robot.ROBOTMAP.drivetrainSolenoidPortOff);
 
     this.LEFT_M_GROUP.setInverted(false);
     this.RIGHT_M_GROUP.setInverted(true);
@@ -120,7 +118,7 @@ public class Drivetrain extends MechanicalSubsystem{
   //SHIFTING METHOD
   public void shiftGear() 
   {
-    if (this.DRIVE_SOLENOID_LEFT.get() == DoubleSolenoid.Value.kForward) {
+    if (this.DRIVE_SOLENOID.get() == DoubleSolenoid.Value.kForward) {
       highGear();
     } else {
       lowGear();
@@ -129,13 +127,11 @@ public class Drivetrain extends MechanicalSubsystem{
   }
 
   public void lowGear() {
-    this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kForward);
-    this.DRIVE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kForward);
+    this.DRIVE_SOLENOID.set(DoubleSolenoid.Value.kForward);
   }
 
   public void highGear() {
-    this.DRIVE_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
-    this.DRIVE_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
+    this.DRIVE_SOLENOID.set(DoubleSolenoid.Value.kReverse);
   }
 
   //MOVING STRAIGHT USING THE GYRO METHOD
@@ -164,12 +160,12 @@ public class Drivetrain extends MechanicalSubsystem{
     this.RIGHT_MOTOR_ONE.configFactoryDefault();
     this.RIGHT_MOTOR_TWO.configFactoryDefault();
     this.RIGHT_MOTOR_THREE.configFactoryDefault();
-    this.LEFT_MOTOR_ONE.setNeutralMode(NeutralMode.Coast);
-    this.LEFT_MOTOR_TWO.setNeutralMode(NeutralMode.Coast);
-    this.LEFT_MOTOR_THREE.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_ONE.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_TWO.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_THREE.setNeutralMode(NeutralMode.Coast);
+    this.LEFT_MOTOR_ONE.setNeutralMode(NeutralMode.Brake);
+    this.LEFT_MOTOR_TWO.setNeutralMode(NeutralMode.Brake);
+    this.LEFT_MOTOR_THREE.setNeutralMode(NeutralMode.Brake);
+    this.RIGHT_MOTOR_ONE.setNeutralMode(NeutralMode.Brake);
+    this.RIGHT_MOTOR_TWO.setNeutralMode(NeutralMode.Brake);
+    this.RIGHT_MOTOR_THREE.setNeutralMode(NeutralMode.Brake);
   }
 
   public AHRS getGyro()
@@ -301,6 +297,12 @@ public class Drivetrain extends MechanicalSubsystem{
       this.RIGHT_M_GROUP.set(0.2 / hubArea);
 
       hubArea = Limelight.getArea();
+      
+      if(Limelight.getYOffset() > 15) {
+        this.LEFT_M_GROUP.set(0);
+        this.RIGHT_M_GROUP.set(0);
+
+      }
       
     } 
 

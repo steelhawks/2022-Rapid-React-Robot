@@ -16,7 +16,7 @@ public class Vision extends SensorSubsystem {
     private double dist; // ball distance from camera to front of ball
     private double hubDist; // HUB distance from camera to the 
     private double lineAngle; //angle of the line
-
+ 
     private final int RED_CARGO_PIPELINE = 0;
     private final int BLUE_CARGO_PIPELINE = 1;
     private final int TAPE_PIPELINE = 2;

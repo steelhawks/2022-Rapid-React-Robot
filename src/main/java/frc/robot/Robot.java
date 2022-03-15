@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     DRIVETRAIN.shuffleBoard();
+    CLIMBER.shuffleBoard();
 
     // SmartDashboard.putBoolean("beam intact", beam.get());
     SmartDashboard.putNumber("ultrainch", ultrasonic.getRangeInches()); 
@@ -216,6 +217,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
+
     CommandScheduler.getInstance().run();
 
   }

@@ -11,7 +11,7 @@ public class Controller {
     this.joystick = joystick;
   }
 
-  public JoystickButton mapButton(int buttonNumber){
+  public JoystickButton mapButton(int buttonNumber) {
     return new JoystickButton(this.joystick, buttonNumber);
   }
 

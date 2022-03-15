@@ -50,8 +50,8 @@ public class DriverJoystickController {
     this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
         .whenPressed(new LimelightUp()); //11 ??
 
-    // this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
-        // .whileHeld(new GoToBall()); // 7 for funsies
+    this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
+        .whileHeld(new GoToBall()); // 7 for funsies
 
     this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
         .whenPressed(new AlignToHub());

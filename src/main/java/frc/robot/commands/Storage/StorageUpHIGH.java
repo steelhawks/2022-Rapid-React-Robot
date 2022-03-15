@@ -1,12 +1,11 @@
-package frc.robot.commands.Storage; 
+package frc.robot.commands.Storage;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
+public class StorageUpHIGH extends CommandBase {
 
-public class StorageDown extends CommandBase {
-
-  public StorageDown() {
+  public StorageUpHIGH() {
     addRequirements(Robot.STORAGE);
   }
 
@@ -16,7 +15,7 @@ public class StorageDown extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.STORAGE.storageRunSlow(false);
+    Robot.STORAGE.storageRunFast(false);
   }
 
   @Override
@@ -28,8 +27,7 @@ public class StorageDown extends CommandBase {
   public void end(boolean interrupted) {
     if (interrupted) {
       Robot.STORAGE.storageMotorStop();
-      System.out.println("motor stopped");
-
+      System.out.println("motor stopping");
     }
   }
 }

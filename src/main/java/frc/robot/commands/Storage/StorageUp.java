@@ -15,7 +15,7 @@ public class StorageUp extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.STORAGE.storageRun(true);
+    Robot.STORAGE.storageRunSlow(true);
   }
 
   @Override
@@ -27,6 +27,7 @@ public class StorageUp extends CommandBase {
   public void end(boolean interrupted) {
     if (interrupted) {
       Robot.STORAGE.storageMotorStop();
+      System.out.println("motor stopping");
     }
   }
 }

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.Robot;
@@ -18,6 +19,9 @@ public class Climber extends MechanicalSubsystem {
 
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
 
+  public final DigitalInput leftLimit;
+  public final DigitalInput rightLimit;
+
   public Climber() {
     this.CLIMBER_MOTOR_LEFT = new WPI_TalonSRX(Robot.ROBOTMAP.climberLeftPort);
     this.CLIMBER_MOTOR_RIGHT = new WPI_TalonSRX(Robot.ROBOTMAP.climberRightPort);
@@ -25,18 +29,38 @@ public class Climber extends MechanicalSubsystem {
     this.CLIMBER_SOLENOID_LEFT = new DoubleSolenoid(type, 4, 5);
     this.CLIMBER_SOLENOID_RIGHT = new DoubleSolenoid(type, 6, 7);
 
+    this.CLIMBER_MOTOR_LEFT.setInverted(true);
+
+    leftLimit = new DigitalInput(Robot.ROBOTMAP.leftLimit);
+    rightLimit = new DigitalInput(Robot.ROBOTMAP.rightLimit);
+
     configureMotors();
   }
 
-  public void climberRoll(boolean isForward) {
+  public void climberRoll(boolean isDown) {
     System.out.println("climber");
-    if (isForward) {
-      this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
-      this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
-    } else {
+
+    if (isDown) {
+
+      if (leftLimit.get()){
+        this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
+      } else {
+          stop();
+      }
+
+      if (rightLimit.get()){
+        this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
+      } else {
+          stop();
+      }
+      
+    } 
+    
+    else {
       this.CLIMBER_MOTOR_LEFT.set(-Robot.ROBOTMAP.climberSpeed);
       this.CLIMBER_MOTOR_RIGHT.set(-Robot.ROBOTMAP.climberSpeed);
     }
+
   }
 
   // public void climberRollWinch() {
@@ -52,10 +76,10 @@ public class Climber extends MechanicalSubsystem {
   public void climberToggleSolenoid() {
     if(this.CLIMBER_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward)) {
       climberRetractSolenoid();
-      System.out.println("Climber Retract");
+      System.out.println("Climber Retract: point diagonal back");
     } else {
       climberExtendSolenoid();
-      System.out.println("Climber Extend");
+      System.out.println("Climber extend: Pointed Straight UP");
     }
   }
 
@@ -65,6 +89,7 @@ public class Climber extends MechanicalSubsystem {
   }
 
   public void climberRetractSolenoid() {
+    
     this.CLIMBER_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
     this.CLIMBER_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
   }

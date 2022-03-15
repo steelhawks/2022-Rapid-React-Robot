@@ -27,6 +27,8 @@ public class StorageOut extends CommandBase {
   public void end(boolean interrupted) {
     if (interrupted) {
       Robot.STORAGE.storageMotorStop();
+      System.out.println("motor stopped");
+
     }
   }
 }

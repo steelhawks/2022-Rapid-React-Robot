@@ -35,26 +35,26 @@ public class DriverJoystickController {
     Button endRecording = this.controller.mapButton(Robot.BUTTON_MAP.endRecordingButton);
     endRecording.whenPressed(new EndRecording());
 
-    //TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGG
-    Button top = this.controller.mapButton(11);
-    top.whileHeld(new StorageTest(0));
-    Button bottom = this.controller.mapButton(12);
-    bottom.whileHeld(new StorageTest(1));
+    // //TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGG
+    // Button top = this.controller.mapButton(11);
+    // top.whileHeld(new StorageTest(0));
+    // Button bottom = this.controller.mapButton(12);
+    // bottom.whileHeld(new StorageTest(1));
 
 
 
     // // VISION
-    // this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
-    //     .whenPressed(new LimelightDown());
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
+        .whenPressed(new LimelightDown());  //12 i think
         
-    // this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
-    //     .whenPressed(new LimelightUp());
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
+        .whenPressed(new LimelightUp()); //11 ??
 
     // this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
-    //     .whileHeld(new GoToBall());
+        // .whileHeld(new GoToBall()); // 7 for funsies
 
-    // this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
-    //     .whileHeld(new AlignToHub());
+    this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
+        .whenPressed(new AlignToHub());
     
   }
 }

@@ -34,10 +34,11 @@ public class RobotMap
   public final int drivetrainSolenoidPortOff = 1;
  
   //Storage % Shooter Motor ID
-  public final int storageMotorPortOneUp = 10; //shooter
-  public final int storageMotorPortTwoUp = 12; //shooter
+  public final int storageMotorPortTop = 21; //shooter
+  public final int storageMotorPortBot = 12; //shooter
   public final int storageMotorPortIn = 11; //sushi rollers
-  public final double storageSpeedUp = 0.75; //shooting speed
+  public final double storageSpeedUpSlow = 0.5; //shooting speed
+  public final double storageSpeedUpFast = 1;
   public final double storageSpeedIn = 1; //sushi roller speed
 
   //Gyro
@@ -47,20 +48,23 @@ public class RobotMap
   public final int intakeMotorOnePort = 7;
   public final int intakeSoleForward = 2;
   public final int intakeSoleReverse = 3;
-  public final double intakeSpeed = 0.75;
+  public final double intakeSpeed = 0.65;
 
   //Climber ??
-    public final int climberLeftPort = 12;
-    public final int climberRightPort = 14;
+    public final int climberLeftPort = 25;
+    public final int climberRightPort = 10;
     public final int climberSoleLeftForward = 4;
     public final int climberSoleLeftReverse = 5;
     public final int climberSoleRightForward = 6;
     public final int climberSoleRightReverse = 7;
-    public final double climberSpeed = 0.5;
+    public final double climberSpeed = 0.85;
 
     public final int LimelightMotorPort = 7;
     public final int beamBreakerPortOne = 1;
     public final int beamBreakerPortTwo = 4; 
+
+    public final int leftLimit = 7 ;
+    public final int rightLimit = 8;
     
 
   /*****

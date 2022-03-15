@@ -1,5 +1,6 @@
 package frc.robot.commands.Vision;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,12 +28,12 @@ public class AlignToHub extends CommandBase {
   public void execute() {
     Robot.VISION.switchToHubPipeline();
     Robot.DRIVETRAIN.rotateToHub();
-    // Robot.DRIVETRAIN.straightHub(); //Danger
+    // Robot.DRIVETRAIN.straightHubTest(); //Danger
   }
     
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.DRIVETRAIN.angleInRange;
   }
 
   @Override

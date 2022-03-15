@@ -4,10 +4,10 @@
 
 package frc.robot;
 
-// import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Compressor;
 // import edu.wpi.first.wpilibj.PneumaticsBase;
 // import edu.wpi.first.wpilibj.PneumaticsControlModule;
-// import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -61,6 +61,8 @@ public class Robot extends TimedRobot {
   public static final Command follow = new Follow();
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
+  
+  Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
   public static final SequentialCommandGroup routine1 = 
     new SequentialCommandGroup(
@@ -72,9 +74,10 @@ public class Robot extends TimedRobot {
     new SequentialCommandGroup(
       new ParallelRaceGroup(
           new AutoShoot(), new WaitCommand(2)),
+      new IntakeToggleSolenoid(),
       new SampleAutopath0(), //same thing as (shoot) and (go towards general area of ball)
       new ParallelRaceGroup(
-          new GoToBall(), new RunAllOfStorage(),new WaitCommand(1.5)), //then Go to ball for hopefully 2 seconds
+          new GoToBall(), new RunAllOfStorage(),new WaitCommand(2)), //then Go to ball for hopefully 2 seconds
       new StopAllOfStorage(),
       new SampleAutopath1(), // drive back,
       new AlignToHub()
@@ -85,15 +88,8 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   Command m_autonomousCommand;
 
-
-  // boolean previous = true;
-  // DigitalInput beamI = new DigitalInput(1);
-  // int count1 = 0;
-
   Ultrasonic ultrasonic = new Ultrasonic(2, 3); 
  
-  
-
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -118,6 +114,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("choose auto", m_chooser);
 
     CommandScheduler.getInstance().enable();  
+
+   // compressor.disable(); 
   }
   
   /**
@@ -129,7 +127,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
     DRIVETRAIN.shuffleBoard();
 
     // SmartDashboard.putBoolean("beam intact", beam.get());
@@ -138,17 +135,6 @@ public class Robot extends TimedRobot {
 
 
     VISION.updateNetworkValues();
-  
-    // boolean light = beamI.get();
-    
-    // if(light) {
-    //   previous = beamI.get(); 
-    // } else {
-    //   if(!light == previous){
-    //     count1++; 
-    //     previous = beamI.get(); 
-    //   }
-    // }
   }
 
   /**
@@ -171,6 +157,8 @@ public class Robot extends TimedRobot {
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     STORAGE.storageMotorStop();
 
+    DRIVETRAIN.lowGear(); // the solenoids are inversed so low is techinally "high"
+
     m_autonomousCommand = m_chooser.getSelected();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -180,6 +168,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    CommandScheduler.getInstance().run();
+
 
     //How to call autonPickUpBall()
     //VISION.autonPickUpBall();
@@ -200,17 +190,21 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
 
+    DRIVETRAIN.lowGear();
+    
+
     //routine1.cancel();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+    // VISION.faceLimelightUp();
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     INTAKE.stopRoll();
     STORAGE.storageMotorStop();
     INTAKE.stopRoll();
+
 
     //TO TEST ALL OF STORAGE AND STOP
     SmartDashboard.putData("All Of Storage", new RunAllOfStorage()); 
@@ -222,6 +216,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
+
   }
 
   /** This function is called once when the robot is disabled. */
@@ -238,7 +234,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    CommandScheduler.getInstance().run();
+
+  }
 
 
     // Shuffleboard.getTab("commands");

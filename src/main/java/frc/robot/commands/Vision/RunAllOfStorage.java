@@ -29,7 +29,7 @@ public class RunAllOfStorage extends CommandBase {
     // run EVERYTHING for INTAKING THE BALL
     Robot.INTAKE.spinRoller(false);
     Robot.STORAGE.storageIn(false); //sushi IN
-    Robot.STORAGE.storageRun(true); //storage UP
+    Robot.STORAGE.storageRunSlow(true); //storage UP
 
   }
     

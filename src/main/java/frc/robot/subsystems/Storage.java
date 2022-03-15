@@ -18,7 +18,6 @@ public class Storage extends MechanicalSubsystem {
   public final WPI_TalonSRX STORAGE_MOTOR_IN;
 
   // SPEED CONTROLLER GROUP
-  public final MotorControllerGroup STORAGE_MOTOR_GROUP_UP;
   public final MotorControllerGroup STORAGE_MOTOR_GROUP_IN;
 
   StopWatch stopWatch = new StopWatch();
@@ -29,15 +28,17 @@ public class Storage extends MechanicalSubsystem {
 
   public Storage() {
     // TALON SRX MOTOR CONTROLLERS
-    STORAGE_MOTOR_UP_ONE = new WPI_TalonFX(Robot.ROBOTMAP.storageMotorPortOneUp);
-    STORAGE_MOTOR_UP_TWO = new WPI_TalonFX(Robot.ROBOTMAP.storageMotorPortTwoUp);
+    STORAGE_MOTOR_UP_ONE = new WPI_TalonFX(Robot.ROBOTMAP.storageMotorPortTop);
+    STORAGE_MOTOR_UP_TWO = new WPI_TalonFX(Robot.ROBOTMAP.storageMotorPortBot);
     STORAGE_MOTOR_IN = new WPI_TalonSRX(Robot.ROBOTMAP.storageMotorPortIn);
 
     // SPEED CONTROLLER GROUPS
-    this.STORAGE_MOTOR_GROUP_UP = new MotorControllerGroup(this.STORAGE_MOTOR_UP_ONE, this.STORAGE_MOTOR_UP_TWO);
+    // this.STORAGE_MOTOR_GROUP_UP = new MotorControllerGroup(this.STORAGE_MOTOR_UP_ONE);
+    
     this.STORAGE_MOTOR_GROUP_IN = new MotorControllerGroup(this.STORAGE_MOTOR_IN);
 
-    this.STORAGE_MOTOR_UP_TWO.setInverted(true);
+    // this.STORAGE_MOTOR_UP_TWO.setInverted(false);
+    // this.STORAGE_MOTOR_UP_ONE.setInverted(false); //don't invert apparently.
 
     configureMotors();
   }
@@ -46,32 +47,55 @@ public class Storage extends MechanicalSubsystem {
     STORAGE_MOTOR_UP_ONE.configFactoryDefault();
     STORAGE_MOTOR_UP_TWO.configFactoryDefault();
     STORAGE_MOTOR_IN.configFactoryDefault();
-
+    
     STORAGE_MOTOR_UP_ONE.setNeutralMode(NeutralMode.Coast);
     STORAGE_MOTOR_UP_TWO.setNeutralMode(NeutralMode.Coast);
     STORAGE_MOTOR_IN.setNeutralMode(NeutralMode.Coast);
   }
-
-     
-  public void storageRun(boolean isForward){
-    System.out.println("rooooolling motors");
+    
+  public void storageRunSlow(boolean isForward){
     if (isForward) {
-        this.STORAGE_MOTOR_GROUP_UP.set(-Robot.ROBOTMAP.storageSpeedUp);
+      this.STORAGE_MOTOR_UP_ONE.set(Robot.ROBOTMAP.storageSpeedUpSlow);
+      this.STORAGE_MOTOR_UP_TWO.set(-Robot.ROBOTMAP.storageSpeedUpSlow);
     } else {
-        this.STORAGE_MOTOR_GROUP_UP.set(Robot.ROBOTMAP.storageSpeedUp);
+      this.STORAGE_MOTOR_UP_ONE.set(-Robot.ROBOTMAP.storageSpeedUpSlow);
+      this.STORAGE_MOTOR_UP_TWO.set(Robot.ROBOTMAP.storageSpeedUpSlow);
     }
   }
+
+  public void storageRunFast(boolean isForward){
+    if (isForward) {
+      this.STORAGE_MOTOR_UP_ONE.set(Robot.ROBOTMAP.storageSpeedUpFast);
+      this.STORAGE_MOTOR_UP_TWO.set(-Robot.ROBOTMAP.storageSpeedUpFast);
+    } else {
+      this.STORAGE_MOTOR_UP_ONE.set(-Robot.ROBOTMAP.storageSpeedUpFast);
+      this.STORAGE_MOTOR_UP_TWO.set(Robot.ROBOTMAP.storageSpeedUpFast);
+    }
+  }
+  
+  //TESTINGGGG
+  public void storageTest(int motor) {
+    if(motor == 0) {
+      this.STORAGE_MOTOR_UP_ONE.set(-Robot.ROBOTMAP.storageSpeedUpSlow);
+      this.STORAGE_MOTOR_UP_TWO.set(-Robot.ROBOTMAP.storageSpeedUpSlow);
+    } else {
+      this.STORAGE_MOTOR_UP_ONE.set(Robot.ROBOTMAP.storageSpeedUpSlow);
+      this.STORAGE_MOTOR_UP_TWO.set(Robot.ROBOTMAP.storageSpeedUpSlow);
+    }
+  }
+  
   //for auto
   public void storageRun(int seconds){
     System.out.println("rooooolling motors");
-
+    
     stopWatch.start();
-
+    
     while (stopWatch.getTime() < seconds*10){
-        this.STORAGE_MOTOR_GROUP_UP.set(Robot.ROBOTMAP.storageSpeedUp);
+      this.STORAGE_MOTOR_UP_ONE.set(Robot.ROBOTMAP.storageSpeedUpSlow);
+      this.STORAGE_MOTOR_UP_TWO.set(Robot.ROBOTMAP.storageSpeedUpSlow);
     }
   }
-
+  
   public void storageIn(boolean isForward) {
     System.out.println("balls moving");
     if (isForward) {
@@ -81,18 +105,10 @@ public class Storage extends MechanicalSubsystem {
     }
   }
 
-  //TESTINGGGGGGGGGGGGGGGGGGGGGGGGG
-  public void storageTest(int motor) {
-    if(motor == 0) {
-      this.STORAGE_MOTOR_UP_ONE.set(Robot.ROBOTMAP.storageSpeedUp);
-    } else {
-      this.STORAGE_MOTOR_UP_TWO.set(-Robot.ROBOTMAP.storageSpeedUp);
-    }
-  }
-
 
   public boolean storageMotorStop() {
-    this.STORAGE_MOTOR_GROUP_UP.stopMotor();
+    this.STORAGE_MOTOR_UP_ONE.stopMotor();
+    this.STORAGE_MOTOR_UP_TWO.stopMotor();
     this.STORAGE_MOTOR_GROUP_IN.stopMotor();
     return true;
   }
@@ -109,7 +125,8 @@ public class Storage extends MechanicalSubsystem {
   }
 
   public boolean stop() {
-    this.STORAGE_MOTOR_GROUP_UP.stopMotor();
+    this.STORAGE_MOTOR_UP_ONE.stopMotor();
+    this.STORAGE_MOTOR_UP_TWO.stopMotor();
     this.STORAGE_MOTOR_GROUP_IN.stopMotor();
     return true;
   }

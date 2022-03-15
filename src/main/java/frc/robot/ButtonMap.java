@@ -8,11 +8,11 @@ public class ButtonMap {
 
   public final int drivetrainShiftButton = 1; //joystick
 
-  public final int climberWinchForwardButton = Gamepad.kGamepadButtonStart;
-  public final int climberWinchReverseButton = Gamepad.kGamepadButtonBack; 
+  public final int climberWinchDownButton = Gamepad.kGamepadButtonStart;
+  public final int climberWinchUpButton = Gamepad.kGamepadButtonBack; 
   public final int climberToggleSolenoidButton = Gamepad.kGamepadButtonX;
   // public final int climberPivotButton = Gamepad.kGamepadRightStick;
-  // public final int climberPivotReverseButton = Gamepad.kGamepadLeftStick; 
+  public final int storageShootHigh = Gamepad.kGamepadLeftStick; 
 
   public final int intakeSpinButton = Gamepad.kGamepadButtonB;
   public final int intakeReverseSpinButton = Gamepad.kGamepadButtonA; 

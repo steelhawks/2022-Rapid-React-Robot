@@ -59,10 +59,12 @@ public class Drivetrain extends MechanicalSubsystem{
   //Vision
   private final int ANGLE_LENIENCY = 5;
   private final double Y_LOWER_LIMIT = 2;
+  private final double Y_MAX_LIMIT_HUB = 17;
   private final double X_THRESHOLD = 8;
   
   private final int LEAVE_HUB_TIME = 2;
   private final int ENTER_HUB_TIME = 2;
+  public boolean angleInRange = false;
 
   public Drivetrain() 
   {
@@ -98,6 +100,8 @@ public class Drivetrain extends MechanicalSubsystem{
 
     this.LEFT_M_GROUP.setInverted(false);
     this.RIGHT_M_GROUP.setInverted(true);
+
+
 
     configureMotors();
   }
@@ -204,14 +208,14 @@ public class Drivetrain extends MechanicalSubsystem{
 
   /** Print info to shuffleboard */
   public void shuffleBoard(){
-    SmartDashboard.putNumber("L1 velocity", this.LEFT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
-    SmartDashboard.putNumber("L3 velocity", this.LEFT_MOTOR_THREE.getSensorCollection().getIntegratedSensorVelocity());
-    SmartDashboard.putNumber("R1 velocity", this.RIGHT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
-    SmartDashboard.putNumber("R2 velocity", this.RIGHT_MOTOR_TWO.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("L1 velocity", this.LEFT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("L3 velocity", this.LEFT_MOTOR_THREE.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("R1 velocity", this.RIGHT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("R2 velocity", this.RIGHT_MOTOR_TWO.getSensorCollection().getIntegratedSensorVelocity());
 
-    SmartDashboard.putNumber("TalonFXControlMode.Velocity", TalonFXControlMode.Velocity.value);
-    SmartDashboard.putNumber("TalonFXControlMode.PercentOutput", TalonFXControlMode.PercentOutput.value);
-    SmartDashboard.putNumber("TalonFXControlMode.Position", TalonFXControlMode.Position.value);
+    // SmartDashboard.putNumber("TalonFXControlMode.Velocity", TalonFXControlMode.Velocity.value);
+    // SmartDashboard.putNumber("TalonFXControlMode.PercentOutput", TalonFXControlMode.PercentOutput.value);
+    // SmartDashboard.putNumber("TalonFXControlMode.Position", TalonFXControlMode.Position.value);
 
 
     SmartDashboard.putNumber("gyroangle", getGyroAngle());
@@ -274,7 +278,7 @@ public class Drivetrain extends MechanicalSubsystem{
     } 
 
     double hubAngle = -Limelight.getXOffset();
-    boolean angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;;
+    angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;;
 
     if (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline() && !angleInRange){
       this.LEFT_M_GROUP.set(hubAngle / 60);
@@ -286,6 +290,26 @@ public class Drivetrain extends MechanicalSubsystem{
     } 
 
     return angleInRange;
+  }
+
+
+  public void straightHubTest() {
+    boolean hubNotReached = true;
+
+    while(hubNotReached) {
+
+      if(Limelight.hasValidTarget() && Robot.VISION.isHubPipeline()) {
+        if(Limelight.getYOffset() < Y_MAX_LIMIT_HUB) {
+          gyroMoveStraight(-0.8);
+        }
+        else if(Limelight.getYOffset() >= Y_MAX_LIMIT_HUB) {
+          stop();
+          hubNotReached = false;
+        }
+      }
+
+
+    } // end of while
   }
 
   public void straightHub() {

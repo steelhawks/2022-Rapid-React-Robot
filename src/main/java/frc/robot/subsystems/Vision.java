@@ -140,7 +140,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightDown(){
         if (limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(35);
+            LIMELIGHT_MOTOR.setAngle(34.5);
             limelightUp = false;
         }
         
@@ -151,7 +151,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightUp(){
         if (!limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(175);
+            LIMELIGHT_MOTOR.setAngle(178);
             limelightUp = true;
         }
         
@@ -166,20 +166,15 @@ public class Vision extends SensorSubsystem {
     }
 
     @Override
-    public void disable() {
-        // TODO Auto-generated method stub
-        
+    public void disable() {       
     }
 
     @Override
     public void ping() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public boolean isAlive() {
-        // TODO Auto-generated method stub
         return false;
     }
 

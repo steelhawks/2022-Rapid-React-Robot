@@ -26,8 +26,8 @@ public class GoToBall extends CommandBase {
 
   @Override
   public void execute() {
-    // Robot.VISION.setPipelineColor();
     Limelight.setPipeline(Robot.VISION.getBallPipeline());  
+    Robot.VISION.setPipelineColor();
 
     Robot.DRIVETRAIN.goToBall();
   }

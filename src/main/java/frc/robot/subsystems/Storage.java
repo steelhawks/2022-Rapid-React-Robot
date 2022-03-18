@@ -97,7 +97,7 @@ public class Storage extends MechanicalSubsystem {
   }
   
   public void storageIn(boolean isForward) {
-    System.out.println("balls moving");
+    // System.out.println("balls moving");
     if (isForward) {
         this.STORAGE_MOTOR_GROUP_IN.set(Robot.ROBOTMAP.storageSpeedIn);
     } else {

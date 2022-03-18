@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
-public class ClimberUnrollWinch extends CommandBase {
+public class LeftClimberDown extends CommandBase {
 
-    public ClimberUnrollWinch() {
+    public LeftClimberDown() {
         addRequirements(Robot.CLIMBER);
     }
 
@@ -15,7 +15,7 @@ public class ClimberUnrollWinch extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.CLIMBER.climberRoll(false);//shoot up
+        Robot.CLIMBER.leftClimberRoll(true);; //down
     }
 
     @Override

@@ -31,7 +31,7 @@ public class Vision extends SensorSubsystem {
     public final Servo LIMELIGHT_MOTOR;
     
     // public final DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
-    // public final DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort);
+    // public final DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortOne);
     public int count = 0;
     public boolean previousIntact = true;
 
@@ -140,7 +140,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightDown(){
         if (limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(34.5);
+            LIMELIGHT_MOTOR.setAngle(20);
             limelightUp = false;
         }
         
@@ -179,15 +179,15 @@ public class Vision extends SensorSubsystem {
     }
 
     public void shuffleBoard() {
-        SmartDashboard.putBoolean("Valid Target", Limelight.hasValidTarget());
-        SmartDashboard.putNumber("X Offset", Limelight.getXOffset());
-        SmartDashboard.putNumber("Y Offset", Limelight.getYOffset());
-        SmartDashboard.putNumber("Area", Limelight.getArea());
-        SmartDashboard.putNumber("Distance (cm)", dist);
-        SmartDashboard.putNumber("Distance (in)", dist / 2.54);
-        SmartDashboard.putNumber("Line Angle", lineAngle);
-        SmartDashboard.putBoolean("isRedAlliance", isRedAlliance);
-        SmartDashboard.putNumber("BALL PIPELINE", BALL_PIPELINE);
+        SmartDashboard.putBoolean("Valid Target", Limelight.hasValidTarget()); //SEE BELOW FOR COMMENTED OUT STUFF FOR TESTING W VISION
+        // SmartDashboard.putNumber("X Offset", Limelight.getXOffset());
+        // SmartDashboard.putNumber("Y Offset", Limelight.getYOffset());
+        // SmartDashboard.putNumber("Area", Limelight.getArea());
+        // SmartDashboard.putNumber("Distance (cm)", dist);
+        // SmartDashboard.putNumber("Distance (in)", dist / 2.54);
+        // SmartDashboard.putNumber("Line Angle", lineAngle);
+        // SmartDashboard.putBoolean("isRedAlliance", isRedAlliance);
+        // SmartDashboard.putNumber("BALL PIPELINE", BALL_PIPELINE);
     }
 
     public void setPipelineColor(){
@@ -198,6 +198,10 @@ public class Vision extends SensorSubsystem {
 
     public int getBallPipeline() {
         return BALL_PIPELINE;
+    }
+
+    public int getHubPipeline() {
+        return HUB_PIPELINE;
     }
 
     
@@ -224,29 +228,37 @@ public class Vision extends SensorSubsystem {
 
 
     public void autonPickUpBall(){
-    //     
-    
-    //    if(beamI.get()){
-    //         Robot.INTAKE.spinRoller(false);; //runs intake at start of auton
-    //         Robot.STORAGE.storageIn(true); //runs sushi rollers at start of auton
-    //         if(!previousIntact){
-    //             Robot.INTAKE.stopRoll();
-    //             Robot.STORAGE.storageMotorStop();
-    //             // Robot.STORAGE.storageInStop();
-    //             // Robot.STORAGE.storageUpStop();
-    //             Robot.INTAKE.stopRoll();
-    //             count++;
-    //         }else{
-    //             previousIntact = true;
-    //         }
-    //     }
-    //     if(!beamI.get()){
-    //         Robot.INTAKE.stopRoll();
-    //         Robot.STORAGE.storageIn(true);
-    //         Robot.STORAGE.storageRun(false);
+    //     Robot.STORAGE.storageMotorStop();
+    //     boolean ballInRobot = false;
+
+    //     while(!ballInRobot) {
+
         
-    //         previousIntact = false;
-      
+        
+    
+    //         if(beamI.get()){
+    //             Robot.INTAKE.spinRoller(false); //runs intake at start of auton
+    //             Robot.STORAGE.storageIn(true); //runs sushi rollers at start of auton
+    //             if(!previousIntact){
+    //                 Robot.INTAKE.stopRoll();
+    //                 Robot.STORAGE.storageMotorStop();
+    //                 // Robot.STORAGE.storageInStop();
+    //                 // Robot.STORAGE.storageUpStop();
+    //                 Robot.INTAKE.stopRoll();
+    //                 count++;
+    //                 ballInRobot = true;
+    //             }else{
+    //                 previousIntact = true;
+    //             }
+    //         }
+    //         if(!beamI.get()){
+    //             Robot.INTAKE.stopRoll();
+    //             Robot.STORAGE.storageIn(true);
+    //             Robot.STORAGE.storageRunSlow(true); 
+            
+    //             previousIntact = false;
+        
+    //         }
     //     }
     }
 }

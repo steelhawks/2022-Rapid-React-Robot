@@ -15,7 +15,7 @@ public class ClimberRollWinch extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.CLIMBER.climberRoll(true);
+        Robot.CLIMBER.climberRoll(true); //down
     }
 
     @Override
@@ -25,6 +25,7 @@ public class ClimberRollWinch extends CommandBase {
       
     @Override
     public void end(boolean interrupted) {
+        
         if (interrupted) {
             Robot.CLIMBER.stop();
         }

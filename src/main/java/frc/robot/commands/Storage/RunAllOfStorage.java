@@ -1,4 +1,4 @@
-package frc.robot.commands.Vision;
+package frc.robot.commands.Storage;
 import frc.robot.Robot;
 
 import java.util.HashSet;
@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
-public class StopAllOfStorage extends CommandBase {
+public class RunAllOfStorage extends CommandBase {
     
-  public StopAllOfStorage() {}
+  public RunAllOfStorage() {}
 
   @Override
   public Set<Subsystem> getRequirements() 
@@ -26,10 +26,11 @@ public class StopAllOfStorage extends CommandBase {
 
   @Override
   public void execute() {
-      // run EVERYTHING for STOPPING ALL INTAKE AND STORAGE OF THE BALL
-    Robot.INTAKE.stopRoll();
-    Robot.STORAGE.storageMotorStop();
-    Robot.INTAKE.stopRoll();
+    // run EVERYTHING for INTAKING THE BALL
+    Robot.INTAKE.spinRoller(false);
+    Robot.STORAGE.storageIn(true); //sushi IN
+    Robot.STORAGE.storageRunSlow(false); //storage UP
+
   }
     
   @Override

@@ -1,6 +1,7 @@
 package frc.robot.commands.Vision;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
+import frc.util.Limelight;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +27,9 @@ public class AlignToHub extends CommandBase {
 
   @Override
   public void execute() {
+    Limelight.setPipeline(Robot.VISION.getHubPipeline());
     Robot.VISION.switchToHubPipeline();
+    
     Robot.DRIVETRAIN.rotateToHub();
     // Robot.DRIVETRAIN.straightHubTest(); //Danger
   }

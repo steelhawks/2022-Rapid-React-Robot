@@ -37,7 +37,7 @@ public class RobotMap
   public final int storageMotorPortTop = 21; //shooter
   public final int storageMotorPortBot = 12; //shooter
   public final int storageMotorPortIn = 11; //sushi rollers
-  public final double storageSpeedUpSlow = 0.5; //shooting speed
+  public final double storageSpeedUpSlow = 0.6; //shooting speed
   public final double storageSpeedUpFast = 1;
   public final double storageSpeedIn = 1; //sushi roller speed
 
@@ -57,14 +57,14 @@ public class RobotMap
     public final int climberSoleLeftReverse = 5;
     public final int climberSoleRightForward = 6;
     public final int climberSoleRightReverse = 7;
-    public final double climberSpeed = 0.85;
+    public final double climberSpeed = 1;
 
     public final int LimelightMotorPort = 7;
     public final int beamBreakerPortOne = 1;
     public final int beamBreakerPortTwo = 4; 
 
-    public final int leftLimit = 7 ;
-    public final int rightLimit = 8;
+    public final int leftLimit = 8 ;
+    public final int rightLimit = 7;
     
 
   /*****

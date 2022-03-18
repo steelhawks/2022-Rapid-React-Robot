@@ -57,9 +57,9 @@ public class Drivetrain extends MechanicalSubsystem {
 
   // Vision
   private final int ANGLE_LENIENCY = 5;
-  private final double Y_LOWER_LIMIT = 2;
+  private final double Y_LOWER_LIMIT = -16;
   private final double Y_MAX_LIMIT_HUB = 17;
-  private final double X_THRESHOLD = 8;
+  private final double X_THRESHOLD = 5;
 
   private final int LEAVE_HUB_TIME = 2;
   private final int ENTER_HUB_TIME = 2;
@@ -107,7 +107,8 @@ public class Drivetrain extends MechanicalSubsystem {
   public void arcadeDrive(Joystick stick) {
     double y = stick.getY();
     double rotate = stick.getTwist();
-    this.DIFF_DRIVE.arcadeDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);
+    this.DIFF_DRIVE.arcadeDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);  
+    
     if (Robot.RECORDER.isRecording) {
       count++;
       Robot.RECORDER.recordJoystick(new JoystickRecorder(y, rotate, false, count));
@@ -224,7 +225,8 @@ public class Drivetrain extends MechanicalSubsystem {
 
   // LOOK FOR BALL
   public void spinRobot() {
-    this.DIFF_DRIVE.arcadeDrive(0, 0.7);
+    this.LEFT_M_GROUP.set(-0.2);
+    this.RIGHT_M_GROUP.set(0.2);
   }
 
   public boolean goToBall() {
@@ -237,20 +239,28 @@ public class Drivetrain extends MechanicalSubsystem {
 
     // Robot.VISION.switchToBallPipeline();
 
-    while (!Limelight.hasValidTarget()) {
+    while (!Limelight.hasValidTarget()) { //update in the loop ensures a break condition
       spinRobot();
-      // Limelight.updateValues();
-      Robot.VISION.updateNetworkValues();
+      Limelight.updateValues();
 
     }
+    // stop();
     Robot.DRIVETRAIN.stop();
 
     while (Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline()) {
+      Limelight.updateValues();
       if (Limelight.getYOffset() > Y_LOWER_LIMIT) {
-        gyroMoveStraight(0.8, 8 * -Limelight.getXOffset());
+        gyroMoveStraight(0.5, 8 * -Limelight.getXOffset()); //make offset negative or positive depending on the drivetrain.
       } else if (Math.abs(Limelight.getXOffset()) > X_THRESHOLD) {
         gyroMoveStraight(0, 4 * -Limelight.getXOffset());
+        //or try:
+        // this.DIFF_DRIVE.arcadeDrive(0, Limelight.getXOffset() / 10);
       } else {
+        System.out.println("ouafhdsjkf");
+        stop();
+        Robot.INTAKE.spinRoller(false);
+        Robot.STORAGE.storageIn(true); //sushi IN
+        Robot.STORAGE.storageRunSlow(false); 
         break; // intake here
       }
     }
@@ -269,23 +279,25 @@ public class Drivetrain extends MechanicalSubsystem {
 
     if (!Limelight.hasValidTarget()) {
       spinRobot();
-      Robot.VISION.updateNetworkValues();
+      // Robot.VISION.updateNetworkValues();
     }
+    stop();
 
     double hubAngle = -Limelight.getXOffset();
     angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;
-    ;
+    
 
-    if (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline() && !angleInRange) {
+    while (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline() && !angleInRange) {
+      hubAngle = Limelight.getXOffset(); // CHANGE TO NEGATIVE IF DRIVETRAIN ERRORS.
       this.LEFT_M_GROUP.set(hubAngle / 60);
-      this.RIGHT_M_GROUP.set(-hubAngle / 60);
+      this.RIGHT_M_GROUP.set(-hubAngle / 60); //prevents any linear movement, only rotational adjustment. 
 
-      hubAngle = Limelight.getXOffset();
       angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;
 
     }
+    stop();
 
-    return angleInRange;
+    return angleInRange; //ends when sufficiently corrected to be in range/
   }
 
   public void straightHubTest() {
@@ -300,6 +312,10 @@ public class Drivetrain extends MechanicalSubsystem {
           stop();
           hubNotReached = false;
         }
+      }
+      else {
+        stop();
+        break;
       }
 
     } // end of while

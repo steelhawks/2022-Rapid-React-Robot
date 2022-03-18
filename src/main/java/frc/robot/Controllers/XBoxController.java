@@ -28,8 +28,6 @@ public class XBoxController {
                 .whenHeld(new StorageIn());
         this.controller.mapButton(Robot.BUTTON_MAP.storageOutButton)
                 .whenHeld(new StorageOut());
-        this.controller.mapButton(Robot.BUTTON_MAP.storageShootHigh)
-                .whenHeld(new StorageUpHIGH());
 
         // Intake
         this.controller.mapButton(Robot.BUTTON_MAP.intakeSpinButton)
@@ -52,6 +50,26 @@ public class XBoxController {
                 .whenHeld(new ClimberUnrollWinch());
         this.controller.mapButton(Robot.BUTTON_MAP.climberToggleSolenoidButton)
                 .whenPressed(new ClimberToggleSolenoid());
+
+
+        this.controller.mapButton(Robot.BUTTON_MAP.climberWinchDownButton)
+                .whenHeld(new ClimberRollWinch());
+        this.controller.mapButton(Robot.BUTTON_MAP.climberWinchUpButton)
+                .whenHeld(new ClimberUnrollWinch());
+        
+
+        // //each independant
+        // this.controller.mapButton(Robot.BUTTON_MAP.climberWinchDownButton)
+        //         .whileHeld(new LeftClimberUp());
+        // this.controller.mapButton(Robot.BUTTON_MAP.climberWinchUpButton)
+        //         .whenHeld(new RightClimberUp());
+        
+        // this.controller.mapButton(Robot.BUTTON_MAP.leftClimberDown)
+        //         .whenHeld(new LeftClimberDown());
+        // this.controller.mapButton(Robot.BUTTON_MAP.rightClimberDown)
+        //         .whenHeld(new RightClimberDown());               
+
+        
 
         // this.controller.mapButton(Robot.BUTTON_MAP.climberPivotButton)
         // .whenHeld(new ClimberPivot());

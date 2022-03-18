@@ -48,47 +48,88 @@ public class Climber extends MechanicalSubsystem {
     configureMotors();
   }
 
-  public void climberRoll(boolean isDown) {
-    System.out.println("climber");
+
+  public void leftClimberRoll(boolean isDown) {
 
     if (isDown) {
 
       if (leftLimit.get()) {
         this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
       } else {
-        stop();
+        stopLeft();
       }
-
+    }
+    
+    else {
+      this.CLIMBER_MOTOR_RIGHT.set(-Robot.ROBOTMAP.climberSpeed);
+    }
+    
+  }
+  
+  public void rightClimberRoll(boolean isDown) {
+    
+    if (isDown) {
+      
       if (rightLimit.get()) {
         this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
       } else {
-        stop();
+        stopRight();
       }
-
     }
-
+    
     else {
-
-      if ((this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048) < 10) {
-
+      this.CLIMBER_MOTOR_RIGHT.set(-Robot.ROBOTMAP.climberSpeed);
+    }
+  }
+  
+  
+  
+  public void climberRoll(boolean isDown) {
+    
+    if (isDown) {
+      
+      if (leftLimit.get()) {
+        this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
+      } else {
+        stopLeft();
+        this.CLIMBER_MOTOR_LEFT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+        
+      }
+      
+      if (rightLimit.get()) {
+        this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
+      } else {
+        stopRight();
+        this.CLIMBER_MOTOR_RIGHT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+      }
+      
+    }
+    
+    else {
+      
+      if ((this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048) < 250) {
         this.CLIMBER_MOTOR_LEFT.set(-Robot.ROBOTMAP.climberSpeed);
       }
-
+      
       else {
-        stop();
+        System.out.print("LEFT limit");
+        System.out.println(this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
+        stopLeft();
       }
-
-      if ((this.CLIMBER_MOTOR_RIGHT.getSensorCollection().getIntegratedSensorPosition() / 2048) < 150) {
+      
+      if ((this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048) < 250) {
+        
         this.CLIMBER_MOTOR_RIGHT.set(-Robot.ROBOTMAP.climberSpeed);
       }
 
       else {
-        stop();
+        System.out.print("RIGHT limit");
+        System.out.println(this.CLIMBER_MOTOR_RIGHT.getSensorCollection().getIntegratedSensorPosition() / 2048);
+        stopRight();
       }
 
     }
   }
-
   // public void climberRollWinch() {
   // System.out.println("forwards");
   // this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
@@ -138,6 +179,14 @@ public class Climber extends MechanicalSubsystem {
     this.CLIMBER_MOTOR_RIGHT.setNeutralMode(NeutralMode.Brake);
   }
 
+  public void stopLeft() {
+    this.CLIMBER_MOTOR_LEFT.stopMotor();
+  }
+
+  public void stopRight() {
+    this.CLIMBER_MOTOR_RIGHT.stopMotor();
+  }
+
   @Override
   public void ping() {
   }
@@ -153,6 +202,9 @@ public class Climber extends MechanicalSubsystem {
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
     SmartDashboard.putNumber("R encoder rotation",
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
+    SmartDashboard.putBoolean("left sensor", leftLimit.get());
+    SmartDashboard.putBoolean("right sensor", rightLimit.get());
+
   }
 
   @Override

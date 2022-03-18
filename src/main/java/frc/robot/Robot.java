@@ -82,8 +82,8 @@ public class Robot extends TimedRobot {
   public static final SequentialCommandGroup routine2 = new SequentialCommandGroup(
       new ParallelRaceGroup(
           new AutoShoot(), new WaitCommand(2)),
-      new IntakeToggleSolenoid(),
-      // new SampleAutopath0(), // same thing as (shoot) and (go towards general area of ball)
+      new IntakeDownAuton(),
+      new SampleAutopath0(), // same thing as (shoot) and (go towards general area of ball)
 
       //if proceeding be sure the sampleautpath0 does not drive over the ball. Need some sufficient room in front to see ball.
       new ParallelRaceGroup(
@@ -93,10 +93,10 @@ public class Robot extends TimedRobot {
       // new ParallelRaceGroup(
       //     new GoToBall(), new AutonPickUpBall() // autopickupball will continue to run intake+storage until the gotoball no longer sees a ball infront.
       // ),
-      new StopAllOfStorage(), //safety check again to stop all storage after ball is in robot. 
-      new IntakeRetract(), //when driving back to hub, fold up intake to prevent injury.
-      new SampleAutopath1(), // drive back to general hub location.
-      new AlignToHub()); //turn by rotating first to center hub, then optionally fix up the straight line distance.
+      new StopAllOfStorage()); //safety check again to stop all storage after ball is in robot. 
+      // new IntakeRetract(), //when driving back to hub, fold up intake to prevent injury.
+      // new SampleAutopath1(), // drive back to general hub location.
+      // new AlignToHub()); //turn by rotating first to center hub, then optionally fix up the straight line distance.
 
   public static int ballCount = 0;
 
@@ -117,7 +117,7 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configureCommands();
 
     ROBOTMAP.paths.add("driveoutfromhub.csv"); // 0
-    ROBOTMAP.paths.add("ba.csv"); // 1
+    ROBOTMAP.paths.add("back.csv"); // 1
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();

@@ -31,8 +31,8 @@ public class Climber extends MechanicalSubsystem {
     this.CLIMBER_MOTOR_LEFT = new WPI_TalonFX(Robot.ROBOTMAP.climberLeftPort);
     this.CLIMBER_MOTOR_RIGHT = new WPI_TalonFX(Robot.ROBOTMAP.climberRightPort);
 
-    this.CLIMBER_SOLENOID_LEFT = new DoubleSolenoid(type, 4, 5);
-    this.CLIMBER_SOLENOID_RIGHT = new DoubleSolenoid(type, 6, 7);
+    this.CLIMBER_SOLENOID_LEFT = new DoubleSolenoid(type, Robot.ROBOTMAP.climberSoleLeftForward, Robot.ROBOTMAP.climberSoleLeftReverse);
+    this.CLIMBER_SOLENOID_RIGHT = new DoubleSolenoid(type, Robot.ROBOTMAP.climberSoleRightForward, Robot.ROBOTMAP.climberSoleRightReverse);
 
     this.CLIMBER_MOTOR_LEFT.setInverted(true);
 

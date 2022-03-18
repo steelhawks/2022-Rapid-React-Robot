@@ -71,10 +71,10 @@ public class Intake extends MechanicalSubsystem {
   public void intakeToggleSolenoid() {
     if (this.INTAKE_SOLENOID.get().equals(DoubleSolenoid.Value.kForward)) {
       intakeRetractSolenoid();
-      System.out.println("intake down: toggle: retract intake pistons");
+      System.out.println("intake up: toggle: retract intake pistons");
     } else {
       intakeExtendSolenoid();
-      System.out.println("intake up : toggle: extend intake pistons");
+      System.out.println("intake down : toggle: extend intake pistons");
     }
     
   }

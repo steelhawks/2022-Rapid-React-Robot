@@ -120,10 +120,11 @@ public class Drivetrain extends MechanicalSubsystem {
   public void shiftGear() {
     if (this.DRIVE_SOLENOID.get() == DoubleSolenoid.Value.kForward) {
       highGear();
+      System.out.println("SHIFT: in high gear");
     } else {
       lowGear();
+      System.out.println("SHIFT: in low gear");
     }
-    System.out.println("Drive Train Shifted gears!");
   }
 
   public void lowGear() {

@@ -176,7 +176,7 @@ public class Robot extends TimedRobot {
                                 // pipeline.
     STORAGE.storageMotorStop();
 
-    DRIVETRAIN.lowGear(); // the solenoids are inversed so low is techinally "high"
+    DRIVETRAIN.highGear(); 
 
     m_autonomousCommand = m_chooser.getSelected();
     if (m_autonomousCommand != null) {
@@ -207,7 +207,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
 
-    DRIVETRAIN.lowGear();
+    DRIVETRAIN.highGear();
 
     // routine1.cancel();
 

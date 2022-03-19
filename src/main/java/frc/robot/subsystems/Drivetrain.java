@@ -93,6 +93,8 @@ public class Drivetrain extends MechanicalSubsystem {
     // TWIST COEFFICIENT
     this.twistCoefficient = 1.25;
 
+    this.isForward = true;
+
     // DRIVETRAIN SOLENOID
     this.DRIVE_SOLENOID = new DoubleSolenoid(type, Robot.ROBOTMAP.drivetrainSolenoidPortOn,
         Robot.ROBOTMAP.drivetrainSolenoidPortOff);
@@ -107,13 +109,35 @@ public class Drivetrain extends MechanicalSubsystem {
   public void arcadeDrive(Joystick stick) {
     double y = stick.getY();
     double rotate = stick.getTwist();
-    this.DIFF_DRIVE.arcadeDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);  
+
+    if (this.isForward){
+      //nothing
+    }
+    else {
+      y = -y;
+    }
+    // if(y < 0.1 && y > -0.1) {
+    //   this.DIFF_DRIVE.arcadeDrive(0, rotate, false);
+    // } else {
+      this.DIFF_DRIVE.arcadeDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);  
+      // this.DIFF_DRIVE.curvatureDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);  
+
+      // }
     
     if (Robot.RECORDER.isRecording) {
       count++;
       Robot.RECORDER.recordJoystick(new JoystickRecorder(y, rotate, false, count));
     }
+    
+  }
 
+  public void reverseDirection() {
+    if (!this.isForward){
+      this.isForward = true;
+    } else {
+      this.isForward = false;
+    }
+    System.out.println("motion reversed");
   }
 
   // SHIFTING METHOD
@@ -219,6 +243,8 @@ public class Drivetrain extends MechanicalSubsystem {
 
     SmartDashboard.putNumber("gyroangle", getGyroAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
+
+   
 
   }
 

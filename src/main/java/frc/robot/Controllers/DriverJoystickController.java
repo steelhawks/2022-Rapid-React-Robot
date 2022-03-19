@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
 import frc.robot.commands.Autonomous.AutoShoot;
+import frc.robot.commands.Drivetrain.ReverseDriveDirection;
 import frc.robot.commands.Drivetrain.ShiftGears;
 import frc.robot.commands.Intake.IntakeToggleSolenoid;
 import frc.robot.commands.Pathcorder.EndRecording;
@@ -35,6 +36,11 @@ public class DriverJoystickController {
     // DRIVETRAIN
     Button shift = this.controller.mapButton(Robot.BUTTON_MAP.drivetrainShiftButton);
     shift.whenPressed(new ShiftGears());
+
+    Button reverse = this.controller.mapButton(Robot.BUTTON_MAP.drivetrainReverseDirectionButton);
+    reverse.whenPressed(new ReverseDriveDirection());
+
+
 
     Button startRecording = this.controller.mapButton(Robot.BUTTON_MAP.startRecordingButton);
     startRecording.whenPressed(new StartRecording());

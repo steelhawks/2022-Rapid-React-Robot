@@ -23,6 +23,9 @@ public class XBoxController {
         this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsReverseButton)
                 .whileHeld(new StorageDown());
 
+        this.controller.mapButton(Robot.BUTTON_MAP.storageFastOutButton)
+                .whileHeld(new StorageUpFast());
+
         // Intake to Storage
         this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
                 .whenHeld(new StorageIn());

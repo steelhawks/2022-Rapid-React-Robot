@@ -28,7 +28,7 @@ public class Vision extends SensorSubsystem {
 
     public boolean limelightUp = false;
 
-    public final Servo LIMELIGHT_MOTOR;
+    // public final Servo LIMELIGHT_MOTOR;
     
     // public final DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
     // public final DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortOne);
@@ -40,7 +40,7 @@ public class Vision extends SensorSubsystem {
     public Vision(){
         Limelight.init();
         
-        LIMELIGHT_MOTOR = new Servo(Robot.ROBOTMAP.LimelightMotorPort);
+        // LIMELIGHT_MOTOR = new Servo(Robot.ROBOTMAP.LimelightMotorPort);
         setPipelineColor();
         // Limelight.setPipeline(isRedAlliance ? RED_CARGO_PIPELINE : BLUE_CARGO_PIPELINE);
 
@@ -140,7 +140,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightDown(){
         if (limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(20);
+            // LIMELIGHT_MOTOR.setAngle(20);
             limelightUp = false;
         }
         
@@ -151,7 +151,7 @@ public class Vision extends SensorSubsystem {
 
     public void faceLimelightUp(){
         if (!limelightUp) {
-            LIMELIGHT_MOTOR.setAngle(178);
+            // LIMELIGHT_MOTOR.setAngle(178);
             limelightUp = true;
         }
         

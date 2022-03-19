@@ -23,6 +23,7 @@ public class ButtonMap {
 
   public final int storageInButton = Gamepad.kGamepadTriggerLeft;
   public final int storageOutButton = Gamepad.kGamepadTriggerRight;
+  public final int storageFastOutButton = Gamepad.kGamepadLeftStick;
 
   public final int storageMoveBallsUpButton = Gamepad.kGamepadButtonShoulderR;
   public final int storageMoveBallsReverseButton = Gamepad.kGamepadButtonShoulderL;

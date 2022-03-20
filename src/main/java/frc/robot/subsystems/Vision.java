@@ -278,8 +278,9 @@ public class Vision extends SensorSubsystem {
 
             while(Robot.STORAGE.beamI.get()){
                 Robot.DRIVETRAIN.rotate(-0.2);
+                System.out.println("a");
             }
-
+            Robot.DRIVETRAIN.stop();
             while(Robot.STORAGE.beamS.get()){}
             Robot.STORAGE.storageMotorStop();
 

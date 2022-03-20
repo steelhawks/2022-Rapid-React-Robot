@@ -14,7 +14,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import frc.util.Limelight;
  
 
@@ -56,6 +59,17 @@ public class Drivetrain extends MechanicalSubsystem{
 
   //PATHCORDER
   public int count = 0;
+
+  // ENCODER
+  // public Encoder leftEnc = new Encoder(constants.leftEncPortI, constants.leftEncPortII, false, EncodingType.k4X);
+	double leftEncValue;
+	double leftEncDist;
+
+	// public Encoder rightEnc = new Encoder(constants.rightEncPortI, constants.rightEncPortII, false, EncodingType.k4X);
+	double rightEncValue;
+	double rightEncDist;
+
+  public boolean ultraBool;
 
   //Vision
   private final int ANGLE_LENIENCY = 2;
@@ -223,6 +237,30 @@ public class Drivetrain extends MechanicalSubsystem{
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
     
   }
+
+  public void EncGyroForward(double leftDist, double rightDist) {
+		double gyroAngle = getGyroAngle();
+
+		// leftEncDist = leftEnc.getDistance();
+		// rightEncDist = rightEnc.getDistance();
+		System.out.println("Straight");
+		System.out.println(gyroAngle);
+		// double newK = SmartDashboard.getDouble("kP");
+		gyroMoveStraight(-0.75, gyroAngle * Robot.ROBOTMAP.KP_GYRO);// *newkP);//ALPHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//drive.drive(0.75, gyroAngle * kP);
+		// matchMotors(frontLeftMotor, backLeftMotor);
+		// matchMotors(frontLeftMotor, middleLeftMotor);
+		// matchMotors(frontRightMotor, backRightMotor);
+		// matchMotors(frontRightMotor, middleRightMotor);
+
+		if (leftEncDist > leftDist && -rightEncDist > rightDist) {
+			ultraBool = true;
+		}
+		if (leftEncDist <= leftDist && -rightEncDist <= rightDist) {
+		  ultraBool = false;
+		}
+
+	}
   
   //VISION STUFF
 
@@ -250,7 +288,6 @@ public class Drivetrain extends MechanicalSubsystem{
       
     }
     Robot.DRIVETRAIN.stop();
-    
     
     while(Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline() && count < 2){
       Limelight.updateValues();

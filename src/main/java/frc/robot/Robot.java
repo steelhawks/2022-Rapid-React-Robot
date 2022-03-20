@@ -76,13 +76,13 @@ public class Robot extends TimedRobot {
   public static final SequentialCommandGroup autopath2 = new SequentialCommandGroup(
     new ParallelRaceGroup(
       new AutoShoot(), new WaitCommand(2)),
-    // new SampleAutopath0(),
-    new GoToBall(),
-    new WaitCommand(1),
-    new GoToBall(), //erase when using path.
+    new SampleAutopath0()
+    // new GoToBall(),
+    // new WaitCommand(1),
+    // new GoToBall() //erase when using path.
     // new SampleAutopath1(),
-    new ParallelRaceGroup(
-      new AutoShoot(), new WaitCommand(2))
+    // new ParallelRaceGroup(
+    //   new AutoShoot(), new WaitCommand(2))
   );
   
 
@@ -219,6 +219,7 @@ public class Robot extends TimedRobot {
     DRIVETRAIN.stop();
 
     CommandScheduler.getInstance().enable();   
+    Robot.VISION.ballCount = 0;
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     STORAGE.storageMotorStop();
@@ -264,16 +265,15 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    CommandScheduler.getInstance().enable();
     autopath.cancel();
     autopath2.cancel();
-    CommandScheduler.getInstance().enable();
-
+    
     DRIVETRAIN.stop();
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     INTAKE.stopRoll();
     STORAGE.storageMotorStop();
-    INTAKE.stopRoll();
   }
 
   /** This function is called periodically during operator control. */

@@ -3,9 +3,9 @@ package frc.robot.commands.Storage;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class StorageIn extends CommandBase {
+public class StorageInTest extends CommandBase {
 
-  public StorageIn() {
+  public StorageInTest() {
     addRequirements(Robot.STORAGE);
   }
 
@@ -16,15 +16,20 @@ public class StorageIn extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.STORAGE.storageIn(true);
+   
+    if(Robot.STORAGE.beamI.get()) {
+        Robot.STORAGE.storageIn(true);
+    }
+    else if(Robot.ballCount == 0){
+        Robot.STORAGE.storageRun(true);
+    }
     
     
   }
 
   @Override
   public boolean isFinished() {
-    return false;
-    
+    return Robot.ballCount == 0 ? Robot.STORAGE.beamI.get() : true;
   }
 
   @Override

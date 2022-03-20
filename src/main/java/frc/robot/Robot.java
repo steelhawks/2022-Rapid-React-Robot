@@ -23,15 +23,22 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Storage.*;
+import frc.robot.commands.Vision.GoToBall;
+import frc.robot.Controllers.Controller;
+import frc.robot.Controllers.XBoxController;
 import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
+import frc.util.Limelight;
 import frc.util.pathcorder.Follower;
 import frc.util.pathcorder.Recorder;
 import frc.util.pathcorder.pathselector.PathSelector;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
+
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 /**
@@ -54,25 +61,47 @@ public class Robot extends TimedRobot {
   public static final Recorder RECORDER = new Recorder();
   public static final Follower FOLLOWER = new Follower();
   public static final PathSelector PATH_SELECTOR = new PathSelector();
+  public static final XBoxController X_BOX_CONTROLLER = new XBoxController(Robot.COMMAND_LINKER.operatorGamepad); 
   
   
   public static final Command follow = new Follow();
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
-  public static final SequentialCommandGroup autopath = new SequentialCommandGroup(new ParallelRaceGroup(new AutoShoot(), new WaitCommand(2)), new SampleAutopath0());
+  public static final SequentialCommandGroup autopath = new SequentialCommandGroup(
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)), new SampleAutopath0()
+    );
+    
+  public static final SequentialCommandGroup autopath2 = new SequentialCommandGroup(
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)),
+    new SampleAutopath0()
+    // new GoToBall(),
+    // new WaitCommand(1),
+    // new GoToBall() //erase when using path.
+    // new SampleAutopath1(),
+    // new ParallelRaceGroup(
+    //   new AutoShoot(), new WaitCommand(2))
+  );
+  
 
   public static int ballCount = 0;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  Command m_autonomousCommand;
+
+
 
   // private final AnalogInput ultrasonic = new AnalogInput(0);
 
   public static final Vision VISION = new Vision();
-
+  // public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
+  // public DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort); 
   // boolean previous = true;
-  // DigitalInput beamI = new DigitalInput(1);
+  // boolean previous2 = true; 
   // int count1 = 0;
 
-  Ultrasonic ultrasonic = new Ultrasonic(2, 3); 
+  // Ultrasonic ultrasonic = new Ultrasonic(2, 3); 
  
   
 
@@ -93,6 +122,11 @@ public class Robot extends TimedRobot {
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
     PATH_SELECTOR.loadPresetPath();
+
+    m_chooser.setDefaultOption("Simple Auto", autopath);
+    m_chooser.addOption("Complex Auto", autopath2);
+    SmartDashboard.putData("choose auto", m_chooser);
+    
   }
   
   /**
@@ -105,9 +139,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     DRIVETRAIN.shuffleBoard();
+    STORAGE.shuffleBoard();
 
     // SmartDashboard.putBoolean("beam intact", beam.get());
-    SmartDashboard.putNumber("ultrainch", ultrasonic.getRangeInches()); 
+    // SmartDashboard.putNumber("ultrainch", ultrasonic.getRangeInches()); 
 
     // double rawValue = ultrasonic.getValue();
     
@@ -116,7 +151,21 @@ public class Robot extends TimedRobot {
     // double currentDistanceInches = rawValue * voltage_scale_factor * 0.0492;
     
     VISION.updateNetworkValues();
-  
+    Limelight.updateValues();
+    //     if(previous != beamI.get() && beamI.get()){
+    //         Robot.ballCount++;
+    //         Robot.STORAGE.storageIn(true);
+    
+    //     }
+    //       else{
+    //         previous = beamI.get();
+    //       }
+       
+    // if(previous2 != beamS.get() && beamS.get()){
+    //           Robot.STORAGE.storageRun(5);; 
+    //       }
+    //         previous2 = beamS.get();
+    //     }
 
     // SmartDashboard.putNumber("dist cm", currentDistanceCentimeters);
     // SmartDashboard.putNumber("dist in", currentDistanceInches);
@@ -151,7 +200,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData("climberunrollwinch", new ClimberUnrollWinch());
     // SmartDashboard.putData("climbertoggle", new ClimberToggleSolenoid());
   
-  }
+    }
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
    * autonomous modes using the dashboard. The sendable chooser code works with the Java
@@ -165,13 +214,31 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    CommandScheduler.getInstance().schedule(autopath);
-    autopath.execute();
-    
+    // CommandScheduler.getInstance().schedule(autopath);
+    // autopath.execute();
+    DRIVETRAIN.stop();
+
     CommandScheduler.getInstance().enable();   
+    Robot.VISION.ballCount = 0;
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     STORAGE.storageMotorStop();
+    
+    // DRIVETRAIN.goToBall();
+    // DRIVETRAIN.goToBall();
+
+    // for(int i = 1; i<5; i++) {
+    //   if(i%4 == 0) {
+    //     DRIVETRAIN.goToBall();
+    //   }
+
+    // }
+
+    m_autonomousCommand = m_chooser.getSelected();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
+    
   }
   
   /** This function is called periodically during autonomous. */
@@ -198,14 +265,15 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    autopath.cancel();
     CommandScheduler.getInstance().enable();
+    autopath.cancel();
+    autopath2.cancel();
     
+    DRIVETRAIN.stop();
     VISION.switchToBallPipeline();
     VISION.faceLimelightDown(); //**These are necessary to set the LL to look down w/ correct ball color pipeline.
     INTAKE.stopRoll();
     STORAGE.storageMotorStop();
-    INTAKE.stopRoll();
   }
 
   /** This function is called periodically during operator control. */

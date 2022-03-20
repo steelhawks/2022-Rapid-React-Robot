@@ -14,9 +14,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import frc.util.Limelight;
-
+ 
 
 
 public class Drivetrain extends MechanicalSubsystem{
@@ -57,9 +60,21 @@ public class Drivetrain extends MechanicalSubsystem{
   //PATHCORDER
   public int count = 0;
 
+  // ENCODER
+  // public Encoder leftEnc = new Encoder(constants.leftEncPortI, constants.leftEncPortII, false, EncodingType.k4X);
+	double leftEncValue;
+	double leftEncDist;
+
+	// public Encoder rightEnc = new Encoder(constants.rightEncPortI, constants.rightEncPortII, false, EncodingType.k4X);
+	double rightEncValue;
+	double rightEncDist;
+
+  public boolean ultraBool;
+
   //Vision
-  private final int ANGLE_LENIENCY = 5;
-  private final double Y_LOWER_LIMIT = 2;
+  private final int ANGLE_LENIENCY = 2;
+  private final double Y_LOWER_LIMIT = -18;
+  private final double Y_MAX_LIMIT_HUB = 15;
   private final double X_THRESHOLD = 8;
   
   private final int LEAVE_HUB_TIME = 2;
@@ -222,81 +237,145 @@ public class Drivetrain extends MechanicalSubsystem{
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
     
   }
+
+  public void EncGyroForward(double leftDist, double rightDist) {
+		double gyroAngle = getGyroAngle();
+
+		// leftEncDist = leftEnc.getDistance();
+		// rightEncDist = rightEnc.getDistance();
+		System.out.println("Straight");
+		System.out.println(gyroAngle);
+		// double newK = SmartDashboard.getDouble("kP");
+		gyroMoveStraight(-0.75, gyroAngle * Robot.ROBOTMAP.KP_GYRO);// *newkP);//ALPHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//drive.drive(0.75, gyroAngle * kP);
+		// matchMotors(frontLeftMotor, backLeftMotor);
+		// matchMotors(frontLeftMotor, middleLeftMotor);
+		// matchMotors(frontRightMotor, backRightMotor);
+		// matchMotors(frontRightMotor, middleRightMotor);
+
+		if (leftEncDist > leftDist && -rightEncDist > rightDist) {
+			ultraBool = true;
+		}
+		if (leftEncDist <= leftDist && -rightEncDist <= rightDist) {
+		  ultraBool = false;
+		}
+
+	}
   
   //VISION STUFF
 
   // LOOK FOR BALL
   public void spinRobot() {
-    this.DIFF_DRIVE.arcadeDrive(0, 0.7);
+    // this.DIFF_DRIVE.arcadeDrive(0, 0.7);
+    this.LEFT_M_GROUP.set(-0.7);
+    this.RIGHT_M_GROUP.set(0.7);
   }
 
   
-  public boolean goToBall(){
-
+  public void goToBall(){
+    int count = Robot.VISION.ballCount;
     // Limelight.setPipeline(Robot.VISION.isRedAlliance ? 0 : 1);
     // Limelight.setPipeline(Robot.VISION.getBallPipeline());
     if(! Robot.VISION.isCargoPipeline()){
-      return true;
+      return;
     }
     
     // Robot.VISION.switchToBallPipeline();
 
-    if(! Limelight.hasValidTarget()) {
+    while(! Limelight.hasValidTarget()) {
       spinRobot();
-      // Limelight.updateValues();
-      Robot.VISION.updateNetworkValues();
+      Limelight.updateValues();
       
     }
+    Robot.DRIVETRAIN.stop();
     
-    
-    if(Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline()){
-      if(Limelight.getYOffset() > Y_LOWER_LIMIT){
-        gyroMoveStraight(0.8, 8 * -Limelight.getXOffset());
-      }
-      else if(Math.abs(Limelight.getXOffset()) > X_THRESHOLD){
-        gyroMoveStraight(0, 4 * -Limelight.getXOffset());
-      }else{
-        return true; // intake here
-      }
-    }
+    while(Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline() && count < 2){
+      Limelight.updateValues();
 
-    return false;
+      if(Limelight.getYOffset() > Y_LOWER_LIMIT){
+        gyroMoveStraight(0.7, 8 * -Limelight.getXOffset());
+      } else if(Math.abs(Limelight.getXOffset()) > X_THRESHOLD){
+         gyroMoveStraight(0, 4 * -Limelight.getXOffset());
+      } else { // cargo is aligned
+        Robot.VISION.autonPickUpBall();
+        stop();
+        break;
+      }
+      // stop();
+      // break; 
+    }
   }
 
-  // public void goToHub(){
-  //   if(Limelight.hasValidTarget() && Robot.VISION.isHubPipeline())
-  //   gyroMoveStraight(0.4, 2 * Limelight.getXOffset());
-  // }
+  public void goToHub(){
+    Limelight.setPipeline(5);
+    rotateToHub();
+    straightHubTest();
+  }
 
   public boolean rotateToHub() {
 
     Robot.VISION.switchToHubPipeline();
+    Limelight.updateValues();
 
-    if (!Limelight.hasValidTarget()) {
+    while (!Limelight.hasValidTarget()) {
+      Limelight.updateValues();
       spinRobot();
-      Robot.VISION.updateNetworkValues();
+      System.out.println("spinning to find hub.");
+      // Robot.VISION.updateNetworkValues();
     } 
+    // stop();
+    System.out.println("stopped spinning");
 
     double hubAngle = -Limelight.getXOffset();
-    boolean angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;;
+    boolean angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;
+    int direction = 1;
 
-    if (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline() && !angleInRange){
-      this.LEFT_M_GROUP.set(hubAngle / 60);
-      this.RIGHT_M_GROUP.set(-hubAngle / 60);
-
+    while (Limelight.hasValidTarget() && !angleInRange){
+      Limelight.updateValues();
       hubAngle = Limelight.getXOffset();
+      direction = hubAngle >= 0 ? 1 : -1;
+      this.LEFT_M_GROUP.set(-0.4 * direction);
+      this.RIGHT_M_GROUP.set(0.4 * direction);
+
       angleInRange = hubAngle > -ANGLE_LENIENCY && hubAngle < ANGLE_LENIENCY;
 
     } 
+    stop();
+    System.out.println("\n\nDone with finding the hub\n\n");
 
     return angleInRange;
+  }
+
+
+  public void straightHubTest() {
+    boolean hubNotReached = true;
+
+    while(hubNotReached) {
+
+      if(Limelight.hasValidTarget() && Robot.VISION.isHubPipeline()) {
+        if(Limelight.getYOffset() < Y_MAX_LIMIT_HUB) {
+          Limelight.updateValues();
+          rotate(-0.4);
+        }
+        else if (Limelight.getYOffset() >= Y_MAX_LIMIT_HUB) {
+          stop();
+          hubNotReached = false;
+          System.out.println("hub is close, ending loop now.");
+          break;
+        }
+      }
+      else {
+        stop();
+        break;
+      }
+    }
   }
 
   public void straightHub() {
 
     double hubArea = Limelight.getArea();
 
-    if (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline()){
+    while (Limelight.hasValidTarget() && Robot.VISION.isHubPipeline()){
       this.LEFT_M_GROUP.set(0.2 / hubArea);
       this.RIGHT_M_GROUP.set(0.2 / hubArea);
 

@@ -1,24 +1,22 @@
 package frc.robot.commands.Vision;
 import frc.robot.Robot;
-import frc.util.Limelight;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
-public class AlignToHub extends CommandBase {
-
-  public  AlignToHub() {}
+public class AutonPickUpBall1 extends CommandBase {
+    
+  public AutonPickUpBall1() {}
 
   @Override
   public Set<Subsystem> getRequirements() 
   {
     Set<Subsystem> list = new HashSet<Subsystem>();
-    list.add(Robot.DRIVETRAIN);
+    list.add(Robot.VISION);
     return list;
   }
 
@@ -27,12 +25,7 @@ public class AlignToHub extends CommandBase {
 
   @Override
   public void execute() {
-    
-    
-    // Robot.VISION.switchToHubPipeline();
-    Robot.DRIVETRAIN.rotateToHub();
-    Robot.DRIVETRAIN.straightHubTest();
-    // Robot.DRIVETRAIN.goToHub();
+    Robot.VISION.autonPickUpBall1();
   }
     
   @Override

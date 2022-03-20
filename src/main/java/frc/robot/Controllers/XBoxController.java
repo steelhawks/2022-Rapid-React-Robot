@@ -3,6 +3,7 @@ package frc.robot.Controllers;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Robot;
 import frc.robot.commands.Storage.*;
+import frc.robot.commands.Vision.*;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
 
@@ -25,8 +26,11 @@ public class XBoxController {
         .whenHeld(new StorageDown());
 
     //Intake to Storage
+    // this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
+    //     .whenHeld(new StorageIn());
     this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
-        .whenHeld(new StorageIn());
+        .whenPressed(new StorageIn());
+
     this.controller.mapButton(Robot.BUTTON_MAP.storageOutButton)
         .whenHeld(new StorageOut());
 
@@ -57,4 +61,8 @@ public class XBoxController {
     // this.controller.mapButton(Robot.BUTTON_MAP.climberPivotReverseButton)
     //     .whenHeld(new ClimberPivotReverse());
   }
+
+public boolean isActive() {
+    return false;
+}
 }

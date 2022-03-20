@@ -122,12 +122,13 @@ public class Climber extends MechanicalSubsystem {
 
       //kinda maybe sometimes really not sure but ok fine // 5 encoder turns is one inch
       climberLimit = this.CLIMBER_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward) ? 150 : 170; // first one is straight up, second one is back 150 : 170
+      
 
       double leftEncoderRotations = this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048;
       double rightEncoderRotations = this.CLIMBER_MOTOR_RIGHT.getSensorCollection().getIntegratedSensorPosition() / 2048;
 
       if (leftEncoderRotations < climberLimit - 20) { //left lags, so we limit less 
-        this.CLIMBER_MOTOR_LEFT.set(leftEncoderRotations < climberLimit - 60 ? -Robot.ROBOTMAP.climberSpeed : -Robot.ROBOTMAP.climberSpeedSlow);
+        this.CLIMBER_MOTOR_LEFT.set(leftEncoderRotations < climberLimit - 85 ? -Robot.ROBOTMAP.climberSpeed : -Robot.ROBOTMAP.climberSpeedSlow);
       } else {
         System.out.print("LEFT limit");
         System.out.println(leftEncoderRotations);
@@ -135,7 +136,7 @@ public class Climber extends MechanicalSubsystem {
       }
       
       if ((-rightEncoderRotations) < climberLimit - 20) {
-        this.CLIMBER_MOTOR_RIGHT.set(leftEncoderRotations < climberLimit - 65 ? -Robot.ROBOTMAP.climberSpeed : -Robot.ROBOTMAP.climberSpeedSlow);
+        this.CLIMBER_MOTOR_RIGHT.set(leftEncoderRotations < climberLimit - 85 ? -Robot.ROBOTMAP.climberSpeed : -Robot.ROBOTMAP.climberSpeedSlow);
       } else {
         System.out.print("RIGHT limit");
         System.out.println(rightEncoderRotations);
@@ -174,6 +175,11 @@ public class Climber extends MechanicalSubsystem {
 
     this.CLIMBER_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
     this.CLIMBER_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public void climbRobot() {
+    this.CLIMBER_MOTOR_LEFT.set(-Robot.ROBOTMAP.climbRobotSpeed);
+    this.CLIMBER_MOTOR_RIGHT.set(-Robot.ROBOTMAP.climbRobotSpeed);
   }
 
   // public void climberPivotForward() {

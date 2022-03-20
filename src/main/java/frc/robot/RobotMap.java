@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class RobotMap 
 {
-
   public RobotMap() {}
   
   /*Store instance variables, values, ports needed for the robot*/
@@ -37,6 +36,13 @@ public class RobotMap
   public final int storageMotorPortTop = 21; //shooter
   public final int storageMotorPortBot = 12; //shooter
   public final int storageMotorPortIn = 11; //sushi rollers
+
+
+  //BEAMS
+  public final int beamBreakerPortIntake = 1;
+  public final int beamBreakerPortStorage = 3;
+
+
   //60 percent 2.25 inch green compliant wheels
   public final double storageSpeedUpSlow = 0.55; //shooting speed
   public final double storageSpeedUpFast = 1;
@@ -60,6 +66,7 @@ public class RobotMap
     public final int climberSoleRightReverse = 6;
     public final double climberSpeed = 1;
     public final double climberSpeedSlow = 0.35;
+    public final double climbRobotSpeed = 0.3;
 
 
     public final int LimelightMotorPort = 7;

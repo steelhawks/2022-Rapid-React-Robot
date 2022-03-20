@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
+
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
   public static final SequentialCommandGroup routine1 = new SequentialCommandGroup(
@@ -77,33 +79,34 @@ public class Robot extends TimedRobot {
       //also can do:
       // new IntakeSpinReverse(), 
       new SampleAutopath0());
+
       //intake the ball
 
-  public static final SequentialCommandGroup routine2 = new SequentialCommandGroup(
+    public static final SequentialCommandGroup routine2 = new SequentialCommandGroup(
       new ParallelRaceGroup(
-          new AutoShoot(), new WaitCommand(2)),
-      new IntakeDownAuton(),
-      new SampleAutopath0(), // same thing as (shoot) and (go towards general area of ball)
+        new AutoShoot(), new WaitCommand(2)),
+      new ParallelCommandGroup(
+        new SampleAutopath0(), new IntakeBeam()),
+      // new StorageBeam(),
+      // new GoToBall(),
+      // new WaitCommand(1),
+      // new GoToBall() //erase when using path.
+      new SampleAutopath1(),
+  
+      new ParallelRaceGroup(
+        new AutoShoot(), new WaitCommand(2))
+    );
 
-      //if proceeding be sure the sampleautpath0 does not drive over the ball. Need some sufficient room in front to see ball.
-      new ParallelRaceGroup(
-          new GoToBall(), new RunAllOfStorage(), new WaitCommand(2)), // then Go to ball for hopefully 2 seconds, spinning intake for all of it.
-      
-      //if we have beam breakers:
-      // new ParallelRaceGroup(
-      //     new GoToBall(), new AutonPickUpBall() // autopickupball will continue to run intake+storage until the gotoball no longer sees a ball infront.
-      // ),
-      new StopAllOfStorage()); //safety check again to stop all storage after ball is in robot. 
-      // new IntakeRetract(), //when driving back to hub, fold up intake to prevent injury.
-      // new SampleAutopath1(), // drive back to general hub location.
-      // new AlignToHub()); //turn by rotating first to center hub, then optionally fix up the straight line distance.
+
+  public static final SequentialCommandGroup routine3 = new SequentialCommandGroup(
+    new SampleAutopath0(),
+    new SampleAutopath1(),
+    new SampleAutopath2());
 
   public static int ballCount = 0;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   Command m_autonomousCommand;
-
-  Ultrasonic ultrasonic = new Ultrasonic(2, 3);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -116,15 +119,18 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configurePeriodicBindings();
     Robot.COMMAND_LINKER.configureCommands();
 
-    ROBOTMAP.paths.add("driveoutfromhub.csv"); // 0
-    ROBOTMAP.paths.add("back.csv"); // 1
-
+    ROBOTMAP.paths.add("sami.csv"); // 0
+    ROBOTMAP.paths.add("samibutt.csv"); // 1
+    ROBOTMAP.paths.add("3ball_3.csv"); // 2
+    
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
     PATH_SELECTOR.loadPresetPath();
 
-    m_chooser.setDefaultOption("Simple Auto", routine1);
-    m_chooser.addOption("Complex Auto", routine2);
+    m_chooser.setDefaultOption("One Ball", routine1);
+    m_chooser.addOption("Two Ball", routine2);
+    m_chooser.addOption("THree Ball", routine3);
+
     SmartDashboard.putData("choose auto", m_chooser);
 
     CommandScheduler.getInstance().enable();
@@ -145,9 +151,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     DRIVETRAIN.shuffleBoard();
     CLIMBER.shuffleBoard();
+    STORAGE.shuffleBoard();
+
 
     // SmartDashboard.putBoolean("beam intact", beam.get());
-    SmartDashboard.putNumber("ultrainch", ultrasonic.getRangeInches());
     // SmartDashboard.putData("intakeextend", new IntakeExtend());
 
     VISION.updateNetworkValues();

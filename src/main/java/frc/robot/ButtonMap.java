@@ -27,6 +27,8 @@ public class ButtonMap {
 
   public final int storageMoveBallsUpButton = Gamepad.kGamepadButtonShoulderR;
   public final int storageMoveBallsReverseButton = Gamepad.kGamepadButtonShoulderL;
+
+  public final int climbRobotButton = Gamepad.kGamepadRightStick;
   // public final int storageMoveBallsInButton = Gamepad.kGamepadButtonX;
   // public final int storageMoveBallsOutButton;
 

@@ -10,6 +10,7 @@ import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Storage extends MechanicalSubsystem {
   //storage motors 
@@ -25,6 +26,11 @@ public class Storage extends MechanicalSubsystem {
   // BEAM BREAKER
   //public DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
   //public boolean previousStorage = true;
+
+  public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortIntake); 
+  public DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortStorage);
+  boolean previousIntake = true;
+  boolean previousIntake2 = true; 
 
   public Storage() {
     // TALON SRX MOTOR CONTROLLERS
@@ -107,9 +113,9 @@ public class Storage extends MechanicalSubsystem {
 
 
   public boolean storageMotorStop() {
-    this.STORAGE_MOTOR_UP_ONE.stopMotor();
-    this.STORAGE_MOTOR_UP_TWO.stopMotor();
-    this.STORAGE_MOTOR_GROUP_IN.stopMotor();
+    this.STORAGE_MOTOR_UP_ONE.set(0);
+    this.STORAGE_MOTOR_UP_TWO.set(0);
+    this.STORAGE_MOTOR_GROUP_IN.set(0);
     return true;
   }
 
@@ -132,6 +138,9 @@ public class Storage extends MechanicalSubsystem {
   }
 
   public void shuffleBoard() {
+
+    SmartDashboard.putBoolean("beam", this.beamI.get());
+    SmartDashboard.putBoolean("upper beam (storage)", this.beamS.get());
   
   }
 

@@ -3,11 +3,11 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class SampleAutopath3 extends CommandBase 
+public class SampleAutopath2 extends CommandBase 
 {
 
     
-  public SampleAutopath3() {
+  public SampleAutopath2() {
       addRequirements(Robot.DRIVETRAIN);
   }
 

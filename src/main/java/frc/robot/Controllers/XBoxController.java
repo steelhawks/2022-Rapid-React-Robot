@@ -53,6 +53,8 @@ public class XBoxController {
                 .whenHeld(new ClimberUnrollWinch());
         this.controller.mapButton(Robot.BUTTON_MAP.climberToggleSolenoidButton)
                 .whenPressed(new ClimberToggleSolenoid());
+        this.controller.mapButton(Robot.BUTTON_MAP.climbRobotButton)
+                .whenHeld(new ClimbRobot());
 
 
         this.controller.mapButton(Robot.BUTTON_MAP.climberWinchDownButton)

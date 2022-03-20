@@ -25,12 +25,12 @@ public class AutonPickUpBall extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.VISION.autonPickUpBall();
+    // Robot.VISION.autonPickUpBall();
   }
     
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 
   @Override

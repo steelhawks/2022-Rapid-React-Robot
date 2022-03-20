@@ -10,6 +10,7 @@ import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Storage extends MechanicalSubsystem {
   //storage motors 
@@ -25,6 +26,10 @@ public class Storage extends MechanicalSubsystem {
   // BEAM BREAKER
   //public DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
   //public boolean previousStorage = true;
+  public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortIntake); 
+  public DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortStorage);
+  boolean previousIntake = true;
+  boolean previousIntake2 = true; 
 
   public Storage() {
     // TALON SRX MOTOR CONTROLLERS
@@ -50,9 +55,11 @@ public class Storage extends MechanicalSubsystem {
   public void storageRun(boolean isForward){
     System.out.println("rooooolling motors");
     if (isForward) {
-        this.STORAGE_MOTOR_GROUP_UP.set(-Robot.ROBOTMAP.storageSpeedUp);
-    } else {
-        this.STORAGE_MOTOR_GROUP_UP.set(Robot.ROBOTMAP.storageSpeedUp);
+      STORAGE_MOTOR_GROUP_UP.set(Robot.ROBOTMAP.storageSpeedUp);
+    }
+    else {
+      STORAGE_MOTOR_GROUP_UP.set(-Robot.ROBOTMAP.storageSpeedUp);
+      
     }
   }
   //for auto
@@ -67,14 +74,46 @@ public class Storage extends MechanicalSubsystem {
   }
 
   public void storageIn(boolean isForward) {
+    if (isForward) {
+      this.STORAGE_MOTOR_GROUP_IN.set(-Robot.ROBOTMAP.storageSpeedUp);
+    } else {
+      this.STORAGE_MOTOR_GROUP_IN.set(Robot.ROBOTMAP.storageSpeedUp);
+    }
+
+  }
+
+  public void storageInSucks(boolean isForward) {
     System.out.println("balls moving");
     if (isForward) {
-        this.STORAGE_MOTOR_GROUP_IN.set(Robot.ROBOTMAP.storageSpeedIn);
+      if(previousIntake != beamI.get() && beamI.get()){
+        Robot.ballCount++;
+        this.STORAGE_MOTOR_GROUP_IN.set(-Robot.ROBOTMAP.storageSpeedUp);
+      }
+      else {
+        previousIntake = beamI.get();
+        this.STORAGE_MOTOR_GROUP_IN.set(Robot.ROBOTMAP.storageSpeedUp);
+      }
+        // this.STORAGE_MOTOR_GROUP_IN.set(Robot.ROBOTMAP.storageSpeedIn);
     } else {
         this.STORAGE_MOTOR_GROUP_IN.set(-Robot.ROBOTMAP.storageSpeedIn);
     }
   }
+  
+  // public void rollBallIn(){
+  //   if(previousIntake != beamI.get() && beamI.get()){
+  //       Robot.ballCount++;
+  //       storageIn(true);
+  //   }
+  //     previousIntake = beamI.get();
+  // }
 
+  // public void rollBallOut(){
+  //   if(previousIntake != beamS.get() && beamS.get()){
+  //     storageRun(5);
+  // }
+  //   previousIntake2 = beamI.get();
+  // }
+  
   public boolean storageMotorStop() {
     this.STORAGE_MOTOR_GROUP_UP.stopMotor();
     this.STORAGE_MOTOR_GROUP_IN.stopMotor();
@@ -99,7 +138,8 @@ public class Storage extends MechanicalSubsystem {
   }
 
   public void shuffleBoard() {
-  
+    SmartDashboard.putBoolean("beam", this.beamI.get());
+    SmartDashboard.putBoolean("upper beam (storage)", this.beamS.get());
   }
 
   // public void countStorage(){

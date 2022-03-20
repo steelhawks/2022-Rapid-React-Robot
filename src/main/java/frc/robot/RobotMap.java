@@ -63,8 +63,8 @@ public class RobotMap
     public final double climberSpeed = 0.5;
 
     public final int LimelightMotorPort = 7;
-    public final int beambreakerPort = 1;
-    public final int beambreakerPort2 = 4; 
+    public final int beamBreakerPortIntake = 1; 
+    public final int beamBreakerPortStorage = 3;
     
 
   /*****

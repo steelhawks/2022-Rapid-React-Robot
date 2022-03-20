@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Robot;
+import frc.robot.commands.Intake.IntakeSpin;
 import frc.util.subsystems.MechanicalSubsystem;
 
 public class Intake extends MechanicalSubsystem {
@@ -28,8 +29,8 @@ public class Intake extends MechanicalSubsystem {
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
 
   // BEAM BREAKER
-  public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort);
-  boolean previousIntake = true;
+  // public DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beambreakerPort);
+  // boolean previousIntake = true;
 
   // DRIVETRAIN CONSTRUCTOR
   public Intake() {
@@ -120,10 +121,5 @@ public class Intake extends MechanicalSubsystem {
 	
   }
 
-  public void countIntake(){
-    if(previousIntake != beamI.get() && beamI.get()){
-      Robot.ballCount++;
-    }
-    previousIntake = beamI.get();
-  }
+  
 }

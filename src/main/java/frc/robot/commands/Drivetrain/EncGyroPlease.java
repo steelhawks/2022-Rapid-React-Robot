@@ -25,8 +25,8 @@ public class EncGyroPlease extends CommandBase {
     	Robot.DRIVETRAIN.ultraBool = false;
     	Robot.DRIVETRAIN.GYRO.reset();
     	Robot.DRIVETRAIN.GYRO.zeroYaw();
-    	Robot.DRIVETRAIN.leftEnc.reset();
-    	Robot.DRIVETRAIN.rightEnc.reset();
+    	// Robot.DRIVETRAIN.leftEnc.reset();
+    	// Robot.DRIVETRAIN.rightEnc.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run

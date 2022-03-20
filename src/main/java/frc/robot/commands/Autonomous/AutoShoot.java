@@ -20,6 +20,7 @@ public class AutoShoot extends CommandBase
   @Override
   public void execute() 
     {
+        Robot.STORAGE.storageIn(false);
         Robot.STORAGE.storageRun(true);
     }
 

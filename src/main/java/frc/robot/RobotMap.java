@@ -39,7 +39,7 @@ public class RobotMap
   //Storage % Shooter Motor ID
   public final int storageMotorPortUp = 7;
   public final int storageMotorPortIn = 13;
-  public final double storageSpeedUp = 0.75;
+  public final double storageSpeedUp = 0.85;
   public final double storageSpeedIn = 1;
 
   //Gyro

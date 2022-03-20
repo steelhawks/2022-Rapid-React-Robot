@@ -3,8 +3,6 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-import org.apache.commons.lang3.time.StopWatch;
-
 
 public class AutoShoot extends CommandBase 
 {    

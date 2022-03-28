@@ -1,28 +1,29 @@
 package frc.robot.subsystems;
+import frc.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.util.subsystems.MechanicalSubsystem;
 
 public class Climber extends MechanicalSubsystem {
-
+  
   public final WPI_TalonFX CLIMBER_MOTOR_LEFT;
   public final WPI_TalonFX CLIMBER_MOTOR_RIGHT;
-
+  
   public final DoubleSolenoid CLIMBER_SOLENOID_LEFT;
   public final DoubleSolenoid CLIMBER_SOLENOID_RIGHT;
 
   private final PneumaticsModuleType type = PneumaticsModuleType.CTREPCM;
 
-  public final DigitalInput leftLimit;
-  public final DigitalInput rightLimit;
+  public final DigitalInput leftUpLimit;
+  public final DigitalInput rightUpLimit;
+
+  public final DigitalInput isClimbForwardLimit;
 
   public double leftEncoderValue;
   public double rightEncoderValue;
@@ -43,8 +44,10 @@ public class Climber extends MechanicalSubsystem {
 
     this.CLIMBER_MOTOR_LEFT.setInverted(true);
 
-    leftLimit = new DigitalInput(Robot.ROBOTMAP.leftLimit);
-    rightLimit = new DigitalInput(Robot.ROBOTMAP.rightLimit);
+    leftUpLimit = new DigitalInput(Robot.ROBOTMAP.leftLimit);
+    rightUpLimit = new DigitalInput(Robot.ROBOTMAP.rightLimit);
+
+    isClimbForwardLimit = new DigitalInput(Robot.ROBOTMAP.isClimbForwardLimit);
 
     leftEncoderValue = 0;
     rightEncoderValue = 0;
@@ -60,7 +63,7 @@ public class Climber extends MechanicalSubsystem {
 
     if (isDown) {
 
-      if (leftLimit.get()) {
+      if (leftUpLimit.get()) {
         this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
       } else {
         stopLeft();
@@ -77,7 +80,7 @@ public class Climber extends MechanicalSubsystem {
     
     if (isDown) {
       
-      if (rightLimit.get()) {
+      if (rightUpLimit.get()) {
         this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
       } else {
         stopRight();
@@ -95,54 +98,50 @@ public class Climber extends MechanicalSubsystem {
     
     if (isDown) {
       
-      if (leftLimit.get()) {
+      if (leftUpLimit.get()) {
         this.CLIMBER_MOTOR_LEFT.set(Robot.ROBOTMAP.climberSpeed);
       } else {
         stopLeft();
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().setIntegratedSensorPosition(0, 0);
-        
       }
       
-      if (rightLimit.get()) {
+      if (rightUpLimit.get()) {
         this.CLIMBER_MOTOR_RIGHT.set(Robot.ROBOTMAP.climberSpeed);
       } else {
         stopRight();
         this.CLIMBER_MOTOR_RIGHT.getSensorCollection().setIntegratedSensorPosition(0, 0);
       }
-      
     }
     
     else {
       
       //250 is the limit for max extension at 30:1 gear ratio
-
       //126 is the limit for 5 ft 6 at 20:1 gear ratio
-
       //20:1 gear ratio code 
 
       //kinda maybe sometimes really not sure but ok fine // 5 encoder turns is one inch
-      climberLimit = this.CLIMBER_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward) ? 150 : 170; // first one is straight up, second one is back 150 : 170
-      
+      climberLimit = this.CLIMBER_SOLENOID_LEFT.get().equals(DoubleSolenoid.Value.kForward) ? 153 : 185; // first one is straight up, second one is back 150 : 170
+      climberLimit = !this.isClimbForwardLimit.get() ? 153 : 185; // first one is straight up, second one is back 150 : 170
+
 
       double leftEncoderRotations = this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048;
       double rightEncoderRotations = this.CLIMBER_MOTOR_RIGHT.getSensorCollection().getIntegratedSensorPosition() / 2048;
 
-      if (leftEncoderRotations < climberLimit - 20) { //left lags, so we limit less 
+      if (leftEncoderRotations < climberLimit - 15) { //left lags, so we limit less 
         this.CLIMBER_MOTOR_LEFT.set(leftEncoderRotations < climberLimit - 85 ? -Robot.ROBOTMAP.climberSpeed : -Robot.ROBOTMAP.climberSpeedSlow);
       } else {
-        System.out.print("LEFT limit");
-        System.out.println(leftEncoderRotations);
         stopLeft();
+        // System.out.print("LEFT limit");
+        // System.out.println(leftEncoderRotations);
       }
       
       if ((-rightEncoderRotations) < climberLimit - 20) {
         this.CLIMBER_MOTOR_RIGHT.set(leftEncoderRotations < climberLimit - 85 ? -Robot.ROBOTMAP.climberSpeed : -Robot.ROBOTMAP.climberSpeedSlow);
       } else {
-        System.out.print("RIGHT limit");
-        System.out.println(rightEncoderRotations);
         stopRight();
+        // System.out.print("RIGHT limit");
+        // System.out.println(rightEncoderRotations);
       }
-
     }
   }
   // public void climberRollWinch() {
@@ -161,7 +160,6 @@ public class Climber extends MechanicalSubsystem {
       System.out.println("Climber Retract: point diagonal back");
     } else {
       climberExtendSolenoid();
-
       System.out.println("Climber extend: Pointed Straight UP");
     }
   }
@@ -172,7 +170,6 @@ public class Climber extends MechanicalSubsystem {
   }
 
   public void climberRetractSolenoid() {
-
     this.CLIMBER_SOLENOID_LEFT.set(DoubleSolenoid.Value.kReverse);
     this.CLIMBER_SOLENOID_RIGHT.set(DoubleSolenoid.Value.kReverse);
   }
@@ -219,12 +216,13 @@ public class Climber extends MechanicalSubsystem {
 
   @Override
   public void shuffleBoard() {
+    SmartDashboard.putBoolean("climber down", isClimbForwardLimit.get());
     SmartDashboard.putNumber("L encoder rotation",
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
     SmartDashboard.putNumber("R encoder rotation",
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
-    SmartDashboard.putBoolean("left sensor", leftLimit.get());
-    SmartDashboard.putBoolean("right sensor", rightLimit.get());
+    SmartDashboard.putBoolean("left sensor", leftUpLimit.get());
+    SmartDashboard.putBoolean("right sensor", rightUpLimit.get());
     SmartDashboard.putNumber("Left Voltage", this.CLIMBER_MOTOR_LEFT.getMotorOutputVoltage());
     SmartDashboard.putNumber("Right Voltage", this.CLIMBER_MOTOR_RIGHT.getMotorOutputVoltage());
     SmartDashboard.putNumber("Left Amperage", this.CLIMBER_MOTOR_LEFT.getSupplyCurrent());

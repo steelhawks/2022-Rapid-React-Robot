@@ -36,11 +36,10 @@ public class Follower {
   public void follow(int pathIndex) {
     AutonPath currentPath = AutonPaths.get(pathIndex);
     isFinished = false;
-
     // FOLLOW JOYSTICK RECORDING
     if (index < currentPath.joystickYValues.size()) {
       Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index),
-          currentPath.joystickRotationValues.get(index),false);
+          currentPath.joystickRotationValues.get(index), false);
 
           index++;
       // FOLLLOW BUTTON RECORDING
@@ -70,42 +69,41 @@ public class Follower {
     }
   }
 
-  // public void followReverse(int pathIndex) {
-  //   AutonPath currentPath = AutonPaths.get(pathIndex);
-  //   isFinished = false;
-  //   index = currentPath.joystickYValues.size();
-  //   // FOLLOW JOYSTICK RECORDING
-  //   if (index < currentPath.joystickYValues.size()) {
-  //     Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index),
-  //         currentPath.joystickRotationValues.get(index),false);
+  public void followReverse(int pathIndex) {
+    AutonPath currentPath = AutonPaths.get(pathIndex);
+    isFinished = false;
+    // FOLLOW JOYSTICK RECORDING
+    if (index < currentPath.joystickYValues.size()) {
+      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(-currentPath.joystickYValues.get(currentPath.joystickYValues.size() - 1 - index),
+          -currentPath.joystickRotationValues.get(currentPath.joystickYValues.size() - 1 - index),false);
 
-  //         index--;
-  //     // FOLLLOW BUTTON RECORDING
+          index++;
+      // FOLLLOW BUTTON RECORDING
       
-  //     //int currentButtonInput = (int)Math.round(currentPath.joystickButtonInputs.get(index));
-  //     //readButtonInput(currentButtonInput); #READ OTHER SUBSYSTEM BUTTON PRESSES
+      //int currentButtonInput = (int)Math.round(currentPath.joystickButtonInputs.get(index));
+      //readButtonInput(currentButtonInput); #READ OTHER SUBSYSTEM BUTTON PRESSES
       
-  //     // DOUBLING FILES TO ENSURE ACCURACY
-  //     // if (shouldDouble == true) 
-  //     // {
-  //     //   shouldDouble = false;
-  //     //   index++;
-  //     // } 
-  //     // else {
-  //     //   shouldDouble = true;
-  //     // }
+      // DOUBLING FILES TO ENSURE ACCURACY
+      // if (shouldDouble == true) 
+      // {
+      //   shouldDouble = false;
+      //   index++;
+      // } 
+      // else {
+      //   shouldDouble = true;
+      // }
 
-  //     // isFinished = false;
-  //   } 
+      // isFinished = false;
+    } 
 
-  //   else 
-  //   {
-  //     Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(0, 0);
-  //     System.out.println(index + " finished running path");
-  //     index = 0;
-  //     isFinished = true;
-  //   }
-  // }
+    else 
+    {
+      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(0, 0);
+      System.out.println(index + " finished running path");
+      index = 0;
+      isFinished = true;
+    }
+  }
 
 
   public void importPath(ArrayList<String> paths) {

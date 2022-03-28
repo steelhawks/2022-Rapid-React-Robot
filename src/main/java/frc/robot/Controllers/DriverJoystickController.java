@@ -1,20 +1,14 @@
 package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
-import frc.robot.commands.Autonomous.AutoShoot;
 import frc.robot.commands.Drivetrain.ReverseDriveDirection;
 import frc.robot.commands.Drivetrain.ShiftGears;
-import frc.robot.commands.Intake.IntakeToggleSolenoid;
 import frc.robot.commands.Pathcorder.EndRecording;
 import frc.robot.commands.Pathcorder.StartRecording;
 import frc.robot.commands.Storage.RunAllOfStorage;
 import frc.robot.commands.Storage.StopAllOfStorage;
-import frc.robot.commands.Storage.StorageTest;
 import frc.robot.commands.Vision.*;
 
 

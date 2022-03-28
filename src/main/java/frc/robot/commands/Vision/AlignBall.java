@@ -1,5 +1,6 @@
 package frc.robot.commands.Vision;
 import frc.robot.Robot;
+import frc.util.Limelight;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,15 +9,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
-public class AutonPickUpBall extends CommandBase {
+public class AlignBall extends CommandBase {
     
-  public AutonPickUpBall() {}
+  public AlignBall() {}
 
   @Override
   public Set<Subsystem> getRequirements() 
   {
     Set<Subsystem> list = new HashSet<Subsystem>();
-    list.add(Robot.VISION);
+    list.add(Robot.DRIVETRAIN);
     return list;
   }
 
@@ -25,7 +26,10 @@ public class AutonPickUpBall extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.VISION.autonPickUpBall();
+    Limelight.setPipeline(Robot.VISION.getBallPipeline());  
+    Robot.VISION.setPipelineColor();
+
+    Robot.DRIVETRAIN.adjustBall();
   }
     
   @Override
@@ -34,6 +38,8 @@ public class AutonPickUpBall extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Robot.DRIVETRAIN.stop();
+  }
     
 }

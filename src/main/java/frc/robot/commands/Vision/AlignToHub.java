@@ -31,7 +31,7 @@ public class AlignToHub extends CommandBase {
     Robot.VISION.switchToHubPipeline();
     
     Robot.DRIVETRAIN.rotateToHub();
-    // Robot.DRIVETRAIN.straightHubTest(); //Danger
+    Robot.DRIVETRAIN.straightHubTest(); //Danger
   }
     
   @Override

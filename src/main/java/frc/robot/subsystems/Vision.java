@@ -28,11 +28,11 @@ public class Vision extends SensorSubsystem {
 
     public boolean limelightUp = false;
 
-    // public final Servo LIMELIGHT_MOTOR;
+    // public final Servo LIMELIGHT_MOTOR; //UN COMMENT THIS OUT PLSE EWOJJWOOJEWGIGEWJOIWEGOJI
     
     // public final DigitalInput beamS = new DigitalInput(Robot.ROBOTMAP.beambreakerPort2);
     // public final DigitalInput beamI = new DigitalInput(Robot.ROBOTMAP.beamBreakerPortOne);
-    public int count = 0;
+    public int ballCount = 0;
     public boolean previousIntact = true;
 
 
@@ -188,6 +188,7 @@ public class Vision extends SensorSubsystem {
         // SmartDashboard.putNumber("Line Angle", lineAngle);
         // SmartDashboard.putBoolean("isRedAlliance", isRedAlliance);
         // SmartDashboard.putNumber("BALL PIPELINE", BALL_PIPELINE);
+        SmartDashboard.putNumber("Ball Count", ballCount);
     }
 
     public void setPipelineColor(){
@@ -223,42 +224,34 @@ public class Vision extends SensorSubsystem {
     public void toggleDetect(){
         detectMode = detectMode.equals("BALL") ? "HUB" : "BALL";
     }
-
-
-
+   
 
     public void autonPickUpBall(){
-    //     Robot.STORAGE.storageMotorStop();
-    //     boolean ballInRobot = false;
 
-    //     while(!ballInRobot) {
+        Robot.INTAKE.spinRoller(false); //runs intake at start of auton
+        Robot.STORAGE.storageIn(true); //(SET TO  TRUE IN OMEGA PLS) runs sushi rollers at start of auton
 
-        
-        
-    
-    //         if(beamI.get()){
-    //             Robot.INTAKE.spinRoller(false); //runs intake at start of auton
-    //             Robot.STORAGE.storageIn(true); //runs sushi rollers at start of auton
-    //             if(!previousIntact){
-    //                 Robot.INTAKE.stopRoll();
-    //                 Robot.STORAGE.storageMotorStop();
-    //                 // Robot.STORAGE.storageInStop();
-    //                 // Robot.STORAGE.storageUpStop();
-    //                 Robot.INTAKE.stopRoll();
-    //                 count++;
-    //                 ballInRobot = true;
-    //             }else{
-    //                 previousIntact = true;
-    //             }
-    //         }
-    //         if(!beamI.get()){
-    //             Robot.INTAKE.stopRoll();
-    //             Robot.STORAGE.storageIn(true);
-    //             Robot.STORAGE.storageRunSlow(true); 
-            
-    //             previousIntact = false;
-        
-    //         }
-    //     }
+        if (ballCount == 0) {
+            // Robot.STORAGE.storageRun(true);
+            Robot.STORAGE.storageRunSlow(false);
+
+            while(Robot.STORAGE.beamI.get()){
+                // Robot.DRIVETRAIN.rotate(-0.2);
+                // System.out.println("a");
+            }
+            Robot.DRIVETRAIN.stop();
+            while(Robot.STORAGE.beamS.get()){}
+            Robot.STORAGE.storageMotorStop();
+
+        }
+        else if (ballCount == 1) {
+            while(Robot.STORAGE.beamI.get()){
+                // Robot.DRIVETRAIN.rotate(-0.2);
+            }
+        }
+        ballCount++;
+
+        Robot.STORAGE.storageMotorStop();
+        Robot.INTAKE.stopRoll();
     }
 }

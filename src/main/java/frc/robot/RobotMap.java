@@ -44,8 +44,9 @@ public class RobotMap
 
 
   //60 percent 2.25 inch green compliant wheels
-  public final double storageSpeedUpSlow = 0.55; //shooting speed
-  public final double storageSpeedUpFast = 1;
+  public final double storageSpeedUpSlow = 0.47; //shooting speed original .55
+  public final double storageSpeedUpFast = .55; // 1 top speed
+
   public final double storageSpeedIn = 1; //sushi roller speed
 
   //Gyro
@@ -65,16 +66,17 @@ public class RobotMap
     public final int climberSoleRightForward = 7;
     public final int climberSoleRightReverse = 6;
     public final double climberSpeed = 1;
-    public final double climberSpeedSlow = 0.35;
+    public final double climberSpeedSlow = .35; //0.65 is 189
     public final double climbRobotSpeed = 0.3;
 
-
+    //Vision
     public final int LimelightMotorPort = 7;
     public final int beamBreakerPortOne = 1;
-    public final int beamBreakerPortTwo = 4; 
+    public final int beamBreakerPortTwo = 4;
 
     public final int leftLimit = 8;
     public final int rightLimit = 7;
+    public final int isClimbForwardLimit = 6;
     
 
   /*****

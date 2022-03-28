@@ -8,11 +8,8 @@ import edu.wpi.first.wpilibj.Compressor;
 // import edu.wpi.first.wpilibj.PneumaticsBase;
 // import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-// import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,10 +28,10 @@ import frc.util.pathcorder.Follower;
 import frc.util.pathcorder.Recorder;
 import frc.util.pathcorder.pathselector.PathSelector;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.networktables.NetworkTableEntry;
+// import edu.wpi.first.wpilibj.AnalogInput;
+// import edu.wpi.first.wpilibj.DigitalInput;
+// import edu.wpi.first.wpilibj.RobotController;
+// import edu.wpi.first.networktables.NetworkTableEntry;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -63,14 +60,13 @@ public class Robot extends TimedRobot {
 
   public static final Command follow = new Follow();
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
-  public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
-
+  public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();    
 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
   public static final SequentialCommandGroup routine1 = new SequentialCommandGroup(
       new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2)),
+        new AutoShoot(), new WaitCommand(2)), //2
       
       // new IntakeRetract(), 
       //new ParallelRaceGroup(
@@ -78,25 +74,44 @@ public class Robot extends TimedRobot {
       //),    
       //also can do:
       // new IntakeSpinReverse(), 
-      new SampleAutopath0());
+      new SampleAutopath0()); // 2 to 3 seconds
 
       //intake the ball
 
     public static final SequentialCommandGroup routine2 = new SequentialCommandGroup(
       new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2)),
+        new AutoShoot(), new WaitCommand(2)), // shoot preloaded ball
+      new IntakeDownAuton(),
       new ParallelCommandGroup(
-        new SampleAutopath0(), new IntakeBeam()),
-      // new StorageBeam(),
-      // new GoToBall(),
-      // new WaitCommand(1),
-      // new GoToBall() //erase when using path.
-      new SampleAutopath1(),
-  
+        new SampleAutopath0(), new IntakeBeam()), // intake ball in front
+
+      new SampleAutopath1(), // return to hub
+      
+      new ParallelRaceGroup(
+        new AutoShoot(), new WaitCommand(2)), // shoot second ball
+
+      new IntakeRetract(),
+
+      new SampleAutopath0() // taxi
+    );
+            
+    public static final SequentialCommandGroup limeRoutine = new SequentialCommandGroup(
+      new ParallelRaceGroup(
+        new AutoShoot(), new WaitCommand(2)),
+
+      new SampleAutonpathLime(), //should be a shorter version of move forward so the ball is still there.
+
+      new ParallelCommandGroup(
+        new IntakeBeam(), new AlignBall() //picks up ball using limelight tracking.
+      ),
+
+      new SampleAutopath1(), //goes back to hub. should have ball.
       new ParallelRaceGroup(
         new AutoShoot(), new WaitCommand(2))
+
     );
 
+    // after finishing path, add align to ball command with wait command in parallel race group
 
   public static final SequentialCommandGroup routine3 = new SequentialCommandGroup(
     new SampleAutopath0(),
@@ -122,6 +137,7 @@ public class Robot extends TimedRobot {
     ROBOTMAP.paths.add("sami.csv"); // 0
     ROBOTMAP.paths.add("samibutt.csv"); // 1
     ROBOTMAP.paths.add("3ball_3.csv"); // 2
+    ROBOTMAP.paths.add("samiShort.csv"); // 3
     
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -129,7 +145,8 @@ public class Robot extends TimedRobot {
 
     m_chooser.setDefaultOption("One Ball", routine1);
     m_chooser.addOption("Two Ball", routine2);
-    m_chooser.addOption("THree Ball", routine3);
+    m_chooser.addOption("Three Ball", routine3);
+    m_chooser.addOption("Two Ball Lime", limeRoutine);
 
     SmartDashboard.putData("choose auto", m_chooser);
 
@@ -152,7 +169,6 @@ public class Robot extends TimedRobot {
     DRIVETRAIN.shuffleBoard();
     CLIMBER.shuffleBoard();
     STORAGE.shuffleBoard();
-
 
     // SmartDashboard.putBoolean("beam intact", beam.get());
     // SmartDashboard.putData("intakeextend", new IntakeExtend());

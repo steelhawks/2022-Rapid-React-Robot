@@ -42,7 +42,7 @@ public class Recorder {
     this.buttonPressed = -1;
   }
   public void recordJoystick(JoystickRecorder stick) {
-    logger.writeData(stick.joystickY, stick.joystickTwist, stick.count, this.buttonPressed);
+    logger.writeData(stick.velocityLeft, stick.velocityRight, stick.count, this.buttonPressed);
     this.resetButton();
   }
   

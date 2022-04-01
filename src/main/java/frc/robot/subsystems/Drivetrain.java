@@ -10,6 +10,8 @@ import frc.util.pathcorder.JoystickRecorder;
 import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -117,15 +119,17 @@ public class Drivetrain extends MechanicalSubsystem {
     //   this.DIFF_DRIVE.arcadeDrive(0, rotate, false);
     // } else {
       this.DIFF_DRIVE.arcadeDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);  
-      // this.DIFF_DRIVE.=urvatureDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false);  
-
+      // this.DIFF_DRIVE.=curvatureDrive(y / this.rPMCoefficient, rotate / this.twistCoefficient, false); 
       // }
     
     if (Robot.RECORDER.isRecording) {
       count++;
-      Robot.RECORDER.recordJoystick(new JoystickRecorder(y, rotate, false, count));
+      Robot.RECORDER.recordJoystick(
+        new JoystickRecorder(
+          LEFT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity(),
+           RIGHT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity(),
+            false, count));
     }
-    
   }
 
   public void reverseDirection() {

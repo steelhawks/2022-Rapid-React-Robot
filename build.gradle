@@ -5,6 +5,14 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2022.4.1"
 }
 
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+final String STUYLIB_VERSION = 'v2022.2.0'
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -76,7 +84,9 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
+    implementation "com.github.StuyPulse:StuyLib:${STUYLIB_VERSION}";
 }
 
 // Simulation configuration (e.g. environment variables).

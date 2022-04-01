@@ -8,20 +8,20 @@
 package frc.util.pathcorder;
 
 public class JoystickRecorder {
-  public final double joystickY;
-  public final double joystickTwist;
+  public final double velocityLeft;
+  public final double velocityRight;
   public final boolean shifted;
   public final int count;
 
-  public JoystickRecorder(double joystickY, double joystickTwist, boolean shifted, int count) {
-    this.joystickY = joystickY;
-    this.joystickTwist = joystickTwist;
+  public JoystickRecorder(double velocityLeft, double velocityRight, boolean shifted, int count) {
+    this.velocityLeft = velocityLeft;
+    this.velocityRight = velocityRight;
     this.shifted = shifted;
     this.count = count;
   }
 
   public String toString() {
-    return "Y: " + this.joystickY + "\nTwist: " + this.joystickTwist + "\nShifted: " + this.shifted;
+    return "Lvelocity: " + this.velocityLeft + "\nRvelocity: " + this.velocityRight + "\nShifted: " + this.shifted;
   }
 
 }

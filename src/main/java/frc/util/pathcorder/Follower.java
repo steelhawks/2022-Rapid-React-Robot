@@ -41,6 +41,7 @@ public class Follower {
       Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index),
           currentPath.joystickRotationValues.get(index), false);
 
+
           index++;
       // FOLLLOW BUTTON RECORDING
       

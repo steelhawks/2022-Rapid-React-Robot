@@ -34,8 +34,10 @@ import frc.util.pathcorder.Recorder;
 import frc.util.pathcorder.pathselector.PathSelector;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 
 
@@ -68,9 +70,28 @@ public class Robot extends TimedRobot {
   public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
   public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();
 
+  Compressor compressor1 = new Compressor(8, PneumaticsModuleType.CTREPCM);
+  Compressor compressor2 = new Compressor(9, PneumaticsModuleType.CTREPCM);
+
   public static final SequentialCommandGroup autopath = new SequentialCommandGroup(
     new ParallelRaceGroup(
-      new AutoShoot(), new WaitCommand(2)), new SampleAutopath0()
+      new AutoShoot(), new WaitCommand(2)
+    ), 
+    new ParallelRaceGroup(
+      new SampleAutopath0(), 
+      new SequentialCommandGroup(
+      new WaitCommand(1), new IntakeSpinReverse()
+    )),
+    new SequentialCommandGroup(
+      new SampleAutopath1(),
+      new ParallelRaceGroup(
+        new AutoShoot(), new WaitCommand(2)
+      )
+    )//, 
+      // new SampleAutopath0Reverse(),
+      // new ParallelRaceGroup(
+      //   new AutoShoot(), new WaitCommand(2) 
+      // )
     );
     
   public static final SequentialCommandGroup autopath2 = new SequentialCommandGroup(
@@ -84,6 +105,61 @@ public class Robot extends TimedRobot {
     // new ParallelRaceGroup(
     //   new AutoShoot(), new WaitCommand(2))
   );
+
+  public static final SequentialCommandGroup autopath3 = new SequentialCommandGroup(
+
+    //Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    ), 
+
+    // Intake ball
+    new ParallelRaceGroup(
+      new SampleAutopath2(), 
+      new SequentialCommandGroup(
+        new WaitCommand(1), new IntakeSpinReverse())
+    ),
+
+    // Return to hub
+    new SampleAutopath3(),
+
+    // Shoot ball
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    )
+    );
+
+    public static final SequentialCommandGroup autopath4 = new SequentialCommandGroup(
+
+    // Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    ), 
+
+    // Intake ball
+    new ParallelRaceGroup(
+      new SampleAutopath2(), 
+      new SequentialCommandGroup(
+        new WaitCommand(1), new IntakeSpinReverse()
+      )
+    ),
+
+    // Intake other ball
+    new ParallelRaceGroup(
+      new SampleAutopath4(),
+      new SequentialCommandGroup(
+        new WaitCommand(1), new IntakeSpinReverse()
+      )
+    ),
+
+    // Return to hub
+    new SampleAutopath5(),
+
+    // Shoot both balls
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    )
+    );
   
 
   public static int ballCount = 0;
@@ -116,8 +192,16 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configurePeriodicBindings();
     Robot.COMMAND_LINKER.configureCommands();
 
-    ROBOTMAP.paths.add("driveoutfromhub.csv");
-    ROBOTMAP.paths.add("ba.csv");
+    // ROBOTMAP.paths.add("ba.csv");
+
+    //bestAutonBack.csv is bad 
+    ROBOTMAP.paths.add("bestAuton.csv"); // 0
+    ROBOTMAP.paths.add("sami2.csv"); // 1
+    ROBOTMAP.paths.add("AngledAuton.csv"); // 2
+    ROBOTMAP.paths.add("AngledAutonBack.csv"); // 3
+    ROBOTMAP.paths.add("AngledAuton2.csv"); // 4
+    ROBOTMAP.paths.add("AngledAutonBack2.csv"); // 5
+    ROBOTMAP.paths.add("driveoutfromhub.csv"); // 6
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -125,8 +209,12 @@ public class Robot extends TimedRobot {
 
     m_chooser.setDefaultOption("Simple Auto", autopath);
     m_chooser.addOption("Complex Auto", autopath2);
+    m_chooser.addOption("Angled Auto 2 Ball", autopath3);
+    m_chooser.addOption("Angled Auto 3 Ball", autopath4);
     SmartDashboard.putData("choose auto", m_chooser);
     
+    compressor1.disable();
+    compressor2.disable();
   }
   
   /**
@@ -268,6 +356,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().enable();
     autopath.cancel();
     autopath2.cancel();
+    autopath3.cancel();
+    autopath4.cancel();
     
     DRIVETRAIN.stop();
     VISION.switchToBallPipeline();

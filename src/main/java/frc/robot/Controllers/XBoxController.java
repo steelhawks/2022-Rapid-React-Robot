@@ -29,7 +29,7 @@ public class XBoxController {
     // this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
     //     .whenHeld(new StorageIn());
     this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
-        .whenPressed(new StorageIn());
+        .whenHeld(new StorageIn());
 
     this.controller.mapButton(Robot.BUTTON_MAP.storageOutButton)
         .whenHeld(new StorageOut());

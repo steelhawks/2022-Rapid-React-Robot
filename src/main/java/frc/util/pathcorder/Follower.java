@@ -36,11 +36,50 @@ public class Follower {
   public void follow(int pathIndex) {
     AutonPath currentPath = AutonPaths.get(pathIndex);
     isFinished = false;
+    int length = currentPath.joystickYValues.size();
 
     // FOLLOW JOYSTICK RECORDING
-    if (index < currentPath.joystickYValues.size()) {
-      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index),
-          currentPath.joystickRotationValues.get(index),false);
+    if (index < length) {
+      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(currentPath.joystickYValues.get(index) / Robot.DRIVETRAIN.rPMCoefficient,
+          currentPath.joystickRotationValues.get(index) / Robot.DRIVETRAIN.twistCoefficient ,false);
+
+          index++;
+      // FOLLLOW BUTTON RECORDING
+      
+      //int currentButtonInput = (int)Math.round(currentPath.joystickButtonInputs.get(index));
+      //readButtonInput(currentButtonInput); #READ OTHER SUBSYSTEM BUTTON PRESSES
+      
+      // DOUBLING FILES TO ENSURE ACCURACY
+      // if (shouldDouble == true) 
+      // {
+      //   shouldDouble = false;
+      //   index++;
+      // } 
+      // else {
+      //   shouldDouble = true;
+      // }
+
+      // isFinished = false;
+    } 
+
+    else 
+    {
+      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(0, 0);
+      System.out.println(index + " finished running path");
+      index = 0;
+      isFinished = true;
+    }
+  }
+
+  public void reverseFollow(int pathIndex) {
+    AutonPath currentPath = AutonPaths.get(pathIndex);
+    isFinished = false;
+    int length = currentPath.joystickYValues.size();
+
+    // FOLLOW JOYSTICK RECORDING
+    if (index < length) {
+      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(-currentPath.joystickYValues.get(length - 1 - index) / Robot.DRIVETRAIN.rPMCoefficient,
+          -currentPath.joystickRotationValues.get(length - 1 - index) / (Robot.DRIVETRAIN.twistCoefficient * 0.85) ,false);
 
           index++;
       // FOLLLOW BUTTON RECORDING

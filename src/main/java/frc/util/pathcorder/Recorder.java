@@ -56,9 +56,9 @@ public class Recorder {
       Path path = Paths.get(pathName);
       Path fileName = path.getFileName();
       System.out.println("FileName: " + fileName.toString());
-      for (int i = 0; i < 25; i++) {
-        logger.writeData(0.0, 0.0, 0);
-      }
+      // for (int i = 0; i < 25; i++) {
+      //   logger.writeData(0.0, 0.0, 0);
+      // }
       logger.forceSync();
       logger.close();
 

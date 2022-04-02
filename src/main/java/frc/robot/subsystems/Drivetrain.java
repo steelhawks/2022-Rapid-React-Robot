@@ -179,12 +179,12 @@ public class Drivetrain extends MechanicalSubsystem{
     this.RIGHT_MOTOR_ONE.configFactoryDefault();
     this.RIGHT_MOTOR_TWO.configFactoryDefault();
     this.RIGHT_MOTOR_THREE.configFactoryDefault();
-    this.LEFT_MOTOR_ONE.setNeutralMode(NeutralMode.Coast);
-    this.LEFT_MOTOR_TWO.setNeutralMode(NeutralMode.Coast);
-    this.LEFT_MOTOR_THREE.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_ONE.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_TWO.setNeutralMode(NeutralMode.Coast);
-    this.RIGHT_MOTOR_THREE.setNeutralMode(NeutralMode.Coast);
+    this.LEFT_MOTOR_ONE.setNeutralMode(NeutralMode.Brake);
+    this.LEFT_MOTOR_TWO.setNeutralMode(NeutralMode.Brake);
+    this.LEFT_MOTOR_THREE.setNeutralMode(NeutralMode.Brake);
+    this.RIGHT_MOTOR_ONE.setNeutralMode(NeutralMode.Brake);
+    this.RIGHT_MOTOR_TWO.setNeutralMode(NeutralMode.Brake);
+    this.RIGHT_MOTOR_THREE.setNeutralMode(NeutralMode.Brake);
   }
 
   public AHRS getGyro()

@@ -53,7 +53,7 @@ public class Storage extends MechanicalSubsystem {
 
      
   public void storageRun(boolean isForward){
-    System.out.println("rooooolling motors");
+    // System.out.println("rooooolling motors");
     if (isForward) {
       STORAGE_MOTOR_GROUP_UP.set(Robot.ROBOTMAP.storageSpeedUp);
     }
@@ -64,7 +64,7 @@ public class Storage extends MechanicalSubsystem {
   }
   //for auto
   public void storageRun(int seconds){
-    System.out.println("rooooolling motors");
+    // System.out.println("rooooolling motors");
 
     stopWatch.start();
 
@@ -75,9 +75,9 @@ public class Storage extends MechanicalSubsystem {
 
   public void storageIn(boolean isForward) {
     if (isForward) {
-      this.STORAGE_MOTOR_GROUP_IN.set(-Robot.ROBOTMAP.storageSpeedUp);
-    } else {
       this.STORAGE_MOTOR_GROUP_IN.set(Robot.ROBOTMAP.storageSpeedUp);
+    } else {
+      this.STORAGE_MOTOR_GROUP_IN.set(-Robot.ROBOTMAP.storageSpeedUp);
     }
 
   }

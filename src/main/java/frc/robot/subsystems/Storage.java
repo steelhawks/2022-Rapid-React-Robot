@@ -115,8 +115,8 @@ public class Storage extends MechanicalSubsystem {
   // }
   
   public boolean storageMotorStop() {
-    this.STORAGE_MOTOR_GROUP_UP.stopMotor();
-    this.STORAGE_MOTOR_GROUP_IN.stopMotor();
+    this.STORAGE_MOTOR_GROUP_UP.set(0);
+    this.STORAGE_MOTOR_GROUP_IN.set(0);
     return true;
   }
 

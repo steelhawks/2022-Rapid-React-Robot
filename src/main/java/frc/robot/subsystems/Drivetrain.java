@@ -70,12 +70,13 @@ public class Drivetrain extends MechanicalSubsystem{
 	double rightEncDist;
 
   public boolean ultraBool;
+  public boolean ballUnaligned;
 
   //Vision
   private final int ANGLE_LENIENCY = 2;
   private final double Y_LOWER_LIMIT = -18;
   private final double Y_MAX_LIMIT_HUB = 15;
-  private final double X_THRESHOLD = 8;
+  private final double X_THRESHOLD = 3;
   
   private final int LEAVE_HUB_TIME = 2;
   private final int ENTER_HUB_TIME = 2;
@@ -272,37 +273,15 @@ public class Drivetrain extends MechanicalSubsystem{
   }
 
   
-  public void goToBall(){
-    int count = Robot.VISION.ballCount;
-    // Limelight.setPipeline(Robot.VISION.isRedAlliance ? 0 : 1);
-    // Limelight.setPipeline(Robot.VISION.getBallPipeline());
-    if(! Robot.VISION.isCargoPipeline()){
-      return;
-    }
-    
-    // Robot.VISION.switchToBallPipeline();
+  public void adjustBall() {
 
-    while(! Limelight.hasValidTarget()) {
-      spinRobot();
-      Limelight.updateValues();
+    Limelight.updateValues();
+    ballUnaligned = Math.abs(Limelight.getXOffset()) > X_THRESHOLD;
+    if (ballUnaligned) {
       
-    }
-    Robot.DRIVETRAIN.stop();
-    
-    while(Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline() && count < 2){
-      Limelight.updateValues();
-
-      if(Limelight.getYOffset() > Y_LOWER_LIMIT){
-        gyroMoveStraight(0.7, 8 * -Limelight.getXOffset());
-      } else if(Math.abs(Limelight.getXOffset()) > X_THRESHOLD){
-         gyroMoveStraight(0, 4 * -Limelight.getXOffset());
-      } else { // cargo is aligned
-        Robot.VISION.autonPickUpBall();
-        stop();
-        break;
-      }
-      // stop();
-      // break; 
+      LEFT_M_GROUP.set(-0.1 * Limelight.getXOffset() / (Math.abs(Limelight.getXOffset())));
+      RIGHT_M_GROUP.set(0.1 * Limelight.getXOffset() / (Math.abs(Limelight.getXOffset())));
+      // gyroMoveStraight(0, 4 * -Limelight.getXOffset());
     }
   }
 

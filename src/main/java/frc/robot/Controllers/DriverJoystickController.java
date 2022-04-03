@@ -49,5 +49,8 @@ public class DriverJoystickController {
 
     this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
         .whenPressed(new AlignToHub());
+        
+    this.controller.mapButton(Robot.BUTTON_MAP.visionAlignBall)
+        .whenPressed(new VisionAdjustBall());
   }
 }

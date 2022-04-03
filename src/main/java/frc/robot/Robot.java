@@ -25,6 +25,7 @@ import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Storage.*;
 import frc.robot.commands.Vision.GoToBall;
+import frc.robot.commands.Vision.VisionAdjustBall;
 import frc.robot.Controllers.Controller;
 import frc.robot.Controllers.XBoxController;
 import frc.robot.commands.Autonomous.*;
@@ -78,11 +79,13 @@ public class Robot extends TimedRobot {
     new ParallelRaceGroup(
       new AutoShoot(), new WaitCommand(2)
     ), 
-    new ParallelRaceGroup(
+    new ParallelCommandGroup(
       new SampleAutopath0(), 
+      new VisionAdjustBall(),
       new SequentialCommandGroup(
       new WaitCommand(1), new IntakeSpinReverse()
     )),
+    
     new SequentialCommandGroup(
       new SampleAutopath1(),
       new ParallelRaceGroup(
@@ -110,7 +113,8 @@ public class Robot extends TimedRobot {
       new AutoShoot(), new WaitCommand(2))
   );
 
-  public static final SequentialCommandGroup autopath3 = new SequentialCommandGroup(
+  // THIS IS 2 Ball
+  public static final SequentialCommandGroup autopath3= new SequentialCommandGroup(
 
     //Shoot pre loaded
     new ParallelRaceGroup(
@@ -133,6 +137,9 @@ public class Robot extends TimedRobot {
     )
     );
 
+
+    
+    // 3 Ball
     public static final SequentialCommandGroup autopath4 = new SequentialCommandGroup(
 
     // Shoot pre loaded
@@ -141,6 +148,7 @@ public class Robot extends TimedRobot {
     ), 
 
     // Intake ball
+    
     new ParallelRaceGroup(
       new SampleAutopath2(), 
       new SequentialCommandGroup(
@@ -164,7 +172,47 @@ public class Robot extends TimedRobot {
       new AutoShoot(), new WaitCommand(2)
     )
     );
-  
+
+    // 2 Ball Hangar
+  public static final SequentialCommandGroup autopath5 = new SequentialCommandGroup(
+
+    //Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    ), 
+
+    // // Intake ball
+    // new ParallelRaceGroup(
+    //   new SampleAutopath0(), // 8 before
+    //   new VisionAdjustBall(),
+    //   new SequentialCommandGroup(
+    //     new WaitCommand(1), new IntakeSpinReverse())
+    // ),
+
+    // Bring down intake
+    
+    // 
+    new ParallelRaceGroup(
+      new SampleAutopath0(),
+      new IntakeSpinReverse()
+    ),
+
+    // Align to the ball
+    new ParallelRaceGroup(
+      new VisionAdjustBall(),
+      new IntakeSpinReverse(),
+      new WaitCommand(2)
+    ),
+
+    // Return to hub
+    new SampleAutopath1(), // 9 before
+
+    // Shoot ball
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    )
+    );
+
 
   public static int ballCount = 0;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -197,15 +245,22 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configureCommands();
 
     // ROBOTMAP.paths.add("ba.csv");
+    Robot.DRIVETRAIN.GYRO.reset();
+    Robot.DRIVETRAIN.GYRO.calibrate();
 
     //bestAutonBack.csv is bad 
+    ROBOTMAP.paths.add("newRecord.csv"); // 8
+    ROBOTMAP.paths.add("Auton2BallReverse.csv"); // 9
     ROBOTMAP.paths.add("bestAuton.csv"); // 0
-    ROBOTMAP.paths.add("sami2.csv"); // 1
+    //ROBOTMAP.paths.add("sami2.csv"); // 1
     ROBOTMAP.paths.add("AngledAuton.csv"); // 2
     ROBOTMAP.paths.add("AngledAutonBack.csv"); // 3
     ROBOTMAP.paths.add("AngledAuton2.csv"); // 4
     ROBOTMAP.paths.add("AngledAutonBack2.csv"); // 5
     ROBOTMAP.paths.add("driveoutfromhub.csv"); // 6
+    ROBOTMAP.paths.add("3BallAuton1.csv");//7
+    // ROBOTMAP.paths.add("Auton2Ball.csv"); // 8
+    // ROBOTMAP.paths.add("Auton2BallReverse.csv"); // 9
 
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -215,6 +270,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Complex Auto", autopath2);
     m_chooser.addOption("Angled Auto 2 Ball", autopath3);
     m_chooser.addOption("Angled Auto 3 Ball", autopath4);
+    m_chooser.addOption("Hangar 2 Ball", autopath5);
     SmartDashboard.putData("choose auto", m_chooser);
     
     compressor1.disable();
@@ -362,6 +418,7 @@ public class Robot extends TimedRobot {
     autopath2.cancel();
     autopath3.cancel();
     autopath4.cancel();
+    autopath5.cancel();
     
     DRIVETRAIN.stop();
     VISION.switchToBallPipeline();

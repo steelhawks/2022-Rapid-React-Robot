@@ -28,7 +28,7 @@ public class GoToBall extends CommandBase {
   public void execute() {
     Robot.VISION.setPipelineColor();
 
-    Robot.DRIVETRAIN.goToBall();
+    Robot.DRIVETRAIN.adjustBall();
 
   }
     

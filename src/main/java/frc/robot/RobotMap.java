@@ -114,4 +114,9 @@ public class RobotMap
   // public double getClimberSpeed() {
   //   return this.climberSpeed;
   // }
+
+    public void initializePaths(){
+      // TODO: move adding paths from Robot.java
+    }
+
 }

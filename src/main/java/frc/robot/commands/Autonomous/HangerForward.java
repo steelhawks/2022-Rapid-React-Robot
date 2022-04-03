@@ -3,11 +3,11 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class SampleAutopath4 extends CommandBase 
+public class HangerForward extends CommandBase 
 {
 
     
-  public SampleAutopath4() {
+  public HangerForward() {
       addRequirements(Robot.DRIVETRAIN);
   }
 
@@ -18,7 +18,7 @@ public class SampleAutopath4 extends CommandBase
   @Override
   public void execute() 
   {
-    Robot.FOLLOWER.follow(4);
+    Robot.FOLLOWER.follow(1);
   }
 
   @Override

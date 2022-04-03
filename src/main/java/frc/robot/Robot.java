@@ -60,8 +60,8 @@ public class Robot extends TimedRobot {
   public static final PathSelector PATH_SELECTOR = new PathSelector();
 
   public static final Command follow = new Follow();
-  public static final Command SAMPLEAUTOPATH0 = new SampleAutopath0();
-  public static final Command SAMPLEAUTOPATH1 = new SampleAutopath1();    
+  public static final Command SAMPLEAUTOPATH0 = new TaxiPath();
+  public static final Command SAMPLEAUTOPATH1 = new HangerForward();    
 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
       new AutoShoot(), new WaitCommand(2)),
 
     // Taxi
-    new SampleAutopath0()
+    new TaxiPath()
   );
 
   // 2 ball hangar tarmac
@@ -148,7 +148,7 @@ public class Robot extends TimedRobot {
 
     // Intake ball
     new ParallelRaceGroup(
-      new SampleAutopath1(),
+      new HangerForward(),
       new IntakeBeam()
     ),
 
@@ -167,7 +167,7 @@ public class Robot extends TimedRobot {
     // Return to hub
     // new SampleAutopath2(),
     
-      new SampleAutopath2(),
+      new HangerBackward(),
     
     // new ParallelCommandGroup(
     //   new SampleAutopath2(),
@@ -179,57 +179,56 @@ public class Robot extends TimedRobot {
     new ParallelRaceGroup(
       new AutoShoot(), new WaitCommand(0.5)
     ),
-    new SampleAutopath0()
+    new TaxiPath()
   );
 
-  // 3 ball terminal tarmac
-  public static final SequentialCommandGroup autopath3 = new SequentialCommandGroup( 
+  //2 ball terminal tarmac
+  public static final SequentialCommandGroup autopath3 = new SequentialCommandGroup(
 
-    // Shoot pre loaded
+  
     new ParallelRaceGroup(
-      new AutoShoot(), new WaitCommand(2)
+      new IntakeRetract(), new WaitCommand(0.4)
+    ), 
+    
+    //Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(0.4)
     ), 
 
-    new IntakeExtend(),
-  
     // Intake ball
     new ParallelRaceGroup(
-      new SampleAutopath3(), 
+      new TerminalForward(),
       new IntakeBeam()
     ),
 
-    // Align to the ball
     new ParallelRaceGroup(
-      new VisionAdjustBall(),
       new IntakeBeam(),
-      new WaitCommand(0.5)
+      new WaitCommand(1)
     ),
-  
-    new StorageBeam(),
 
-    // Intake other ball
     new ParallelRaceGroup(
-      new SampleAutopath4(),
-      new IntakeBeam()
-    ),
+      new IntakeExtend(), new WaitCommand(0.4)
+    ), 
+    // new WaitCommand(2),
 
-    // Align to the ball
-    new ParallelRaceGroup(
-      new VisionAdjustBall(),
-      new IntakeBeam(),
-      new WaitCommand(0.5)
-    ),
-
-    new IntakeRetract(),
-  
     // Return to hub
-    new SampleAutopath5(),
-  
-    // Shoot both balls
-    new ParallelRaceGroup(
-      new AutoShoot(), new WaitCommand(2)
-    )
+    // new SampleAutopath2(),
+    
+      new TerminalBackward(),
 
+      new WaitCommand(.5),
+    
+    // new ParallelCommandGroup(
+    //   new SampleAutopath2(),
+    //   new StorageBeam()
+    // ),
+
+
+    // // Shoot ball
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(1)
+    ),
+    new TaxiTerminal()
   );
 
   public static int ballCount = 0;
@@ -262,6 +261,11 @@ public class Robot extends TimedRobot {
     ROBOTMAP.paths.add("samiShort.csv");
     ROBOTMAP.paths.add("hangarleft1.csv");
     ROBOTMAP.paths.add("hangarleft2.csv");
+    ROBOTMAP.paths.add("terminalforward.csv");
+    ROBOTMAP.paths.add("terminalshorttaxi.csv");
+
+    
+    
     
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
@@ -278,7 +282,8 @@ public class Robot extends TimedRobot {
 
     m_chooser.setDefaultOption("1 ball taxi", autopath1);
     m_chooser.addOption("2 Ball Hangar", autopath2);
-    m_chooser.addOption("3 Ball Terminal", autopath3);
+    m_chooser.addOption("2 Ball Terminal", autopath3);
+
 
     SmartDashboard.putData("choose auto", m_chooser);
 

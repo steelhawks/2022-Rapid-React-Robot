@@ -74,8 +74,8 @@ public class Follower {
     isFinished = false;
     // FOLLOW JOYSTICK RECORDING
     if (index < currentPath.joystickYValues.size()) {
-      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(-currentPath.joystickYValues.get(currentPath.joystickYValues.size() - 1 - index) / 0.75,
-          -currentPath.joystickRotationValues.get(currentPath.joystickYValues.size() - 1 - index) / 0.75 ,false);
+      Robot.DRIVETRAIN.DIFF_DRIVE.arcadeDrive(-currentPath.joystickYValues.get(currentPath.joystickYValues.size() - 1 - index),
+          -currentPath.joystickRotationValues.get(currentPath.joystickYValues.size() - 1 - index)  ,false);
 
           index++;
       // FOLLLOW BUTTON RECORDING

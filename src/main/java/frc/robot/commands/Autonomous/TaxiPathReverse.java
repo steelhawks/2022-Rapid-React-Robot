@@ -3,11 +3,11 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class SampleAutopath2 extends CommandBase 
+public class TaxiPathReverse extends CommandBase 
 {
 
     
-  public SampleAutopath2() {
+  public TaxiPathReverse() {
       addRequirements(Robot.DRIVETRAIN);
   }
 
@@ -18,7 +18,7 @@ public class SampleAutopath2 extends CommandBase
   @Override
   public void execute() 
   {
-    Robot.FOLLOWER.follow(2);
+    Robot.FOLLOWER.followReverse(0);
   }
 
   @Override

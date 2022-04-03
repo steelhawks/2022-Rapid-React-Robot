@@ -1,11 +1,11 @@
-package frc.robot.commands.Storage;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.util.pathcorder.Follower;
 
-public class StorageBeam extends CommandBase {
-    
-    public StorageBeam() {
+public class IntakeBeam extends CommandBase {
+    public IntakeBeam() {
         addRequirements(Robot.STORAGE);
     }
 
@@ -16,16 +16,19 @@ public class StorageBeam extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.STORAGE.storageRunFast(false);
+        Robot.INTAKE.spinRoller(false);
+        Robot.STORAGE.storageIn(true);  
     }
 
     @Override
     public boolean isFinished() {
-       return !Robot.STORAGE.beamS.get();
+        return !Robot.STORAGE.beamI.get();
     }
 
     @Override
     public void end(boolean interrupted) {
+        Robot.INTAKE.stopRoll();
         Robot.STORAGE.storageMotorStop();
+        Robot.FOLLOWER.index = 0;
     }
 }

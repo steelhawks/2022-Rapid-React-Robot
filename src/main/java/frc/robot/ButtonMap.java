@@ -7,7 +7,7 @@ public class ButtonMap {
   public final int gamepadOnePort = 1;
 
   public final int drivetrainShiftButton = 1; //joystick
-  public final int drivetrainReverseDirectionButton = 2;
+  public final int drivetrainReverseDirectionButton = 3;
 
   public final int climberWinchDownButton = Gamepad.kGamepadButtonStart;
   public final int climberWinchUpButton = Gamepad.kGamepadButtonBack; 

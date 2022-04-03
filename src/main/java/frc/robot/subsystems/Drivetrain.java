@@ -61,6 +61,7 @@ public class Drivetrain extends MechanicalSubsystem {
   private final int LEAVE_HUB_TIME = 2;
   private final int ENTER_HUB_TIME = 2;
   public boolean angleInRange = false;
+  public boolean ballUnaligned;
 
   public Drivetrain() {
     // SPARK MAX LEFT MOTORS
@@ -238,7 +239,7 @@ public class Drivetrain extends MechanicalSubsystem {
     // SmartDashboard.putNumber("TalonFXControlMode.Position",
     // TalonFXControlMode.Position.value);
 
-    SmartDashboard.putNumber("gyroangle", getGyroAngle());
+    SmartDashboard.putNumber("gyroangle", this.GYRO.getAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
 
    
@@ -288,25 +289,21 @@ public class Drivetrain extends MechanicalSubsystem {
 
     return false;
   }
+  
   public void adjustBall() {
 
-    if (!Robot.VISION.isCargoPipeline()) {
+    if (!Limelight.hasValidTarget()) {
       return;
     }
 
-    while (Limelight.hasValidTarget() && Robot.VISION.isCargoPipeline()) {
 
-      Limelight.updateValues();
+    Limelight.updateValues();
+    ballUnaligned = Math.abs(Limelight.getXOffset()) > X_THRESHOLD;
 
-      if (Limelight.getYOffset() > Y_LOWER_LIMIT) {
-        gyroMoveStraight(0.5, 8 * -Limelight.getXOffset()); //make offset negative or positive depending on the drivetrain.
-      } else if (Math.abs(Limelight.getXOffset()) > X_THRESHOLD) {
-        gyroMoveStraight(0, 4 * -Limelight.getXOffset());
-      } else {
-        break;
-      }
-      
+    if (ballUnaligned) {
+      gyroMoveStraight(0, 4 * -Limelight.getXOffset());
     }
+    
   }
 
   public boolean rotateToHub() {

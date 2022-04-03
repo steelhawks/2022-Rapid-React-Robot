@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 
-public class AlignBall extends CommandBase {
+public class VisionAdjustBall extends CommandBase {
     
-  public AlignBall() {}
+  public VisionAdjustBall() {}
 
   @Override
   public Set<Subsystem> getRequirements() 
   {
     Set<Subsystem> list = new HashSet<Subsystem>();
-    list.add(Robot.DRIVETRAIN);
+    list.add(Robot.VISION);
     return list;
   }
 
@@ -26,15 +26,12 @@ public class AlignBall extends CommandBase {
 
   @Override
   public void execute() {
-    Limelight.setPipeline(Robot.VISION.getBallPipeline());  
-    Robot.VISION.setPipelineColor();
-
     Robot.DRIVETRAIN.adjustBall();
   }
     
   @Override
   public boolean isFinished() {
-    return true;
+    return !Robot.DRIVETRAIN.ballUnaligned || !Limelight.hasValidTarget();
   }
 
   @Override

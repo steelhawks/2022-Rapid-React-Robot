@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.Intake.IntakeBeam;
 import frc.robot.commands.Storage.*;
 import frc.robot.commands.Vision.*;
 import frc.robot.commands.Autonomous.*;
@@ -64,59 +65,172 @@ public class Robot extends TimedRobot {
 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
-  public static final SequentialCommandGroup routine1 = new SequentialCommandGroup(
-      new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2)), //2
+  // public static final SequentialCommandGroup autopath1 = new SequentialCommandGroup(
+  //     new ParallelRaceGroup(
+  //       new AutoShoot(), new WaitCommand(2)), //2
       
-      // new IntakeRetract(), 
-      //new ParallelRaceGroup(
-      //  new SampleAuthopath0, new IntakeSpinReverse(),
-      //),    
-      //also can do:
-      // new IntakeSpinReverse(), 
-      new SampleAutopath0()); // 2 to 3 seconds
+  //     // new IntakeRetract(), 
+  //     //new ParallelRaceGroup(
+  //     //  new SampleAuthopath0, new IntakeSpinReverse(),
+  //     //),    
+  //     //also can do:
+  //     // new IntakeSpinReverse(), 
+  //     new SampleAutopath0()); // 2 to 3 seconds
 
-      //intake the ball
+  //     //intake the ball
 
-    public static final SequentialCommandGroup routine2 = new SequentialCommandGroup(
-      new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2)), // shoot preloaded ball
-      new IntakeDownAuton(),
-      new ParallelCommandGroup(
-        new SampleAutopath0(), new IntakeBeam()), // intake ball in front
+  //   public static final SequentialCommandGroup autopath2 = new SequentialCommandGroup(
+  //     new ParallelRaceGroup(
+  //       new AutoShoot(), new WaitCommand(2)), // shoot preloaded ball
+  //     new IntakeDownAuton(),
+  //     new ParallelCommandGroup(
+  //       new SampleAutopath0(), new IntakeBeam()), // intake ball in front
 
-      new SampleAutopath1(), // return to hub
+  //     new SampleAutopath1(), // return to hub
       
-      new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2)), // shoot second ball
+  //     new ParallelRaceGroup(
+  //       new AutoShoot(), new WaitCommand(2)), // shoot second ball
 
-      new IntakeRetract(),
+  //     new IntakeRetract(),
 
-      new SampleAutopath0() // taxi
-    );
+  //     new SampleAutopath0() // taxi
+  //   );
             
-    public static final SequentialCommandGroup limeRoutine = new SequentialCommandGroup(
-      new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2)),
+  //   public static final SequentialCommandGroup autopath3 = new SequentialCommandGroup(
+  //     new ParallelRaceGroup(
+  //       new AutoShoot(), new WaitCommand(2)),
 
-      new SampleAutonpathLime(), //should be a shorter version of move forward so the ball is still there.
+  //     new SampleAutonpathLime(), //should be a shorter version of move forward so the ball is still there.
 
-      new ParallelCommandGroup(
-        new IntakeBeam(), new AlignBall() //picks up ball using limelight tracking.
-      ),
+  //     new ParallelCommandGroup(
+  //       new IntakeBeam(), new AlignBall() //picks up ball using limelight tracking.
+  //     ),
 
-      new SampleAutopath1(), //goes back to hub. should have ball.
-      new ParallelRaceGroup(
-        new AutoShoot(), new WaitCommand(2))
+  //     new SampleAutopath1(), //goes back to hub. should have ball.
+  //     new ParallelRaceGroup(
+  //       new AutoShoot(), new WaitCommand(2))
 
-    );
+  //   );
 
-    // after finishing path, add align to ball command with wait command in parallel race group
+  //   // after finishing path, add align to ball command with wait command in parallel race group
 
-  public static final SequentialCommandGroup routine3 = new SequentialCommandGroup(
-    new SampleAutopath0(),
-    new SampleAutopath1(),
-    new SampleAutopath2());
+  // public static final SequentialCommandGroup routine3 = new SequentialCommandGroup(
+  //   new SampleAutopath0(),
+  //   new SampleAutopath1(),
+  //   new SampleAutopath2());
+
+  // 1 ball and taxi
+  public static final SequentialCommandGroup autopath1 = new SequentialCommandGroup(
+    // Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)),
+
+    // Taxi
+    new SampleAutopath0()
+  );
+
+  // 2 ball hangar tarmac
+  public static final SequentialCommandGroup autopath2 = new SequentialCommandGroup(
+
+    new ParallelRaceGroup(
+      new IntakeRetract(), new WaitCommand(0.4)
+    ), 
+
+    // new ParallelRaceGroup(
+    //   new IntakeExtend(), new WaitCommand(2)
+    // ), 
+    
+    //Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(0.4)
+    ), 
+      
+
+    // Intake ball
+    new ParallelRaceGroup(
+      new SampleAutopath1(),
+      new IntakeBeam()
+    ),
+
+    // Align to the ball
+    // new ParallelRaceGroup(
+    //   new VisionAdjustBall(),
+    //   new IntakeBeam(),
+    //   new WaitCommand(2)
+    // ),
+
+    new ParallelRaceGroup(
+      new IntakeExtend(), new WaitCommand(0.4)
+    ), 
+    // new WaitCommand(2),
+
+    // Return to hub
+    // new SampleAutopath2(),
+    
+      new SampleAutopath2(),
+    
+    // new ParallelCommandGroup(
+    //   new SampleAutopath2(),
+    //   new StorageBeam()
+    // ),
+
+
+    // // Shoot ball
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(0.5)
+    ),
+    new SampleAutopath0()
+  );
+
+  // 3 ball terminal tarmac
+  public static final SequentialCommandGroup autopath3 = new SequentialCommandGroup( 
+
+    // Shoot pre loaded
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    ), 
+
+    new IntakeExtend(),
+  
+    // Intake ball
+    new ParallelRaceGroup(
+      new SampleAutopath3(), 
+      new IntakeBeam()
+    ),
+
+    // Align to the ball
+    new ParallelRaceGroup(
+      new VisionAdjustBall(),
+      new IntakeBeam(),
+      new WaitCommand(0.5)
+    ),
+  
+    new StorageBeam(),
+
+    // Intake other ball
+    new ParallelRaceGroup(
+      new SampleAutopath4(),
+      new IntakeBeam()
+    ),
+
+    // Align to the ball
+    new ParallelRaceGroup(
+      new VisionAdjustBall(),
+      new IntakeBeam(),
+      new WaitCommand(0.5)
+    ),
+
+    new IntakeRetract(),
+  
+    // Return to hub
+    new SampleAutopath5(),
+  
+    // Shoot both balls
+    new ParallelRaceGroup(
+      new AutoShoot(), new WaitCommand(2)
+    )
+
+  );
 
   public static int ballCount = 0;
 
@@ -134,19 +248,37 @@ public class Robot extends TimedRobot {
     Robot.COMMAND_LINKER.configurePeriodicBindings();
     Robot.COMMAND_LINKER.configureCommands();
 
-    ROBOTMAP.paths.add("sami.csv"); // 0
-    ROBOTMAP.paths.add("samibutt.csv"); // 1
-    ROBOTMAP.paths.add("3ball_3.csv"); // 2
-    ROBOTMAP.paths.add("samiShort.csv"); // 3
+    // ROBOTMAP.paths.add("sami.csv"); // 0
+    // ROBOTMAP.paths.add("samibutt.csv"); // 1
+    // ROBOTMAP.paths.add("3ball_3.csv"); // 2
+    // ROBOTMAP.paths.add("samiShort.csv"); // 3
+
+    // 0 - taxi
+    // 1- Get ball hangar
+    // 2 - Return hub hangar
+    // 3 - Get ball 1 terminal
+    // 4 - Get ball 2 terminal
+    // 5 - Return hub terminal
+    ROBOTMAP.paths.add("samiShort.csv");
+    ROBOTMAP.paths.add("hangarleft1.csv");
+    ROBOTMAP.paths.add("hangarleft2.csv");
     
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
     PATH_SELECTOR.loadPresetPath();
+    DRIVETRAIN.resetGyro();
 
-    m_chooser.setDefaultOption("One Ball", routine1);
-    m_chooser.addOption("Two Ball", routine2);
-    m_chooser.addOption("Three Ball", routine3);
-    m_chooser.addOption("Two Ball Lime", limeRoutine);
+
+    // m_chooser.setDefaultOption("One Ball", routine1);
+    // m_chooser.addOption("Two Ball", routine2);
+    // m_chooser.addOption("Three Ball", routine3);
+    // m_chooser.addOption("Two Ball Lime", limeRoutine);
+
+    // SmartDashboard.putData("choose auto", m_chooser);
+
+    m_chooser.setDefaultOption("1 ball taxi", autopath1);
+    m_chooser.addOption("2 Ball Hangar", autopath2);
+    m_chooser.addOption("3 Ball Terminal", autopath3);
 
     SmartDashboard.putData("choose auto", m_chooser);
 

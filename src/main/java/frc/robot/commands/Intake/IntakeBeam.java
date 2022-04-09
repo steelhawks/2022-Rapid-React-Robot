@@ -16,7 +16,7 @@ public class IntakeBeam extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.INTAKE.spinRoller(false);
+        Robot.INTAKE.spinRoller(0.8);
         Robot.STORAGE.storageIn(true);  
     }
 

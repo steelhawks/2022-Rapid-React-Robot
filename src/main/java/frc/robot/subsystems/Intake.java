@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -30,7 +31,8 @@ public class Intake extends MechanicalSubsystem {
   public Intake() {
     // TALON SRX MOTOR CONTROLLER
     this.INTAKE_MOTOR_ONE = new WPI_TalonSRX(Robot.ROBOTMAP.intakeMotorOnePort);
-
+    
+    // INTAKE_MOTOR_ONE.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
     // SPEED CONTROLLER GROUPS
     this.INTAKE_MOTOR_GROUP = new MotorControllerGroup(this.INTAKE_MOTOR_ONE);
 
@@ -51,7 +53,7 @@ public class Intake extends MechanicalSubsystem {
 
   public void spinRoller(double speed) {
     // System.out.println("intake set to spin at:" + speed);
-    this.INTAKE_MOTOR_GROUP.set(-speed);
+    this.INTAKE_MOTOR_GROUP.set(speed);
   }
 
   public void spinRollerReverse(double speed) {

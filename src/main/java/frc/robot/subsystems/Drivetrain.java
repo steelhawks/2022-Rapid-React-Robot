@@ -193,7 +193,7 @@ public class Drivetrain extends MechanicalSubsystem {
   }
 
   public double getGyroAngle() {
-    return this.GYRO.getAngle();
+    return this.GYRO.getYaw();
   }
 
   public double getGyroAxis() {
@@ -221,6 +221,15 @@ public class Drivetrain extends MechanicalSubsystem {
     return true;
   }
 
+  public void resetEncoders() {
+    // this.LEFT_MOTOR_ONE.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    // this.LEFT_MOTOR_TWO.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    // this.LEFT_MOTOR_THREE.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    // this.RIGHT_MOTOR_ONE.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    // this.RIGHT_MOTOR_TWO.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    // this.RIGHT_MOTOR_THREE.getSensorCollection().setIntegratedSensorPosition(0, 0);
+  }
+
   /** Print info to shuffleboard */
   public void shuffleBoard() {
     // SmartDashboard.putNumber("L1 velocity",
@@ -241,6 +250,20 @@ public class Drivetrain extends MechanicalSubsystem {
 
     SmartDashboard.putNumber("gyroangle", this.GYRO.getAngle());
     SmartDashboard.putNumber("gyro axis", getGyroAxis());
+    // SmartDashboard.putNumber("Left One Position", this.LEFT_MOTOR_ONE.getSensorCollection().getIntegratedSensorPosition());
+    // SmartDashboard.putNumber("Left One Velocity", this.LEFT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("Left Two Position", this.LEFT_MOTOR_TWO.getSensorCollection().getIntegratedSensorPosition());
+    // SmartDashboard.putNumber("Left Two Velocity", this.LEFT_MOTOR_TWO.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("Left Three Position", this.LEFT_MOTOR_THREE.getSensorCollection().getIntegratedSensorPosition());
+    // SmartDashboard.putNumber("Left Three Velocity", this.LEFT_MOTOR_THREE.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("Right One Position", this.RIGHT_MOTOR_ONE.getSensorCollection().getIntegratedSensorPosition());
+    // SmartDashboard.putNumber("Right One Velocity", this.RIGHT_MOTOR_ONE.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("Right Two Position", this.RIGHT_MOTOR_TWO.getSensorCollection().getIntegratedSensorPosition());
+    // SmartDashboard.putNumber("Right Two Velocity", this.RIGHT_MOTOR_TWO.getSensorCollection().getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("Right Three Position", this.RIGHT_MOTOR_THREE.getSensorCollection().getIntegratedSensorPosition());
+    // SmartDashboard.putNumber("Right Three Velocity", this.RIGHT_MOTOR_THREE.getSensorCollection().getIntegratedSensorVelocity());
+
+
 
    
 

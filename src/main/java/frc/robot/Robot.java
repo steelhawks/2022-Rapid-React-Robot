@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -61,7 +63,7 @@ public class Robot extends TimedRobot {
 
   public static final Command follow = new Follow();
   public static final Command SAMPLEAUTOPATH0 = new TaxiPath();
-  public static final Command SAMPLEAUTOPATH1 = new HangerForward();    
+  public static final Command SAMPLEAUTOPATH1 = new HangerForward();
 
   Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
@@ -130,6 +132,7 @@ public class Robot extends TimedRobot {
   );
 
   // 2 ball hangar tarmac
+  // the robot aligns diagonally with one corner touching the fender and the other one ball away from the fender
   public static final SequentialCommandGroup autopath2 = new SequentialCommandGroup(
 
     new ParallelRaceGroup(
@@ -147,10 +150,11 @@ public class Robot extends TimedRobot {
       
 
     // Intake ball
-    new ParallelRaceGroup(
-      new HangerForward(),
-      new IntakeBeam()
+    new ParallelDeadlineGroup(
+      new IntakeBeam(),
+      new HangerForward()
     ),
+  
 
     // Align to the ball
     // new ParallelRaceGroup(
@@ -196,9 +200,9 @@ public class Robot extends TimedRobot {
     ), 
 
     // Intake ball
-    new ParallelRaceGroup(
-      new TerminalForward(),
-      new IntakeBeam()
+    new ParallelDeadlineGroup(
+      new IntakeBeam(),
+      new TerminalForward()
     ),
 
     new ParallelRaceGroup(
@@ -271,6 +275,7 @@ public class Robot extends TimedRobot {
     PATH_SELECTOR.presetPaths();
     PATH_SELECTOR.loadPresetPath();
     DRIVETRAIN.resetGyro();
+    DRIVETRAIN.resetEncoders();
 
 
     // m_chooser.setDefaultOption("One Ball", routine1);

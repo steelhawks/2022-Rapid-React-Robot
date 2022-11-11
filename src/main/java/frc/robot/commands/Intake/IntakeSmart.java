@@ -86,7 +86,7 @@ public class IntakeSmart extends CommandBase {
             Robot.STORAGE.STORAGE_MOTOR_UP_TWO.set(0);
                        
             Robot.INTAKE.spinRoller(false);
-            Robot.STORAGE.storageIn(true);  
+            Robot.STORAGE.storageIn(true); 
 
             // if(!Robot.STORAGE.beamI.get()) {
             //     Robot.STORAGE.STORAGE_MOTOR_IN.set(0);

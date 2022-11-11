@@ -39,7 +39,7 @@ public class RobotMap
 
 
   //BEAMS
-  public final int beamBreakerPortIntake = 1;
+  public final int beamBreakerPortIntake = 1; 
   public final int beamBreakerPortStorage = 3;
 
 

@@ -34,7 +34,7 @@ public class XBoxController {
 
         // Intake
         this.controller.mapButton(Robot.BUTTON_MAP.intakeSpinButton)
-                .whenHeld(new IntakeSpin());
+                .whenHeld(new IntakeSmart());
         this.controller.mapButton(Robot.BUTTON_MAP.intakeReverseSpinButton)
                 .whenHeld(new IntakeSpinReverse());
         this.controller.mapButton(Robot.BUTTON_MAP.intakeToggleSolenoidButton)

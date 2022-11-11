@@ -111,12 +111,12 @@ public class Follower {
       this.AutonPaths.clear();
       // insert path to csv
       for (String pathName : paths) {
-        System.out.println("PATH NAME: " + pathName);
+        //System.out.println("PATH NAME: " + pathName);
         Path path = Paths.get(pathName);
         Path fileName = path.getFileName();
         File TBR = fileName.toFile();
-        String file = fileName.toString();
-        System.out.println("this is name: " + file);
+        // String file = fileName.toString();
+        //System.out.println("this is name: " + file);
         bufferedReader(TBR);
       }
 
@@ -131,21 +131,21 @@ public class Follower {
     try {
 
       String filePathName = Filesystem.getDeployDirectory().toString() + "/" + fileName;
-      System.out.println(filePathName + "found filePathName");
+      //System.out.println(filePathName + "found filePathName");
       File exFile = new File(filePathName);
-      System.out.println(exFile + "found exFIle");
+      //System.out.println(exFile + "found exFIle");
       FileReader in = new FileReader(exFile);
-      System.out.println("made filereader");
+      //System.out.println("made filereader");
       // System.out.println("File reader" + in.ready());
       BufferedReader br = new BufferedReader(in);
-      System.out.println("made bufferedreader");
+      //System.out.println("made bufferedreader");
       // System.out.println("buffered reader" + br.ready());
       br.readLine();
-      System.out.println("readline1");
+      //System.out.println("readline1");
       br.readLine();
-      System.out.println("readline2");
+      //System.out.println("readline2");
       AutonPath newPath = new AutonPath();
-      System.out.println("new AutonPath");
+      //System.out.println("new AutonPath");
       String line = null;
 
       while ((line = br.readLine()) != null) {
@@ -167,9 +167,9 @@ public class Follower {
       }
       System.out.println("finished reading newpath");
       AutonPaths.add(newPath);
-      System.out.println("finished adding newpath");
+      //System.out.println("finished adding newpath");
       br.close();
-      System.out.println("closed buffer reader");
+      //System.out.println("closed buffer reader");
       
     } catch (Exception e) {
       System.out.println("Could not find file");

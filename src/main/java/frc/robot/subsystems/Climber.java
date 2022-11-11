@@ -215,8 +215,9 @@ public class Climber extends MechanicalSubsystem {
   }
 
   @Override
+ 
   public void shuffleBoard() {
-    SmartDashboard.putBoolean("climber down", isClimbForwardLimit.get());
+    SmartDashboard.putBoolean("climber down", !isClimbForwardLimit.get());
     SmartDashboard.putNumber("L encoder rotation",
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
     SmartDashboard.putNumber("R encoder rotation",

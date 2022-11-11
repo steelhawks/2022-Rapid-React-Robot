@@ -236,6 +236,7 @@ public class Robot extends TimedRobot {
   );
 
   public static int ballCount = 0;
+  public static boolean ballInStorage = false;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   Command m_autonomousCommand;

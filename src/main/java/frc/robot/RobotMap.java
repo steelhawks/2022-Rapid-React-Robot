@@ -45,6 +45,7 @@ public class RobotMap
 
   //60 percent 2.25 inch green compliant wheels
   public final double storageSpeedUpSlow = 0.47; //shooting speed original .55
+  public final double storageSpeedUpUltraSlow = 0.25; //shooting speed original .55
   public final double storageSpeedUpFast = 0.85; // .55 1 top speed
 
   public final double storageSpeedIn = 1; //sushi roller speed

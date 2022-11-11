@@ -105,7 +105,7 @@ public class Intake extends MechanicalSubsystem {
   }
 
   public boolean stop() {
-    this.INTAKE_MOTOR_ONE.stopMotor();
+    this.INTAKE_MOTOR_ONE.set(0);
     return true;
   }
 

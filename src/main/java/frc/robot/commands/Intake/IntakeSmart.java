@@ -55,20 +55,13 @@ public class IntakeSmart extends CommandBase {
         */
 
         if(!Robot.STORAGE.beamI.get()){ //if ball in Intake Beams
-
             Robot.INTAKE.spinRoller(false);
             Robot.STORAGE.storageIn(true); 
-            
-          
-
             if(!Robot.ballInStorage) {
                 Robot.STORAGE.storageRunSlow(false);
                 if(!Robot.ballInStorage) {
                     Robot.ballInStorage = true;
                 }
-                
-
-
                 // if(!Robot.STORAGE.beamS.get()){
                 //     Robot.STORAGE.STORAGE_MOTOR_UP_ONE.set(0);
                 //     Robot.STORAGE.STORAGE_MOTOR_UP_TWO.set(0);
@@ -77,11 +70,7 @@ public class IntakeSmart extends CommandBase {
                 // }
             }
         }
-        
         else { //if ball NOT in intake beams
-            
-            
-
             Robot.STORAGE.STORAGE_MOTOR_UP_ONE.set(0);
             Robot.STORAGE.STORAGE_MOTOR_UP_TWO.set(0);
                        

@@ -17,10 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Storage;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -37,15 +34,14 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static final RobotMap ROBOTMAP = new RobotMap();
   public static final Drivetrain DRIVETRAIN = new Drivetrain(); 
-  public static final Intake INTAKE = new Intake();
   public static final CommandLinker COMMAND_LINKER = new CommandLinker(); 
   public static final ButtonMap BUTTON_MAP = new ButtonMap(); 
-  public static final Storage STORAGE = new Storage(); 
-  public static final Climber CLIMBER = new Climber();
+  // public static final Storage STORAGE = new Storage(); 
+  // public static final Climber CLIMBER = new Climber();
   public static final Vision VISION = new Vision();
   public static final PowerDistribution PDP = new PowerDistribution();
-  public static final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  public static final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
+  // public static final Compressor COMPRESSOR_ONE = new Compressor(0, PneumaticsModuleType.CTREPCM);
+  // public static final Compressor COMPRESSOR_TWO = new Compressor(1, PneumaticsModuleType.CTREPCM);
   // private String m_autoSelected;
   
 
@@ -65,8 +61,8 @@ public class Robot extends TimedRobot {
 
     Shuffleboard.getTab("Subsystem");    
     PDP.clearStickyFaults();
-    COMPRESSOR_ONE.disable();
-    COMPRESSOR_TWO.disable();
+    // COMPRESSOR_ONE.disable();
+    // COMPRESSOR_TWO.disable();
   }
 
   /**

@@ -30,16 +30,11 @@ public class DriverJoystickController {
 
 
     // VISION
-    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
-        .whenPressed(new LimelightDown());
-        
-    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
-        .whenPressed(new LimelightUp());
 
-    this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
-        .whileHeld(new GoToBall());
+    // this.controller.mapButton(Robot.BUTTON_MAP.visionGoToBall)
+    //     .whileHeld(new GoToBall());
 
-    this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
-        .whileHeld(new AlignToHub());
+    // this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
+    //     .whileHeld(new AlignToHub());
   }
 }

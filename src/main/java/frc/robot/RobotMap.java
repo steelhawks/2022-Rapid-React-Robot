@@ -14,40 +14,40 @@ public class RobotMap
   //DRIVETRAIN Motor ID
   public final int drivetrainLeftMotorPortOne = 1;
   public final int drivetrainLeftMotorPortTwo = 2;
-  public final int drivetrainLeftMotorPortThree = 3;
+  //public final int drivetrainLeftMotorPortThree = 3;
   
-  public final int drivetrainRightMotorPortOne = 4;
-  public final int drivetrainRightMotorPortTwo = 5;
-  public final int drivetrainRightMotorPortThree = 6;
+  public final int drivetrainRightMotorPortOne = 3;
+  public final int drivetrainRightMotorPortTwo = 4;
+  //public final int drivetrainRightMotorPortThree = 6;
 
   public final int drivetrainSolenoidPortOn = 0; //make sure it is right
   public final int drivetrainSolenoidPortOff = 1;
 
   //Storage % Shooter Motor ID
-  public final int storageMotorPortOne = 13;
-  public final double storageSpeedOne = 1.0;
+  // public final int storageMotorPortOne = 13;
+  // public final double storageSpeedOne = 1.0;
   //public final int storageMotorPortTwo = 15;
   //public final double storageSpeedTwo = 1.0;
 
   //Gyro
-  public final double KP_GYRO = 0.008;
+  //public final double KP_GYRO = 0.008;
 
   //Intake Motor & solenoids
-  public final int intakeMotorOnePort = 0;
-  public final int intakeSoleLeftForward = 0;
-  public final int intakeSoleLeftReverse = 0;
-  public final int intakeSoleRightForward = 0;
-  public final int intakeSoleRightReverse = 0;
-  public final double intakeSpeed = 0.75;
+  // public final int intakeMotorOnePort = 0;
+  // public final int intakeSoleLeftForward = 0;
+  // public final int intakeSoleLeftReverse = 0;
+  // public final int intakeSoleRightForward = 0;
+  // public final int intakeSoleRightReverse = 0;
+  // public final double intakeSpeed = 0.75;
 
 
 
 
   //Climber ??
-  public final int WINCH_PORT = 3;
-  public final int PIVOT_PORT = 8;
-  public final double climberSpeed = 0.5;
-  public final double pivotSpeed = 0.1;
+  // public final int WINCH_PORT = 3;
+  // public final int PIVOT_PORT = 8;
+  // public final double climberSpeed = 0.5;
+  // public final double pivotSpeed = 0.1;
 
 
 

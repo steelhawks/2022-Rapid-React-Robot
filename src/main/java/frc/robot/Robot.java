@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -245,6 +246,8 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   Command m_autonomousCommand;
 
+  private boolean rainbow = false;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -399,6 +402,18 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
+    System.out.println(Timer.getFPGATimestamp());
+
+    if (Timer.getFPGATimestamp() >= 105 && !rainbow) {
+      rainbow = true;
+      Command command = new SequentialCommandGroup(
+        new ParallelRaceGroup(
+          new LedCommand(null, LEDMode.RAINBOW),
+          new WaitCommand(5)), 
+        new LedCommand(LEDColor.OFF, LEDMode.STATIC));
+      command.schedule();
+    }
 
     CommandScheduler.getInstance().run();
   }

@@ -33,10 +33,12 @@ public class LedCommand extends CommandBase {
     }
     else if (mode == LEDMode.STATIC) {
       Robot.led.setColor(color);
-
     }
     else if (mode == LEDMode.RAINBOW) {
       Robot.led.rainbow();
+    }
+    else if (mode == LEDMode.WAVE) {
+      Robot.led.wave(color);
     }
   }
 

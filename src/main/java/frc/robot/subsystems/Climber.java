@@ -1,11 +1,18 @@
 package frc.robot.subsystems;
 import frc.robot.Robot;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.util.subsystems.MechanicalSubsystem;
@@ -28,6 +35,13 @@ public class Climber extends MechanicalSubsystem {
   public double leftEncoderValue;
   public double rightEncoderValue;
 
+  private CANCoder can;
+  public CANCoderConfiguration canCoderConfig;
+  private boolean goingUp;
+  private double lastCanReading;
+  private int count;
+  private double total;
+  private double intial;
   
   public double climberLimit;
   
@@ -54,6 +68,21 @@ public class Climber extends MechanicalSubsystem {
 
     this.CLIMBER_MOTOR_LEFT.getSensorCollection().setIntegratedSensorPosition(0, 0);
     this.CLIMBER_MOTOR_RIGHT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+
+    can = new CANCoder(0);
+    canCoderConfig = new CANCoderConfiguration();
+    canCoderConfig.sensorDirection = true;
+    can.configAllSettings(canCoderConfig);
+    can.setPosition(0);
+
+    // String path = "ClimberValues.txt";
+    // try (FileWriter writer = new FileWriter("src/main/deploy/ClimberValues.txt")) {
+    // } catch (IOException e) {
+    //   e.printStackTrace();
+    // }
+
+    lastCanReading = can.getPosition();
+    intial = can.getPosition();
 
     configureMotors();
   }
@@ -95,6 +124,9 @@ public class Climber extends MechanicalSubsystem {
   
   
   public void climberRoll(boolean isDown) {
+
+    goingUp = !isDown;
+    double currentCan = can.getAbsolutePosition();
     
     if (isDown) {
       
@@ -103,6 +135,8 @@ public class Climber extends MechanicalSubsystem {
       } else {
         stopLeft();
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+        can.setPosition(0);
+        intial = 0;
       }
       
       if (rightUpLimit.get()) {
@@ -110,6 +144,8 @@ public class Climber extends MechanicalSubsystem {
       } else {
         stopRight();
         this.CLIMBER_MOTOR_RIGHT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+        can.setPosition(0);
+        intial = 0;
       }
     }
     
@@ -205,6 +241,43 @@ public class Climber extends MechanicalSubsystem {
     this.CLIMBER_MOTOR_RIGHT.stopMotor();
   }
 
+  public double[] getEncoderVals() {
+    // double left = CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048;
+    // double right = -CLIMBER_MOTOR_RIGHT.getSensorCollection().getIntegratedSensorPosition() / 2048;
+
+    double count = (can.getPosition() - intial) / 360;
+    double[] vals = {count, count};
+    return vals;
+
+    // double[] encoders = {left, right};
+    // return encoders;
+  }
+
+  public void moveToPosition(double[] speeds) {
+    if(speeds[0] > 0) {
+      if (leftUpLimit.get()) {
+        CLIMBER_MOTOR_LEFT.set(speeds[0]);
+      } else {
+        stopLeft();
+        this.CLIMBER_MOTOR_LEFT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+        can.setPosition(0);
+      }
+      
+      if (rightUpLimit.get()) {
+        CLIMBER_MOTOR_RIGHT.set(speeds[1]);
+      } else {
+        stopRight();
+        this.CLIMBER_MOTOR_RIGHT.getSensorCollection().setIntegratedSensorPosition(0, 0);
+        can.setPosition(0);
+      }
+      
+    } else {
+      CLIMBER_MOTOR_LEFT.set(speeds[0]);
+      CLIMBER_MOTOR_RIGHT.set(speeds[1]);
+    }
+    
+  }
+
   @Override
   public void ping() {
   }
@@ -215,19 +288,21 @@ public class Climber extends MechanicalSubsystem {
   }
 
   @Override
- 
   public void shuffleBoard() {
     SmartDashboard.putBoolean("climber down", !isClimbForwardLimit.get());
     SmartDashboard.putNumber("L encoder rotation",
         this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
     SmartDashboard.putNumber("R encoder rotation",
-        this.CLIMBER_MOTOR_LEFT.getSensorCollection().getIntegratedSensorPosition() / 2048);
+        -this.CLIMBER_MOTOR_RIGHT.getSensorCollection().getIntegratedSensorPosition() / 2048);
     SmartDashboard.putBoolean("left sensor", leftUpLimit.get());
     SmartDashboard.putBoolean("right sensor", rightUpLimit.get());
     SmartDashboard.putNumber("Left Voltage", this.CLIMBER_MOTOR_LEFT.getMotorOutputVoltage());
     SmartDashboard.putNumber("Right Voltage", this.CLIMBER_MOTOR_RIGHT.getMotorOutputVoltage());
     SmartDashboard.putNumber("Left Amperage", this.CLIMBER_MOTOR_LEFT.getSupplyCurrent());
     SmartDashboard.putNumber("Right Amperage", this.CLIMBER_MOTOR_RIGHT.getSupplyCurrent());
+    SmartDashboard.putNumber("absolute climber", can.getAbsolutePosition());
+    SmartDashboard.putBoolean("going up", goingUp);
+    SmartDashboard.putNumber("total rotations", (can.getPosition() - intial) / 360);
   }
 
   @Override

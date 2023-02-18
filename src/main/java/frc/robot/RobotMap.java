@@ -65,9 +65,9 @@ public class RobotMap
     public final int climberSoleLeftReverse = 4;
     public final int climberSoleRightForward = 7;
     public final int climberSoleRightReverse = 6;
-    public final double climberSpeed = 1;
+    public final double climberSpeed = 1; // 1
     public final double climberSpeedSlow = .35; //0.65 is 189
-    public final double climbRobotSpeed = 0.3;
+    public final double climbRobotSpeed = 0.3; // 0.3
 
     //Vision
     public final int LimelightMotorPort = 7;

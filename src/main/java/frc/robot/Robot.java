@@ -25,8 +25,11 @@ import frc.robot.commands.Intake.*;
 import frc.robot.commands.Intake.IntakeBeam;
 import frc.robot.commands.Storage.*;
 import frc.robot.commands.Vision.*;
+import frc.robot.commands.LedCommand;
 import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
+import frc.util.LEDColor;
+import frc.util.LEDMode;
 import frc.util.pathcorder.Follower;
 import frc.util.pathcorder.Recorder;
 import frc.util.pathcorder.pathselector.PathSelector;
@@ -56,6 +59,7 @@ public class Robot extends TimedRobot {
   public static final Storage STORAGE = new Storage();
   public static final Climber CLIMBER = new Climber();
   public static final Vision VISION = new Vision();
+  public static final LED led = new LED(0, 60);
 
   public static final Recorder RECORDER = new Recorder();
   public static final Follower FOLLOWER = new Follower();
@@ -269,7 +273,9 @@ public class Robot extends TimedRobot {
     ROBOTMAP.paths.add("terminalforward.csv");
     ROBOTMAP.paths.add("terminalshorttaxi.csv");
 
-    
+    SmartDashboard.putData("low", new ParallelCommandGroup(new ElevatorCommand(ElevatorLevels.LOW), new LedCommand(LEDColor.GREEN, LEDMode.STATIC)));
+    SmartDashboard.putData("mid", new ParallelCommandGroup(new ElevatorCommand(ElevatorLevels.MID), new LedCommand(LEDColor.YELLOW, LEDMode.STATIC)));
+    SmartDashboard.putData("high", new ParallelCommandGroup(new ElevatorCommand(ElevatorLevels.HIGH), new LedCommand(LEDColor.RED, LEDMode.STATIC)));
     
     
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
@@ -395,7 +401,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     CommandScheduler.getInstance().run();
-
   }
 
   /** This function is called once when the robot is disabled. */

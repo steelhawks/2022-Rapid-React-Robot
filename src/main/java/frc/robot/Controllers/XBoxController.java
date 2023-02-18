@@ -1,8 +1,16 @@
 package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.commands.Storage.*;
+import frc.robot.subsystems.ElevatorLevels;
+import frc.util.LEDColor;
+import frc.util.LEDMode;
+import frc.robot.commands.LedCommand;
 import frc.robot.commands.Climber.*;
 import frc.robot.commands.Intake.*;
 
@@ -18,14 +26,34 @@ public class XBoxController {
 
         // Storage
         this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsUpButton)
-                .whileHeld(new StorageUp());
+                // .whileHeld(new StorageUp());
+                .whenPressed(new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                                new ElevatorCommand(ElevatorLevels.LOW), 
+                                new LedCommand(LEDColor.WHITE, LEDMode.STATIC)), 
+                        new ParallelRaceGroup(new LedCommand(LEDColor.WHITE, LEDMode.PULSE), 
+                        new WaitCommand(0.7)), 
+                        new LedCommand(LEDColor.OFF, LEDMode.STATIC)));
 
         this.controller.mapButton(Robot.BUTTON_MAP.storageMoveBallsReverseButton)
-                .whileHeld(new StorageDown());
+                // .whileHeld(new StorageDown());
+                .whenPressed(new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                                new ElevatorCommand(ElevatorLevels.MID), 
+                                new LedCommand(LEDColor.BLUE, LEDMode.STATIC)), 
+                        new ParallelRaceGroup(new LedCommand(LEDColor.BLUE, LEDMode.PULSE), 
+                        new WaitCommand(0.7)), 
+                        new LedCommand(LEDColor.OFF, LEDMode.STATIC)));
 
         this.controller.mapButton(Robot.BUTTON_MAP.storageFastOutButton)
-                .whileHeld(new StorageUpFast());
-
+                // .whileHeld(new StorageUpFast());
+                .whenPressed(new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                                new ElevatorCommand(ElevatorLevels.HIGH), 
+                                new LedCommand(LEDColor.RED, LEDMode.STATIC)), 
+                        new ParallelRaceGroup(new LedCommand(LEDColor.RED, LEDMode.PULSE), 
+                        new WaitCommand(0.7)), 
+                        new LedCommand(LEDColor.OFF, LEDMode.STATIC)));
         // Intake to Storage
         this.controller.mapButton(Robot.BUTTON_MAP.storageInButton)
                 .whenHeld(new StorageIn());
@@ -34,7 +62,9 @@ public class XBoxController {
 
         // Intake
         this.controller.mapButton(Robot.BUTTON_MAP.intakeSpinButton)
-                .whenHeld(new IntakeSmart());
+                .whenHeld(new IntakeSmart())
+                .whenPressed(new LedCommand(null, LEDMode.RAINBOW))
+                .whenReleased(new LedCommand(LEDColor.OFF, null));
         this.controller.mapButton(Robot.BUTTON_MAP.intakeReverseSpinButton)
                 .whenHeld(new IntakeSpinReverse());
         this.controller.mapButton(Robot.BUTTON_MAP.intakeToggleSolenoidButton)
@@ -58,9 +88,13 @@ public class XBoxController {
 
 
         this.controller.mapButton(Robot.BUTTON_MAP.climberWinchDownButton)
-                .whenHeld(new ClimberRollWinch());
+                .whenHeld(new ClimberRollWinch())
+                .whenPressed(new LedCommand(LEDColor.RED, LEDMode.STATIC))
+                .whenReleased(new LedCommand(LEDColor.OFF, null));
         this.controller.mapButton(Robot.BUTTON_MAP.climberWinchUpButton)
-                .whenHeld(new ClimberUnrollWinch());
+                .whenHeld(new ClimberUnrollWinch())
+                .whenPressed(new LedCommand(LEDColor.GREEN, LEDMode.STATIC))
+                .whenReleased(new LedCommand(LEDColor.OFF, null));
         
 
         // //each independant

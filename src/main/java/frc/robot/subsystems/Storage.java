@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.Robot;
+import frc.util.LEDColor;
 import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -142,6 +143,16 @@ public class Storage extends MechanicalSubsystem {
     SmartDashboard.putBoolean("beam", this.beamI.get());
     SmartDashboard.putBoolean("upper beam (storage)", this.beamS.get());
   
+  }
+
+  @Override
+  public void periodic() {
+    // if (beamI.get()) {
+    //   Robot.led.setColor(LEDColor.GREEN);
+    // }
+    // else {
+    //   Robot.led.setColor(LEDColor.RED);
+    // }
   }
 
   // public void countStorage(){

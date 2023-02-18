@@ -3,6 +3,7 @@ package frc.robot.Controllers;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
+import frc.robot.commands.LedCommand;
 import frc.robot.commands.Drivetrain.ReverseDriveDirection;
 import frc.robot.commands.Drivetrain.ShiftGears;
 import frc.robot.commands.Pathcorder.EndRecording;
@@ -10,6 +11,8 @@ import frc.robot.commands.Pathcorder.StartRecording;
 import frc.robot.commands.Storage.RunAllOfStorage;
 import frc.robot.commands.Storage.StopAllOfStorage;
 import frc.robot.commands.Vision.*;
+import frc.util.LEDColor;
+import frc.util.LEDMode;
 
 
 //Not made yet
@@ -52,7 +55,8 @@ public class DriverJoystickController {
 
     // // VISION
     this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
-        .whenPressed(new LimelightDown());  //12 i think
+        .whenPressed(new LedCommand(LEDColor.BLUE, LEDMode.STATIC))  //12 i think
+        .whenReleased(new LedCommand(LEDColor.OFF, null));
         
     this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
         .whenPressed(new LimelightUp()); //11 ??

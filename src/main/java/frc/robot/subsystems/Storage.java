@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.Robot;
-import frc.util.LEDColor;
 import frc.util.subsystems.MechanicalSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -147,6 +146,9 @@ public class Storage extends MechanicalSubsystem {
 
   @Override
   public void periodic() {
+    // if (!beamI.get()) {
+    //   Robot.led.pulse(LEDColor.GREEN, 0.1);
+    // }
     // if (beamI.get()) {
     //   Robot.led.setColor(LEDColor.GREEN);
     // }

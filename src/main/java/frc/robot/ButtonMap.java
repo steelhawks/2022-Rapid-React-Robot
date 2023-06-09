@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.util.Gamepad;
 
 public class ButtonMap {
@@ -13,7 +12,6 @@ public class ButtonMap {
   public final int climberWinchDownButton = Gamepad.kGamepadButtonStart;
   public final int climberWinchUpButton = Gamepad.kGamepadButtonBack; 
   public final int climberToggleSolenoidButton = Gamepad.kGamepadButtonX;
-  
   
   public final int rightClimberDown = Gamepad.kGamepadRightStick;
   public final int leftClimberDown = Gamepad.kGamepadLeftStick; 
@@ -30,9 +28,6 @@ public class ButtonMap {
   public final int storageMoveBallsReverseButton = Gamepad.kGamepadButtonShoulderL;
 
   public final int climbRobotButton = Gamepad.kGamepadRightStick;
-  // public final int storageMoveBallsInButton = Gamepad.kGamepadButtonX;
-  // public final int storageMoveBallsOutButton;
-
 
   public final int visionGoToBall = 7;
   public final int visionAlignToHub = 8;
@@ -42,18 +37,7 @@ public class ButtonMap {
   
   public final int visionFaceLimelightUp = 11;
   public final int visionFaceLimelightDown = 12;
-//   public final int drivetrainReverseDirectionButton = 3;
-//   public final int drivetrainCoolFalconsButton = -3;
-
-//   public final int visionAlignButton = 4;
-//   public final int visionRequestBayButton = 7;
-//   public final int visionRequestPortButton = 11;
-//   public final int visionRequestBallButton = 9;
-//   public final int visionRequestConnectButton = 12;
 
   public final int startRecordingButton = 5;
   public final int endRecordingButton = 6;
-
-//   public final int turretToggleTestingButton = 8;
-
 }

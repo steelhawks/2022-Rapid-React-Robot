@@ -5,8 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
-// import edu.wpi.first.wpilibj.PneumaticsBase;
-// import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -26,11 +24,8 @@ import frc.robot.commands.Intake.*;
 import frc.robot.commands.Intake.IntakeBeam;
 import frc.robot.commands.Storage.*;
 import frc.robot.commands.Vision.*;
-import frc.robot.commands.LedCommand;
 import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
-import frc.util.LEDColor;
-import frc.util.LEDMode;
 import frc.util.pathcorder.Follower;
 import frc.util.pathcorder.Recorder;
 import frc.util.pathcorder.pathselector.PathSelector;
@@ -60,7 +55,6 @@ public class Robot extends TimedRobot {
   public static final Storage STORAGE = new Storage();
   public static final Climber CLIMBER = new Climber();
   public static final Vision VISION = new Vision();
-  public static final LED led = new LED(0, 60);
 
   public static final Recorder RECORDER = new Recorder();
   public static final Follower FOLLOWER = new Follower();
@@ -276,11 +270,6 @@ public class Robot extends TimedRobot {
     ROBOTMAP.paths.add("terminalforward.csv");
     ROBOTMAP.paths.add("terminalshorttaxi.csv");
 
-    SmartDashboard.putData("low", new ParallelCommandGroup(new ElevatorCommand(ElevatorLevels.LOW), new LedCommand(LEDColor.GREEN, LEDMode.STATIC)));
-    SmartDashboard.putData("mid", new ParallelCommandGroup(new ElevatorCommand(ElevatorLevels.MID), new LedCommand(LEDColor.YELLOW, LEDMode.STATIC)));
-    SmartDashboard.putData("high", new ParallelCommandGroup(new ElevatorCommand(ElevatorLevels.HIGH), new LedCommand(LEDColor.RED, LEDMode.STATIC)));
-    
-    
     Robot.FOLLOWER.importPath(ROBOTMAP.paths);
     PATH_SELECTOR.presetPaths();
     PATH_SELECTOR.loadPresetPath();
@@ -402,19 +391,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
-    System.out.println(Timer.getFPGATimestamp());
-
-    if (Timer.getFPGATimestamp() >= 105 && !rainbow) {
-      rainbow = true;
-      Command command = new SequentialCommandGroup(
-        new ParallelRaceGroup(
-          new LedCommand(null, LEDMode.RAINBOW),
-          new WaitCommand(5)), 
-        new LedCommand(LEDColor.OFF, LEDMode.STATIC));
-      command.schedule();
-    }
-
     CommandScheduler.getInstance().run();
   }
 

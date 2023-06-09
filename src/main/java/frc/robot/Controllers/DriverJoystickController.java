@@ -3,7 +3,6 @@ package frc.robot.Controllers;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Robot;
-import frc.robot.commands.LedCommand;
 import frc.robot.commands.Drivetrain.ReverseDriveDirection;
 import frc.robot.commands.Drivetrain.ShiftGears;
 import frc.robot.commands.Pathcorder.EndRecording;
@@ -11,8 +10,6 @@ import frc.robot.commands.Pathcorder.StartRecording;
 import frc.robot.commands.Storage.RunAllOfStorage;
 import frc.robot.commands.Storage.StopAllOfStorage;
 import frc.robot.commands.Vision.*;
-import frc.util.LEDColor;
-import frc.util.LEDMode;
 
 
 //Not made yet
@@ -45,21 +42,12 @@ public class DriverJoystickController {
     Button endRecording = this.controller.mapButton(Robot.BUTTON_MAP.endRecordingButton);
     endRecording.whenPressed(new EndRecording());
 
-    // //TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGG
-    // Button top = this.controller.mapButton(11);
-    // top.whileHeld(new StorageTest(0));
-    // Button bottom = this.controller.mapButton(12);
-    // bottom.whileHeld(new StorageTest(1));
-
-
-
-    // // VISION
-    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown)
-        .whenPressed(new LedCommand(LEDColor.BLUE, LEDMode.STATIC))  //12 i think
-        .whenReleased(new LedCommand(LEDColor.OFF, null));
+    // VISION
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightDown) // 12
+        .whenPressed(new LimelightDown());
         
-    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp)
-        .whenPressed(new LimelightUp()); //11 ??
+    this.controller.mapButton(Robot.BUTTON_MAP.visionFaceLimelightUp) // 11
+        .whenPressed(new LimelightUp());
         
     this.controller.mapButton(Robot.BUTTON_MAP.storageRunAllStorage)
         .whenPressed(new RunAllOfStorage()); //=9 
@@ -78,7 +66,7 @@ public class DriverJoystickController {
     //   //if proceeding be sure the sampleautpath0 does not drive over the ball. Need some sufficient room in front to see ball.
     //   new ParallelRaceGroup(
     //       new GoToBall(), new RunAllOfStorage(), new WaitCommand(2) // then Go to ball for hopefully 2 seconds, spinning intake for all of it.
-    //     ); // 7 for funsies
+    //     ); 
 
     this.controller.mapButton(Robot.BUTTON_MAP.visionAlignToHub)
         .whenPressed(new AlignToHub()); // 8 for rotate to hub, optionally a straight To Hub command.
